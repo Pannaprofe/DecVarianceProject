@@ -14,20 +14,20 @@ namespace DecVarianceProject
     {
         protected List<BetInfo> AllBets = new List<BetInfo>();
 
-        protected const int matchesNum = 6;
+        protected int matchesNum = 6;
         protected const double R = 0.05;
-        protected const int NumberOfBets = 2;
-        protected List<MatchParams> ProbsMarathon = new List<MatchParams>();
-        protected List<MatchParams> ProbsOtherCo = new List<MatchParams>();
-        protected List<MatchParams> CoefsMarathon = new List<MatchParams>();
-        protected List<MatchParams> CoefsOtherCo = new List<MatchParams>();
+        protected int NumberOfBets = 2;
+        protected int maxWinnings = 10000;
+        protected List<MatchParams> ProbsMarathon;
+        protected List<MatchParams> ProbsOtherCo;
+        protected List<MatchParams> CoefsMarathon;
+        protected List<MatchParams> CoefsOtherCo;
         protected Random RandomNum = new Random();   // the way to make this variable global is the only possible as random numbers are equal to the first random number 
 
         public Form1()
         {
             InitializeComponent();
         }
-
 
         protected void ObtainData()
         {
@@ -151,7 +151,7 @@ namespace DecVarianceProject
             var gennedMatchesNumber = RandomNum.Next(1, 10); // randomize the number of matches in express
             List<int> chosenMatches = GenListOfMatchesInTheBet(gennedMatchesNumber);
             List<int> outcomes = new List<int>(gennedMatchesNumber);
-            int betSize = RandomNum.Next(1, 10000); //randomize  the size of bet
+            
 
             for (int i = 0; i < gennedMatchesNumber; i++)
             {
@@ -175,6 +175,8 @@ namespace DecVarianceProject
                         break;
                 }
             }
+            var maxBet = (int)(maxWinnings/(coef-1));
+            int betSize = RandomNum.Next(1, (maxBet>0) ?maxBet:1 ); //randomize  the size of bet
             chosenMatches.Sort();
             BetInfo betinfo = new BetInfo(chosenMatches, outcomes, betSize, coef);
             coef = 1;
@@ -183,11 +185,6 @@ namespace DecVarianceProject
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ObtainData();
-            SubTree tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
-            RTB_Info.AppendText( GetAllmatchesInfoForPrint());
-            RTB_Info.AppendText(GetAllBetsInfoForPrtint());
-            RTB_rez.AppendText(tree.StringOutput);
         }
 
         private string GetAllmatchesInfoForPrint()
@@ -221,6 +218,66 @@ namespace DecVarianceProject
             }
             sb.AppendLine("______________________________________________________________________");
             return sb.ToString();
+        }
+
+        private void MatchesNumTxtBx_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+            if (!Char.IsDigit(ch) && (ch != 8) && (ch != 46))  // turning on backspace and del keys
+                e.Handled = true;
+        }
+
+        private void BetsNumTxtBx_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+            if (!Char.IsDigit(ch) && (ch != 8) && (ch != 46))  // turning on backspace and del keys
+                e.Handled = true;
+        }
+
+        private void MatchesNumTxtBx_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                matchesNum = Convert.ToInt32(MatchesNumTxtBx.Text);
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void BetsNumTxtBx_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                NumberOfBets = Convert.ToInt32(BetsNumTxtBx.Text);
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void RunBtn_Click(object sender, EventArgs e)
+        {
+            if ((MatchesNumTxtBx.Text == "") && (BetsNumTxtBx.Text == ""))
+            {
+                MessageBox.Show("Invalid input");
+            }
+            else
+            {
+                ProbsMarathon = new List<MatchParams>();
+                ProbsOtherCo = new List<MatchParams>();
+                CoefsMarathon = new List<MatchParams>();
+                CoefsOtherCo = new List<MatchParams>();
+                RTB_Info.Clear();
+                RTB_rez.Clear();
+                ObtainData();
+                SubTree tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
+                RTB_Info.AppendText(GetAllmatchesInfoForPrint());
+                RTB_Info.AppendText(GetAllBetsInfoForPrtint());
+                RTB_rez.AppendText(tree.StringOutput);
+            }
         }
     }
 }
