@@ -9,5 +9,6 @@ namespace DecVarianceProject
     {
         public List<int> MatchList { get; set; }
         public List<int> Outcomes { get; set; }
+        public int Count { get { return MatchList.Count; } }
     }
 }

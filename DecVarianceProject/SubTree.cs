@@ -16,13 +16,11 @@ namespace DecVarianceProject
 
         private Node Tree;
         private Node Top;
-        private Node CurNode;
 
         private int TreeLevels;
         private StringBuilder stringBuilder = new StringBuilder();
         private int CriticalNodeNumber;
-        private bool isOrderedSublist = true;
-        private string StringOutput;
+        public string StringOutput {get;set;}
 
         public SubTree(List<MatchParams> probs, List<MatchParams> coefs, List<BetInfo> bets)
         {
@@ -36,29 +34,16 @@ namespace DecVarianceProject
             TreeLevels = probs.Count;
             GetCriticalNodeNumber();
             Top = Tree;
-            CurNode = Top;
 
             BuildTheTree(ref Tree);
             PassTheTree(Top);
-            Output();
 
             StringOutput = stringBuilder.ToString();
-            using (StreamWriter streamWriter = new StreamWriter("123.txt"))
-            {
-                streamWriter.WriteLine(StringOutput);
-            }
+
         }
 
-
-        private void Output()
-        {
-            foreach (BetInfo playerbet in Bets)
-            {
-                PassTheTreeSelectively(Top, playerbet);
-            }
-        }
         //returns number of nodes in the tree, excluding top element
-        private void GetCriticalNodeNumber()
+        internal void GetCriticalNodeNumber()
         {
             for (int i = 0; i < TreeLevels; i++)
             {
@@ -71,32 +56,38 @@ namespace DecVarianceProject
             bool stop = false;
             int level = 0;
             int nodesNum = 0;
-
+            var path = new List<int>();
             while (!stop)
             {
                 if (level < TreeLevels)
                 {
+                    Node node = new Node();
                     if (tree.Win1 == null)
                     {
-                        Node node = new Node();
+                        
                         node.Coef = Coefs[level].X1;
                         node.Prob = Probs[level].X1;
                         node.LocalCoef = tree.LocalCoef * node.Coef;
                         node.LocalProb = tree.LocalProb * node.Prob;
+                        path.Add(1);
                         tree.Win1 = node;
                         node.Parent = tree;
                         tree = node;
+                        tree.Path = new List<int>(path);
+                       // Console.WriteLine(tree.Parent.Path);
                         nodesNum++;
+                        
                         tree.NodeNum = nodesNum;
                         level++;
                     }
                     else if (tree.Draw == null)
                     {
-                        Node node = new Node();
                         node.Coef = Coefs[level].X;
                         node.Prob = Probs[level].X;
                         node.LocalCoef = tree.LocalCoef * node.Coef;
                         node.LocalProb = tree.LocalProb * node.Prob;
+                        path.Add(0);
+                        node.Path = new List<int>(path);
                         tree.Draw = node;
                         node.Parent = tree;
                         tree = node;
@@ -106,11 +97,13 @@ namespace DecVarianceProject
                     }
                     else if (tree.Win2 == null)
                     {
-                        Node node = new Node();
                         node.Coef = Coefs[level].X2;
                         node.Prob = Probs[level].X2;
                         node.LocalCoef = tree.LocalCoef * node.Coef;
                         node.LocalProb = tree.LocalProb * node.Prob;
+                        path.Add(2);
+                        node.Path = new List<int>(path);
+
                         tree.Win2 = node;
                         node.Parent = tree;
                         tree = node;
@@ -120,7 +113,8 @@ namespace DecVarianceProject
                     }
                     else
                     {
-                        Tree = Tree.Parent;
+                        path.RemoveAt(path.Count-1);
+                        tree = tree.Parent;
                         level--;
                     }
                 }
@@ -131,16 +125,28 @@ namespace DecVarianceProject
                         stop = true;
                     else
                     {
+                        path.RemoveAt(path.Count - 1);
                         level--;
                         tree = tree.Parent;
                     }
                 }
             }
+            Console.WriteLine(tree.Parent.Parent.Win1.Win1.Path.ToString());
         }
 
         private void PassTheTree(Node tree)
         {
-            stringBuilder.AppendLine(tree.NodeNum.ToString() + " " + tree.LocalProb);
+            double payments = 0;
+            foreach (BetInfo bet in Bets)
+            {
+                if (HavingSuchBet(tree.Path,bet))
+                {
+                    payments += bet.BetSize * bet.Coef;
+                }
+            }
+            if (tree.Parent != null)
+                stringBuilder.AppendLine(tree.NodeNum.ToString() + " " + tree.LocalProb + " path: " + getPathString(tree.Path) + " payment: " + payments);
+
             if (tree.Win1 == null)  // the level is the last
             {
                 return;
@@ -150,58 +156,35 @@ namespace DecVarianceProject
             PassTheTree(tree.Win2);
         }
 
-        //non recursive pass of the tree
-        private void PassTheTreeSelectively(Node tree, BetInfo playerBet)
+        private string getPathString(List<int> lst)
         {
-            // stringBuilder.AppendLine(tree.NodeNum.ToString() + " " + tree.LocalProb);
-            tmp.Add(tree.Level);
-            if (tree.Win1 == null)  // the level is the last
-            {
-                foreach (int elem in playerBet.MatchesAndOutcomes.MatchList)
-                {
-                    if (!tmp.Contains(elem))
-                    {
-                        isOrderedSublist = false;
-                        break;
-                    }
-                }
-                if (isOrderedSublist)
-                {
-                    foreach (int elem in playerBet.MatchesAndOutcomes.MatchList)
-                    {
-                        stringBuilder.AppendLine(elem.ToString());
-                    }
-                }
-                tmp.RemoveAt(tmp.Count - 1);
-                return;
-            }
-            PassTheTreeSelectively(tree.Win1, playerBet);
-            PassTheTreeSelectively(tree.Draw, playerBet);
-            PassTheTreeSelectively(tree.Win2, playerBet);
+            StringBuilder sb = new StringBuilder();
+            foreach (var elem in lst)
+                sb.Append(elem + " ");
+            return sb.ToString();
         }
 
-        private bool HavingSuchBet(List<int> path)
+        private bool HavingSuchBet(List<int> path, BetInfo bet)
         {
-            foreach (BetInfo bet in Bets)
+            try
             {
-                if (bet.MatchesAndOutcomes.MatchList.Count != path.Count)
+                if (bet.MatchesAndOutcomes.Count > path.Count)
                     return false;
                 else
                 {
-                    for (int i = 0; i < path.Count;i++)
+                    for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
                     {
-                        if (bet.MatchesAndOutcomes.MatchList[i] != path[i])
+                        if (bet.MatchesAndOutcomes.Outcomes[i] != path[bet.MatchesAndOutcomes.MatchList[i]])
                             return false;
                     }
                     return true;
                 }
             }
-            return false;
-        }
-
-        public string GetOutput()
-        {
-            return StringOutput;
+            catch
+            {
+                return false;
+            }
+           
         }
     }
 }
