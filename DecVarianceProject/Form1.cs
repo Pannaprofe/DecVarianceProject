@@ -27,6 +27,34 @@ namespace DecVarianceProject
         public Form1()
         {
             InitializeComponent();
+
+            Label label = new Label();
+            label.Text = "№";
+            ProbsCoefsTable.Controls.Add(label, 0, 0);
+
+            label = new Label();
+            label.Text = "P1";
+            ProbsCoefsTable.Controls.Add(label, 1, 0);
+
+            label = new Label();
+            label.Text = "P1";
+            ProbsCoefsTable.Controls.Add(label, 4, 0);
+
+            label = new Label();
+            label.Text = "X";
+            ProbsCoefsTable.Controls.Add(label, 2, 0);
+
+            label = new Label();
+            label.Text = "X";
+            ProbsCoefsTable.Controls.Add(label, 5, 0);
+
+            label = new Label();
+            label.Text = "P2";
+            ProbsCoefsTable.Controls.Add(label, 3, 0);
+
+            label = new Label();
+            label.Text = "P2";
+            ProbsCoefsTable.Controls.Add(label, 6, 0);
         }
 
         protected void ObtainData()
@@ -93,9 +121,9 @@ namespace DecVarianceProject
             {
                 for (int i = 0; i < probsList.Count; i++)
                 {
-                    double x1 = (1 - R) / probsList[i].X1;
-                    double x2 = (1 - R) / probsList[i].X2;
-                    double x = (1 - R) / probsList[i].X;
+                    double x1 = Math.Round((1 - R) / probsList[i].X1,3);
+                    double x2 = Math.Round((1 - R) / probsList[i].X2,3);
+                    double x = Math.Round((1 - R) / probsList[i].X,3);
 
                     MatchParams matchParams = new MatchParams(x1, x2, x);
                     coefList.Add(matchParams);
@@ -191,11 +219,15 @@ namespace DecVarianceProject
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Matches info:");
+            sb.AppendLine("_______________________________________________________________________________________");
+            sb.AppendLine("                 Probabilities                  |                Coefs                           |");
+            sb.AppendLine("_______________________________________________________________________________________");
+            sb.AppendLine("      P1      |      X        |        P2       |      P1      |      X        |        P2       |");
             for (int i = 0; i < ProbsMarathon.Count; i++)
             {
-                sb.AppendLine("Probabilities: " + ProbsMarathon[i].X1 + ":" + ProbsMarathon[i].X + ":" + ProbsMarathon[i].X2);
+                sb.AppendLine("    " + ProbsMarathon[i].X1 + "   |   " + ProbsMarathon[i].X + "   |   " + ProbsMarathon[i].X2 + "   |   " + CoefsMarathon[i].X1 + "   |   " + CoefsMarathon[i].X + "   |   " + CoefsMarathon[i].X2);
             }
-            sb.AppendLine("______________________________________________________________________");
+            sb.AppendLine("_______________________________________________________________________________________");
             return sb.ToString();
         }
 
@@ -274,10 +306,50 @@ namespace DecVarianceProject
                 RTB_rez.Clear();
                 ObtainData();
                 SubTree tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
+                FillInTheProbsAndCoefsTable();
                 RTB_Info.AppendText(GetAllmatchesInfoForPrint());
                 RTB_Info.AppendText(GetAllBetsInfoForPrtint());
                 RTB_rez.AppendText(tree.StringOutput);
             }
+        }
+
+        private void FillInTheProbsAndCoefsTable()
+        {
+            for (int i = 0; i < ProbsMarathon.Count; i++)
+            {
+                Label label = new Label();
+                label.Text = i.ToString();
+                ProbsCoefsTable.Controls.Add(label, 0, i+1);
+
+                label = new Label();
+                label.Text = ProbsMarathon[i].X1.ToString();
+                ProbsCoefsTable.Controls.Add(label, 1, i+1);
+
+                label = new Label();
+                label.Text = ProbsMarathon[i].X.ToString();
+                ProbsCoefsTable.Controls.Add(label, 2, i+1);
+
+                label = new Label();
+                label.Text = ProbsMarathon[i].X2.ToString();
+                ProbsCoefsTable.Controls.Add(label, 3, i+1);
+
+                label = new Label();
+                label.Text = CoefsMarathon[i].X1.ToString();
+                ProbsCoefsTable.Controls.Add(label, 4, i+1);
+
+                label = new Label();
+                label.Text = CoefsMarathon[i].X.ToString();
+                ProbsCoefsTable.Controls.Add(label, 5, i + 1);
+
+                label = new Label();
+                label.Text = CoefsMarathon[i].X2.ToString();
+                ProbsCoefsTable.Controls.Add(label, 6, i + 1);
+
+            }
+        }
+        private void ProbsCoefsTable_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
