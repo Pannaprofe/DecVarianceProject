@@ -27,36 +27,7 @@ namespace DecVarianceProject
         public Form1()
         {
             InitializeComponent();
-
-            Label label = new Label();
-            label.Text = "№";
-            ProbsCoefsTable.Controls.Add(label, 0, 0);
-
-            label = new Label();
-            label.Text = "P1";
-            ProbsCoefsTable.Controls.Add(label, 1, 0);
-
-            label = new Label();
-            label.Text = "P1";
-            ProbsCoefsTable.Controls.Add(label, 4, 0);
-
-            label = new Label();
-            label.Text = "X";
-            ProbsCoefsTable.Controls.Add(label, 2, 0);
-
-            label = new Label();
-            label.Text = "X";
-            ProbsCoefsTable.Controls.Add(label, 5, 0);
-
-            label = new Label();
-            label.Text = "P2";
-            ProbsCoefsTable.Controls.Add(label, 3, 0);
-
-            label = new Label();
-            label.Text = "P2";
-            ProbsCoefsTable.Controls.Add(label, 6, 0);
         }
-
         protected void ObtainData()
         {
             GenProbsMarathon();
@@ -66,6 +37,7 @@ namespace DecVarianceProject
             GenAllBetsOfAllPlayers();
         }
 
+        // *********************BEGIN GENERATORS*********************************************
         private void GenAllBetsOfAllPlayers()
         {
             BetInfo OnePlayerBet;
@@ -75,7 +47,6 @@ namespace DecVarianceProject
                 AllBets.Add(OnePlayerBet);
             }
         }
-
         private void GenProbsMarathon()
         {
             double minProb = 0.2;
@@ -90,7 +61,6 @@ namespace DecVarianceProject
                 ProbsMarathon.Add(matchParams);
             }
         }
-
         private void GenProbsOtherCo()
         {
             double delta = 0.03;
@@ -113,7 +83,6 @@ namespace DecVarianceProject
             }
 
         }
-
         private List<MatchParams> GetCoefs(List<MatchParams> probsList)
         {
             var coefList = new List<MatchParams>();
@@ -135,8 +104,6 @@ namespace DecVarianceProject
             }
             return coefList;
         }
-
-
         private List<int> GenListOfMatchesInTheBet(int gennedMatchesNumber)
         {
             List<int> rez;
@@ -210,27 +177,11 @@ namespace DecVarianceProject
             coef = 1;
             return betinfo;
         }
+        //**********************END GENERATORS***********************************************
 
         private void Form1_Load(object sender, EventArgs e)
         {
         }
-
-        private string GetAllmatchesInfoForPrint()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Matches info:");
-            sb.AppendLine("_______________________________________________________________________________________");
-            sb.AppendLine("                 Probabilities                  |                Coefs                           |");
-            sb.AppendLine("_______________________________________________________________________________________");
-            sb.AppendLine("      P1      |      X        |        P2       |      P1      |      X        |        P2       |");
-            for (int i = 0; i < ProbsMarathon.Count; i++)
-            {
-                sb.AppendLine("    " + ProbsMarathon[i].X1 + "   |   " + ProbsMarathon[i].X + "   |   " + ProbsMarathon[i].X2 + "   |   " + CoefsMarathon[i].X1 + "   |   " + CoefsMarathon[i].X + "   |   " + CoefsMarathon[i].X2);
-            }
-            sb.AppendLine("_______________________________________________________________________________________");
-            return sb.ToString();
-        }
-
         private string GetAllBetsInfoForPrtint()
         {
             StringBuilder sb = new StringBuilder();
@@ -251,21 +202,18 @@ namespace DecVarianceProject
             sb.AppendLine("______________________________________________________________________");
             return sb.ToString();
         }
-
         private void MatchesNumTxtBx_KeyPress(object sender, KeyPressEventArgs e)
         {
             char ch = e.KeyChar;
             if (!Char.IsDigit(ch) && (ch != 8) && (ch != 46))  // turning on backspace and del keys
                 e.Handled = true;
         }
-
         private void BetsNumTxtBx_KeyPress(object sender, KeyPressEventArgs e)
         {
             char ch = e.KeyChar;
             if (!Char.IsDigit(ch) && (ch != 8) && (ch != 46))  // turning on backspace and del keys
                 e.Handled = true;
         }
-
         private void MatchesNumTxtBx_TextChanged(object sender, EventArgs e)
         {
             try
@@ -277,7 +225,6 @@ namespace DecVarianceProject
 
             }
         }
-
         private void BetsNumTxtBx_TextChanged(object sender, EventArgs e)
         {
             try
@@ -289,7 +236,6 @@ namespace DecVarianceProject
 
             }
         }
-
         private void RunBtn_Click(object sender, EventArgs e)
         {
             if ((MatchesNumTxtBx.Text == "") && (BetsNumTxtBx.Text == ""))
@@ -307,12 +253,10 @@ namespace DecVarianceProject
                 ObtainData();
                 SubTree tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
                 FillInTheProbsAndCoefsTable();
-                RTB_Info.AppendText(GetAllmatchesInfoForPrint());
+                PrintResults(tree);
                 RTB_Info.AppendText(GetAllBetsInfoForPrtint());
-                RTB_rez.AppendText(tree.StringOutput);
             }
         }
-
         private void FillInTheProbsAndCoefsTable()
         {
             for (int i = 0; i < ProbsMarathon.Count; i++)
@@ -344,12 +288,18 @@ namespace DecVarianceProject
                 label = new Label();
                 label.Text = CoefsMarathon[i].X2.ToString();
                 ProbsCoefsTable.Controls.Add(label, 6, i + 1);
-
             }
         }
-        private void ProbsCoefsTable_Paint(object sender, PaintEventArgs e)
-        {
 
+        private void PrintResults(SubTree tree)
+        {
+            StringBuilder sb = new StringBuilder();
+            var visualizedResults = tree.AllVisualizedResults;
+            foreach(var result in visualizedResults)
+            {
+                sb.AppendLine("  " + result.NodeNumber + "  " + result.Probability + " " + String.Join(", ", result.Path.ToArray()) + " " + result.Payments + " " + result.Winnings + " "+ (result.Winnings - result.Payments));
+            }
+            RTB_rez.AppendText(sb.ToString());
         }
     }
 }

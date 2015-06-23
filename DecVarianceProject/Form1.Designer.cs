@@ -35,20 +35,23 @@
             this.label2 = new System.Windows.Forms.Label();
             this.BetsNumTxtBx = new System.Windows.Forms.TextBox();
             this.RunBtn = new System.Windows.Forms.Button();
-            this.ProbsCoefsTable = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.groupBox1.SuspendLayout();
+            this.ProbsCoefsTable = new System.Windows.Forms.TableLayoutPanel();
+            this.NodeNumLbl = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // RTB_rez
             // 
-            this.RTB_rez.Location = new System.Drawing.Point(583, 46);
+            this.RTB_rez.Location = new System.Drawing.Point(609, 65);
             this.RTB_rez.Name = "RTB_rez";
-            this.RTB_rez.Size = new System.Drawing.Size(686, 496);
+            this.RTB_rez.Size = new System.Drawing.Size(530, 477);
             this.RTB_rez.TabIndex = 0;
             this.RTB_rez.Text = "";
             // 
@@ -98,7 +101,7 @@
             // 
             // RunBtn
             // 
-            this.RunBtn.Location = new System.Drawing.Point(1092, 13);
+            this.RunBtn.Location = new System.Drawing.Point(571, 7);
             this.RunBtn.Name = "RunBtn";
             this.RunBtn.Size = new System.Drawing.Size(75, 23);
             this.RunBtn.TabIndex = 6;
@@ -106,8 +109,36 @@
             this.RunBtn.UseVisualStyleBackColor = true;
             this.RunBtn.Click += new System.EventHandler(this.RunBtn_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(22, 46);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(48, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Matches";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(152, 46);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(63, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Probabilities";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(369, 49);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Coefs";
+            // 
             // ProbsCoefsTable
             // 
+            this.ProbsCoefsTable.AutoScroll = true;
             this.ProbsCoefsTable.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.ProbsCoefsTable.ColumnCount = 7;
             this.ProbsCoefsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -117,68 +148,101 @@
             this.ProbsCoefsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
             this.ProbsCoefsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
             this.ProbsCoefsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
-            this.ProbsCoefsTable.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.ProbsCoefsTable.Location = new System.Drawing.Point(13, 9);
+            this.ProbsCoefsTable.Location = new System.Drawing.Point(12, 65);
             this.ProbsCoefsTable.Name = "ProbsCoefsTable";
             this.ProbsCoefsTable.RowCount = 22;
-            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35.29412F));
-            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 58.82354F));
-            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.882352F));
-            this.ProbsCoefsTable.Size = new System.Drawing.Size(512, 143);
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProbsCoefsTable.Size = new System.Drawing.Size(565, 167);
             this.ProbsCoefsTable.TabIndex = 7;
-            this.ProbsCoefsTable.Paint += new System.Windows.Forms.PaintEventHandler(this.ProbsCoefsTable_Paint);
             // 
-            // label3
+            // NodeNumLbl
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 53);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Matches";
+            this.NodeNumLbl.AutoSize = true;
+            this.NodeNumLbl.Location = new System.Drawing.Point(625, 46);
+            this.NodeNumLbl.Name = "NodeNumLbl";
+            this.NodeNumLbl.Size = new System.Drawing.Size(33, 13);
+            this.NodeNumLbl.TabIndex = 12;
+            this.NodeNumLbl.Text = "Node";
             // 
-            // label4
+            // label6
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(124, 53);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Probabilities";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(703, 46);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Probabilities";
             // 
-            // label5
+            // label7
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(308, 53);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Coefs";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(814, 46);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Path";
             // 
-            // groupBox1
+            // label8
             // 
-            this.groupBox1.Controls.Add(this.ProbsCoefsTable);
-            this.groupBox1.Controls.Add(this.vScrollBar1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 69);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(548, 163);
-            this.groupBox1.TabIndex = 11;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(889, 46);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 13);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Payments";
             // 
-            // vScrollBar1
+            // label9
             // 
-            this.vScrollBar1.Location = new System.Drawing.Point(528, 9);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 143);
-            this.vScrollBar1.TabIndex = 8;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(979, 46);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 13);
+            this.label9.TabIndex = 16;
+            this.label9.Text = "Winnings";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(1074, 46);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(50, 13);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "Net Won";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1281, 573);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(1191, 573);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.RTB_rez);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.NodeNumLbl);
+            this.Controls.Add(this.ProbsCoefsTable);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -188,11 +252,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.MatchesNumTxtBx);
             this.Controls.Add(this.RTB_Info);
-            this.Controls.Add(this.RTB_rez);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,12 +269,16 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox BetsNumTxtBx;
         private System.Windows.Forms.Button RunBtn;
-        private System.Windows.Forms.TableLayoutPanel ProbsCoefsTable;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.TableLayoutPanel ProbsCoefsTable;
+        private System.Windows.Forms.Label NodeNumLbl;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
     }
 }
 

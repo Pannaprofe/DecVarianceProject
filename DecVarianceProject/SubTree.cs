@@ -12,15 +12,12 @@ namespace DecVarianceProject
         private List<MatchParams> Probs;
         private List<MatchParams> Coefs;
         private List<BetInfo> Bets;
-        private List<int> tmp = new List<int>();
+        public List<VisualizedResults> AllVisualizedResults { get; private set; }
 
         private Node Tree;
-        private Node Top;
-
+        public  Node Top {get; private set;}
         private int TreeLevels;
-        private StringBuilder stringBuilder = new StringBuilder();
-        private int CriticalNodeNumber;
-        public string StringOutput {get;set;}
+        public int CriticalNodeNumber { get; private set; }   // the Number of nodes of the tree with known number of levels
 
         public SubTree(List<MatchParams> probs, List<MatchParams> coefs, List<BetInfo> bets)
         {
@@ -34,12 +31,10 @@ namespace DecVarianceProject
             TreeLevels = probs.Count;
             GetCriticalNodeNumber();
             Top = Tree;
+            AllVisualizedResults = new List<VisualizedResults>();
 
             BuildTheTree(ref Tree);
             PassTheTree(Top);
-
-            StringOutput = stringBuilder.ToString();
-
         }
 
         //returns number of nodes in the tree, excluding top element
@@ -137,15 +132,26 @@ namespace DecVarianceProject
         private void PassTheTree(Node tree)
         {
             double payments = 0;
+            double winnings = 0;
             foreach (BetInfo bet in Bets)
             {
                 if (HavingSuchBet(tree.Path,bet))
                 {
-                    payments += bet.BetSize * bet.Coef;
+                    payments += bet.BetSize * (bet.Coef-1);
+                }
+                else
+                {
+                    winnings += bet.BetSize;
                 }
             }
+            payments = Math.Round(payments, 2);
+            winnings = Math.Round(winnings, 2);
             if (tree.Parent != null)
-                stringBuilder.AppendLine(tree.NodeNum.ToString() + " " + tree.LocalProb + " path: " + getPathString(tree.Path) + " payment: " + payments);
+            {
+                VisualizedResults visualizedResults = new VisualizedResults(tree.NodeNum, tree.Path, tree.LocalProb, payments, winnings);
+                AllVisualizedResults.Add(visualizedResults);
+            }
+               
 
             if (tree.Win1 == null)  // the level is the last
             {
