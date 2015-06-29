@@ -12,22 +12,35 @@ namespace DecVarianceProject
         public List<MatchParams> ProbsOtherCo { get; private set; }
         public List<MatchParams> CoefsMarathon { get; private set; }
         public List<MatchParams> CoefsOtherCo { get; private set; }
+        public List<GennedParamsInTable> GennedParams { get; private set; }
         public List<BetInfo> AllBets { get; private set; }
+        public List<AllBetsTable> AllMadeBets { get; private set; }
+        public SubTree Tree { get; private set; }
+
+        public double Rake { get; private set; }
 
         public int MatchesNum { get; private set; }
-        public double Rake {get; private set;}
         public int NumberOfBets { get; private set; }
         public int MaxWinnings { get; private set; }
 
-        protected Random RandomNum = new Random();   // the way to make this variable global is the only possible as random numbers are equal to the first random number
+        private Random RandomNum = new Random();  
 
         public ProbsCoefsCreator(int MatchesNum, double rake, int numberOfBets, int maxWinnings)
         {
+            ProbsMarathon = new List<MatchParams>();
+            ProbsOtherCo = new List<MatchParams>();
+            CoefsMarathon = new List<MatchParams>();
+            CoefsOtherCo = new List<MatchParams>();
+            
             this.MatchesNum = MatchesNum;
-            this.Rake = rake;
             this.NumberOfBets = numberOfBets;
             this.MaxWinnings = maxWinnings;
+            this.Rake = rake;
             AllBets = new List<BetInfo>();
+            AllMadeBets = new List<AllBetsTable>();
+            ObtainData();  //Generate Probs/Coefs
+            CreateProbsAndCoefsStructure();   // for printing Probs and Coefs into Table
+            Tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
         }
 
         protected void ObtainData()
@@ -39,6 +52,24 @@ namespace DecVarianceProject
             GenAllBetsOfAllPlayers();
         }
 
+        private void CreateProbsAndCoefsStructure()
+        {
+            GennedParams = new List<GennedParamsInTable>();
+            for (int i = 0; i < ProbsMarathon.Count;i++ )
+            {
+                var row = new GennedParamsInTable()
+                {
+                    MatchNum = i,
+                    ProbabilityP1 = ProbsMarathon[i].P1,
+                    ProbabilityP2 = ProbsMarathon[i].P2,
+                    ProbabilityX = ProbsMarathon[i].X,
+                    CoefP1 = CoefsMarathon[i].P1,
+                    CoefP2 = CoefsMarathon[i].P2,
+                    CoefX = CoefsMarathon[i].X
+                };
+                GennedParams.Add(row);
+            }
+        }
         // *********************BEGIN GENERATORS*********************************************
         private void GenAllBetsOfAllPlayers()
         {
@@ -71,8 +102,8 @@ namespace DecVarianceProject
             {
                 for (int i = 0; i < MatchesNum; i++)
                 {
-                    double x1 = ProbsMarathon[i].X1 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
-                    double x2 = ProbsMarathon[i].X2 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
+                    double x1 = ProbsMarathon[i].P1 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
+                    double x2 = ProbsMarathon[i].P2 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
                     double x = ProbsMarathon[i].X + random.NextDouble() * (2 * delta) - delta;
 
                     MatchParams matchParams = new MatchParams(x1, x2, x);
@@ -92,9 +123,9 @@ namespace DecVarianceProject
             {
                 for (int i = 0; i < probsList.Count; i++)
                 {
-                    double x1 = Math.Round((1 - R) / probsList[i].X1, 3);
-                    double x2 = Math.Round((1 - R) / probsList[i].X2, 3);
-                    double x = Math.Round((1 - R) / probsList[i].X, 3);
+                    double x1 = Math.Round((1 - Rake) / probsList[i].P1, 3);
+                    double x2 = Math.Round((1 - Rake) / probsList[i].P2, 3);
+                    double x = Math.Round((1 - Rake) / probsList[i].X, 3);
 
                     MatchParams matchParams = new MatchParams(x1, x2, x);
                     coefList.Add(matchParams);
@@ -161,21 +192,32 @@ namespace DecVarianceProject
                 switch (outcomes[i])
                 {
                     case 0:
-                        coef *= CoefsMarathon[chosenMatches[i]].X1;
+                        coef *= CoefsMarathon[chosenMatches[i]].P1;
 
                         break;
                     case 1:
                         coef *= CoefsMarathon[chosenMatches[i]].X;
                         break;
                     case 2:
-                        coef *= CoefsMarathon[chosenMatches[i]].X2;
+                        coef *= CoefsMarathon[chosenMatches[i]].P2;
                         break;
                 }
             }
-            var maxBet = (int)(maxWinnings / (coef - 1));
+            var maxBet = (int)(MaxWinnings / (coef - 1));
             int betSize = RandomNum.Next(1, (maxBet > 0) ? maxBet : 1); //randomize  the size of bet
             chosenMatches.Sort();
             BetInfo betinfo = new BetInfo(chosenMatches, outcomes, betSize, coef);
+            var sb = new StringBuilder();
+            for (int i = 0;i < chosenMatches.Count;i++)
+            {
+                sb.Append("{"+chosenMatches[i]+"-"+outcomes[i]+"}, ");
+            }
+            AllBetsTable row = new AllBetsTable(){
+                BetSize = betSize,
+                Coef = coef,
+                ChosenMatchesResults = sb.ToString()
+            };
+            AllMadeBets.Add(row);
             coef = 1;
             return betinfo;
         }

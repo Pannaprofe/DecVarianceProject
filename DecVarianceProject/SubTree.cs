@@ -12,7 +12,7 @@ namespace DecVarianceProject
         private List<MatchParams> Probs;
         private List<MatchParams> Coefs;
         private List<BetInfo> Bets;
-        public List<VisualizedResults> AllVisualizedResults { get; private set; }
+        public List<ResultsInTable> AllResultsInTable { get; private set; }
 
         private Node Tree;
         public  Node Top {get; private set;}
@@ -31,14 +31,14 @@ namespace DecVarianceProject
             TreeLevels = probs.Count;
             GetCriticalNodeNumber();
             Top = Tree;
-            AllVisualizedResults = new List<VisualizedResults>();
+            AllResultsInTable = new List<ResultsInTable>();
 
             BuildTheTree(ref Tree);
             PassTheTree(Top);
         }
 
         //returns number of nodes in the tree, excluding top element
-        internal void GetCriticalNodeNumber()
+        private void GetCriticalNodeNumber()
         {
             for (int i = 0; i < TreeLevels; i++)
             {
@@ -60,8 +60,8 @@ namespace DecVarianceProject
                     if (tree.Win1 == null)
                     {
                         
-                        node.Coef = Coefs[level].X1;
-                        node.Prob = Probs[level].X1;
+                        node.Coef = Coefs[level].P1;
+                        node.Prob = Probs[level].P1;
                         node.LocalCoef = tree.LocalCoef * node.Coef;
                         node.LocalProb = tree.LocalProb * node.Prob;
                         path.Add(1);
@@ -92,8 +92,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Win2 == null)
                     {
-                        node.Coef = Coefs[level].X2;
-                        node.Prob = Probs[level].X2;
+                        node.Coef = Coefs[level].P2;
+                        node.Prob = Probs[level].P2;
                         node.LocalCoef = tree.LocalCoef * node.Coef;
                         node.LocalProb = tree.LocalProb * node.Prob;
                         path.Add(2);
@@ -148,8 +148,16 @@ namespace DecVarianceProject
             winnings = Math.Round(winnings, 2);
             if (tree.Parent != null)
             {
-                VisualizedResults visualizedResults = new VisualizedResults(tree.NodeNum, tree.Path, tree.LocalProb, payments, winnings);
-                AllVisualizedResults.Add(visualizedResults);
+                ResultsInTable resultsInTable = new ResultsInTable()
+                {
+                    Node = tree.NodeNum,
+                    Probability = tree.LocalProb,
+                    NodePath = String.Join(", ", tree.Path.ToArray()),
+                    Winnings = winnings,
+                    Payments = payments,
+                    NetWon = winnings - payments
+                };
+                AllResultsInTable.Add(resultsInTable);
             }
                
 
@@ -160,14 +168,6 @@ namespace DecVarianceProject
             PassTheTree(tree.Win1);
             PassTheTree(tree.Draw);
             PassTheTree(tree.Win2);
-        }
-
-        private string getPathString(List<int> lst)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var elem in lst)
-                sb.Append(elem + " ");
-            return sb.ToString();
         }
 
         private bool HavingSuchBet(List<int> path, BetInfo bet)
