@@ -13,6 +13,6 @@ C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarian
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\bin\Debug\DecVarianceProject.exe
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\bin\Debug\DecVarianceProject.pdb
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.csprojResolveAssemblyReference.cache
-C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.Form1.resources
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.Properties.Resources.resources
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.csproj.GenerateResource.Cache
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.MainForm.resources

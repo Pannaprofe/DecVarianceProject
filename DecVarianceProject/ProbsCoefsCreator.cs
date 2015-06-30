@@ -76,7 +76,7 @@ namespace DecVarianceProject
             BetInfo OnePlayerBet;
             for (int i = 0; i < NumberOfBets; i++)
             {
-                OnePlayerBet = GenerateBet();
+                OnePlayerBet = GenerateBet(i);
                 AllBets.Add(OnePlayerBet);
             }
         }
@@ -89,7 +89,7 @@ namespace DecVarianceProject
                 double x1 = Math.Round(random.NextDouble() * (1 - 2 * minProb) + minProb, 3);
                 //random.NextDouble() * (maximum - minimum) + minimum;
                 double x = Math.Round(random.NextDouble() * (1 - x1 - 2 * minProb) + minProb, 3);
-                double x2 = 1 - x1 - x;
+                double x2 = Math.Round(1 - x1 - x,3);
                 MatchParams matchParams = new MatchParams(x1, x2, x);
                 ProbsMarathon.Add(matchParams);
             }
@@ -174,7 +174,7 @@ namespace DecVarianceProject
             }
             return rez;
         }
-        private BetInfo GenerateBet()
+        private BetInfo GenerateBet(int betNum)
         {
             var gennedMatchesNumber = RandomNum.Next(1, 10); // randomize the number of matches in express
             List<int> chosenMatches = GenListOfMatchesInTheBet(gennedMatchesNumber);
@@ -203,6 +203,7 @@ namespace DecVarianceProject
                         break;
                 }
             }
+            coef = Math.Round(coef, 3);
             var maxBet = (int)(MaxWinnings / (coef - 1));
             int betSize = RandomNum.Next(1, (maxBet > 0) ? maxBet : 1); //randomize  the size of bet
             chosenMatches.Sort();
@@ -213,6 +214,7 @@ namespace DecVarianceProject
                 sb.Append("{"+chosenMatches[i]+"-"+outcomes[i]+"}, ");
             }
             AllBetsTable row = new AllBetsTable(){
+                BetNum = betNum,
                 BetSize = betSize,
                 Coef = coef,
                 ChosenMatchesResults = sb.ToString()

@@ -62,14 +62,13 @@ namespace DecVarianceProject
                         
                         node.Coef = Coefs[level].P1;
                         node.Prob = Probs[level].P1;
-                        node.LocalCoef = tree.LocalCoef * node.Coef;
-                        node.LocalProb = tree.LocalProb * node.Prob;
+                        node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
+                        node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(1);
                         tree.Win1 = node;
                         node.Parent = tree;
                         tree = node;
                         tree.Path = new List<int>(path);
-                       // Console.WriteLine(tree.Parent.Path);
                         nodesNum++;
                         
                         tree.NodeNum = nodesNum;
@@ -79,8 +78,8 @@ namespace DecVarianceProject
                     {
                         node.Coef = Coefs[level].X;
                         node.Prob = Probs[level].X;
-                        node.LocalCoef = tree.LocalCoef * node.Coef;
-                        node.LocalProb = tree.LocalProb * node.Prob;
+                        node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
+                        node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(0);
                         node.Path = new List<int>(path);
                         tree.Draw = node;
@@ -94,8 +93,8 @@ namespace DecVarianceProject
                     {
                         node.Coef = Coefs[level].P2;
                         node.Prob = Probs[level].P2;
-                        node.LocalCoef = tree.LocalCoef * node.Coef;
-                        node.LocalProb = tree.LocalProb * node.Prob;
+                        node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
+                        node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(2);
                         node.Path = new List<int>(path);
 
@@ -155,7 +154,7 @@ namespace DecVarianceProject
                     NodePath = String.Join(", ", tree.Path.ToArray()),
                     Winnings = winnings,
                     Payments = payments,
-                    NetWon = winnings - payments
+                    NetWon = Math.Round(winnings - payments,2)
                 };
                 AllResultsInTable.Add(resultsInTable);
             }

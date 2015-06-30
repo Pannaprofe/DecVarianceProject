@@ -1,6 +1,6 @@
 ﻿namespace DecVarianceProject
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -119,13 +119,14 @@
             // dataGridViewBets
             // 
             this.dataGridViewBets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewBets.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.dataGridViewBets.Location = new System.Drawing.Point(16, 262);
             this.dataGridViewBets.Name = "dataGridViewBets";
             this.dataGridViewBets.RowHeadersVisible = false;
             this.dataGridViewBets.Size = new System.Drawing.Size(561, 278);
             this.dataGridViewBets.TabIndex = 13;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -138,8 +139,8 @@
             this.Controls.Add(this.BetsNumTxtBx);
             this.Controls.Add(this.BetsNumLbl);
             this.Controls.Add(this.MatchesNumTxtBx);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainForm";
+            this.Text = "Marathon";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProbsCoefs)).EndInit();
