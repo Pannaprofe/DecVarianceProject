@@ -211,7 +211,7 @@ namespace DecVarianceProject
             var sb = new StringBuilder();
             for (int i = 0;i < chosenMatches.Count;i++)
             {
-                sb.Append("{"+chosenMatches[i]+"-"+outcomes[i]+"}, ");
+                sb.Append("{"+chosenMatches[i]+"-"+( (outcomes[i] == 0)?"X":"P"+outcomes[i]) +"}, ");
             }
             AllBetsTable row = new AllBetsTable(){
                 BetNum = betNum,

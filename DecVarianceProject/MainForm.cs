@@ -36,70 +36,148 @@ namespace DecVarianceProject
                 this.MatchesNum = Convert.ToInt32(MatchesNumTxtBx.Text);
                 this.NumberOfBets = Convert.ToInt32(BetsNumTxtBx.Text);
                 Creator = new ProbsCoefsCreator(MatchesNum, Rake, NumberOfBets, MaxWinnings);
-                dataGridViewResults.DataSource = Creator.Tree.AllResultsInTable;
-                dataGridViewProbsCoefs.DataSource = Creator.GennedParams;
-                dataGridViewBets.DataSource = Creator.AllMadeBets;
-                ConfigureBetsInfoTableAppearence();
-                ConfigureResultsTableAppearence();
-                ConfigureCoefsProbsTableAppearence();
-                //this.dataGridViewBets.Sort(this.dataGridViewBets.Columns[0], ListSortDirection.Descending);
+                ConfigureDataGridViewBets();
+                ConfigureDataGridViewResults();
+                ConfigureDataGridViewProbsCoefs();
             }
         }
 
-        private void ConfigureBetsInfoTableAppearence()
+        private void ConfigureDataGridViewBets()
         {
-            dataGridViewBets.ReadOnly = true;
-            DataGridViewColumn betNumColumn = dataGridViewBets.Columns[0];
-            betNumColumn.Width = 50;
-            DataGridViewColumn betSizeColumn = dataGridViewBets.Columns[1];
-            betSizeColumn.Width = 60;
-            DataGridViewColumn coefColumn = dataGridViewBets.Columns[2];
-            coefColumn.Width = 70;
-            DataGridViewColumn chosenMatchesResultsColumn = dataGridViewBets.Columns[3];
-            chosenMatchesResultsColumn.Width = dataGridViewBets.Width - (betSizeColumn.Width + coefColumn.Width + betNumColumn.Width);
-        }
-
-        private void ConfigureResultsTableAppearence()
-        {
-            dataGridViewResults.ReadOnly = true;
-            DataGridViewColumn nodeNumColumn = dataGridViewResults.Columns[0];
-            nodeNumColumn.Width = 50;
-            DataGridViewColumn probabilityColumn = dataGridViewResults.Columns[1];
-            probabilityColumn.Width = 60;
-            int patternWidth = (int)dataGridViewResults.Width/6;
-            DataGridViewColumn paymentsColumn = dataGridViewResults.Columns[2];
-            paymentsColumn.Width = patternWidth;
-            DataGridViewColumn winningsColumn = dataGridViewResults.Columns[3];
-            winningsColumn.Width = patternWidth;
-            DataGridViewColumn netWonColumn = dataGridViewResults.Columns[4];
-            netWonColumn.Width = patternWidth;
-            DataGridViewColumn pathColumn = dataGridViewResults.Columns[5];
-            pathColumn.Width = dataGridViewResults.Width - (nodeNumColumn.Width + probabilityColumn.Width + paymentsColumn.Width + winningsColumn.Width + netWonColumn.Width);
-        }
-
-        private void ConfigureCoefsProbsTableAppearence()
-        {
-            dataGridViewProbsCoefs.ReadOnly = true;
-            foreach (DataGridViewColumn column in dataGridViewProbsCoefs.Columns)
+            try
             {
-                dataGridViewProbsCoefs.Columns[column.Name].SortMode = DataGridViewColumnSortMode.Automatic;
+                DataTable table = new DataTable();
+                table.Columns.Add("BetNum").DataType = typeof(Int32);
+                table.Columns.Add("BetSize").DataType = typeof(Int32);
+                table.Columns.Add("Coef").DataType = typeof(double);
+                table.Columns.Add("MatchResults").DataType = typeof(string);
+                var list = new List<TablesContent>(Creator.AllMadeBets);
+                dataGridViewBets.DataSource = FillInTheTable(table, list);
+                dataGridViewBets.ReadOnly = true;
+                DataGridViewColumn betNumColumn = dataGridViewBets.Columns["BetNum"];
+                betNumColumn.Width = 50;
+                DataGridViewColumn betSizeColumn = dataGridViewBets.Columns["BetSize"];
+                betSizeColumn.Width = 60;
+                DataGridViewColumn coefColumn = dataGridViewBets.Columns["Coef"];
+                coefColumn.Width = 70;
+                DataGridViewColumn chosenMatchesResultsColumn = dataGridViewBets.Columns["MatchResults"];
+                chosenMatchesResultsColumn.Width = dataGridViewBets.Width - (betSizeColumn.Width + coefColumn.Width + betNumColumn.Width);
+                BindSortingEventToATableHeader(dataGridViewBets);
             }
-            DataGridViewColumn matchNumColumn = dataGridViewProbsCoefs.Columns[0];
-            matchNumColumn.Width = 40;
-            
-            int patternWidth = (int)(dataGridViewProbsCoefs.Width - matchNumColumn.Width)/6;
-            DataGridViewColumn probP1Column = dataGridViewProbsCoefs.Columns[1];
-            probP1Column.Width = patternWidth;
-            DataGridViewColumn probXColumn = dataGridViewProbsCoefs.Columns[2];
-            probXColumn.Width = patternWidth;
-            DataGridViewColumn probP2Column = dataGridViewProbsCoefs.Columns[3];
-            probP2Column.Width = patternWidth;
-            DataGridViewColumn coefP1Column = dataGridViewProbsCoefs.Columns[4];
-            coefP1Column.Width = patternWidth;
-            DataGridViewColumn coefXColumn = dataGridViewProbsCoefs.Columns[5];
-            coefXColumn.Width = patternWidth;
-            DataGridViewColumn coefP2Column = dataGridViewProbsCoefs.Columns[6];
-            coefP2Column.Width = patternWidth;
+            catch
+            {
+                MessageBox.Show("The Number of Columns is less then requested in DataGridViewBets Table  or cell type missmatch has occured");
+                throw;
+            }
+        }
+
+        private void ConfigureDataGridViewResults()
+        {
+            try
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("Node").DataType = typeof(Int32);
+                table.Columns.Add("Probability").DataType = typeof(double);
+                table.Columns.Add("Payments").DataType = typeof(double);
+                table.Columns.Add("Winnings").DataType = typeof(double);
+                table.Columns.Add("NetWon").DataType = typeof(double);
+                table.Columns.Add("Path").DataType = typeof(string);
+                var list = new List<TablesContent>(Creator.Tree.AllResultsInTable);
+                dataGridViewResults.DataSource = FillInTheTable(table, list);
+                dataGridViewResults.ReadOnly = true;
+                DataGridViewColumn nodeNumColumn = dataGridViewResults.Columns["Node"];
+                nodeNumColumn.Width = 50;
+                DataGridViewColumn probabilityColumn = dataGridViewResults.Columns["Probability"];
+                probabilityColumn.Width = 60;
+                int patternWidth = (int)dataGridViewResults.Width / 6;
+                DataGridViewColumn paymentsColumn = dataGridViewResults.Columns["Payments"];
+                paymentsColumn.Width = patternWidth;
+                DataGridViewColumn winningsColumn = dataGridViewResults.Columns["Winnings"];
+                winningsColumn.Width = patternWidth;
+                DataGridViewColumn netWonColumn = dataGridViewResults.Columns["NetWon"];
+                netWonColumn.Width = patternWidth;
+                DataGridViewColumn pathColumn = dataGridViewResults.Columns["Path"];
+                pathColumn.Width = dataGridViewResults.Width - (nodeNumColumn.Width + probabilityColumn.Width + paymentsColumn.Width + winningsColumn.Width + netWonColumn.Width);
+                BindSortingEventToATableHeader(dataGridViewResults);
+            }
+            catch
+            {
+                MessageBox.Show("The Number of Columns is less then requested in DataGridViewResults Table  or cell type missmatch has occured");
+                throw;
+            }
+        }
+
+        private void ConfigureDataGridViewProbsCoefs()
+        {
+            try
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("MatchNum").DataType = typeof(Int32);
+                table.Columns.Add("ProbabilityP1").DataType = typeof(double);
+                table.Columns.Add("ProbabilityX").DataType = typeof(double);
+                table.Columns.Add("ProbabilityP2").DataType = typeof(double);
+                table.Columns.Add("CoefP1").DataType = typeof(double);
+                table.Columns.Add("CoefX").DataType = typeof(double);
+                table.Columns.Add("CoefP2").DataType = typeof(double);
+                var list = new List<TablesContent>(Creator.GennedParams);
+                dataGridViewProbsCoefs.DataSource = FillInTheTable(table, list);
+                dataGridViewProbsCoefs.ReadOnly = true;
+                DataGridViewColumn matchNumColumn = dataGridViewProbsCoefs.Columns["MatchNum"];
+                matchNumColumn.Width = 40;
+
+                int patternWidth = (int)(dataGridViewProbsCoefs.Width - matchNumColumn.Width) / 6;
+                DataGridViewColumn probP1Column = dataGridViewProbsCoefs.Columns["ProbabilityP1"];
+                probP1Column.Width = patternWidth;
+                DataGridViewColumn probXColumn = dataGridViewProbsCoefs.Columns["ProbabilityX"];
+                probXColumn.Width = patternWidth;
+                DataGridViewColumn probP2Column = dataGridViewProbsCoefs.Columns["ProbabilityP2"];
+                probP2Column.Width = patternWidth;
+                DataGridViewColumn coefP1Column = dataGridViewProbsCoefs.Columns["CoefP1"];
+                coefP1Column.Width = patternWidth;
+                DataGridViewColumn coefXColumn = dataGridViewProbsCoefs.Columns["CoefX"];
+                coefXColumn.Width = patternWidth;
+                DataGridViewColumn coefP2Column = dataGridViewProbsCoefs.Columns["CoefP2"];
+                coefP2Column.Width = patternWidth;
+                BindSortingEventToATableHeader(dataGridViewProbsCoefs);
+            }
+            catch
+            {
+                MessageBox.Show("The Number of Columns is less then requested in DataGridViewProbsCoefs Table or cell type missmatch has occured");
+                throw;
+            }
+        }
+
+        private DataTable FillInTheTable(DataTable table, List<TablesContent> list)
+        {
+            foreach (var row in list)
+            {
+                var properties = row.GetType().GetProperties();
+                var propertiesForTableCount = properties.Count() - 1;   // There is no "Count" column in the table
+                string[] rowAsTheList = new string[propertiesForTableCount];
+                for (int i = 0; i < propertiesForTableCount; i++)
+                {
+                    rowAsTheList[i] = Convert.ToString(properties[i].GetValue(row, null));
+                }
+                table.Rows.Add(rowAsTheList);
+            }
+            return table;
+        }
+        private void BindSortingEventToATableHeader(DataGridView dgv)
+        {
+            List<string> sortColumns = new List<string>();
+            dgv.ColumnHeaderMouseClick += (o, e) =>
+            {
+                DataGridView grid = (o as DataGridView);
+                string colName = grid.Columns[e.ColumnIndex].DataPropertyName;
+
+                sortColumns.Remove(colName);
+                sortColumns.Add(colName);
+                string sortExpr = "";
+                foreach (string c in sortColumns)
+                    sortExpr = c + "," + sortExpr;
+
+                (grid.DataSource as DataTable).DefaultView.Sort = sortExpr.Trim(',');
+            };
         }
         
         private void MatchesNumTxtBx_KeyPress(object sender, KeyPressEventArgs e)

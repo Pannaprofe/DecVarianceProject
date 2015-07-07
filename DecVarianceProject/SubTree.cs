@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DecVarianceProject
@@ -147,11 +148,14 @@ namespace DecVarianceProject
             winnings = Math.Round(winnings, 2);
             if (tree.Parent != null)
             {
+                var str = String.Join(", ", tree.Path.ToArray());
+                str = Regex.Replace(str, @"0", "X");
+                str = Regex.Replace(str,@"[1-2]", "P$&");
                 ResultsInTable resultsInTable = new ResultsInTable()
                 {
                     Node = tree.NodeNum,
                     Probability = tree.LocalProb,
-                    NodePath = String.Join(", ", tree.Path.ToArray()),
+                    NodePath = str,
                     Winnings = winnings,
                     Payments = payments,
                     NetWon = Math.Round(winnings - payments,2)
