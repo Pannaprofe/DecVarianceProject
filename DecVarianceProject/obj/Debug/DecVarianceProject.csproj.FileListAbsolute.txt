@@ -16,3 +16,4 @@ C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarian
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.Properties.Resources.resources
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.csproj.GenerateResource.Cache
 C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.MainForm.resources
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\obj\Debug\DecVarianceProject.MatchDayResultsDialog.resources

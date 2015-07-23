@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
-    public abstract class TablesContent
+    public interface TablesContent
     {
-        public int Count { get; protected set; }
+
     }
 }

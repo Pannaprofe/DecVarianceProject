@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
-    public class ProbsCoefsCreator
+    public class ProbsCoefsBetsCreator
     {
         public List<MatchParams> ProbsMarathon{get;private set;}
         public List<MatchParams> ProbsOtherCo { get; private set; }
@@ -14,7 +14,7 @@ namespace DecVarianceProject
         public List<MatchParams> CoefsOtherCo { get; private set; }
         public List<GennedParamsInTable> GennedParams { get; private set; }
         public List<BetInfo> AllBets { get; private set; }
-        public List<AllBetsTable> AllMadeBets { get; private set; }
+        public List<AllBetsTable> AllBetsForTable { get; private set; }  
         public SubTree Tree { get; private set; }
 
         public double Rake { get; private set; }
@@ -25,7 +25,7 @@ namespace DecVarianceProject
 
         private Random RandomNum = new Random();  
 
-        public ProbsCoefsCreator(int MatchesNum, double rake, int numberOfBets, int maxWinnings)
+        public ProbsCoefsBetsCreator(int MatchesNum, double rake, int numberOfBets, int maxWinnings)
         {
             ProbsMarathon = new List<MatchParams>();
             ProbsOtherCo = new List<MatchParams>();
@@ -37,7 +37,7 @@ namespace DecVarianceProject
             this.MaxWinnings = maxWinnings;
             this.Rake = rake;
             AllBets = new List<BetInfo>();
-            AllMadeBets = new List<AllBetsTable>();
+            AllBetsForTable = new List<AllBetsTable>();
             ObtainData();  //Generate Probs/Coefs
             CreateProbsAndCoefsStructure();   // for printing Probs and Coefs into Table
             Tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
@@ -219,7 +219,7 @@ namespace DecVarianceProject
                 Coef = coef,
                 ChosenMatchesResults = sb.ToString()
             };
-            AllMadeBets.Add(row);
+            AllBetsForTable.Add(row);
             coef = 1;
             return betinfo;
         }
