@@ -13,7 +13,7 @@ namespace DecVarianceProject
         public List<MatchParams> CoefsMarathon { get; private set; }
         public List<MatchParams> CoefsOtherCo { get; private set; }
         public List<GennedParamsInTable> GennedParams { get; private set; }
-        public List<BetInfo> AllBets { get; private set; }
+        public List<BetInfo> AllBets { get; set; }
         public List<AllBetsTable> AllBetsForTable { get; private set; }  
         public SubTree Tree { get; private set; }
 
@@ -41,6 +41,14 @@ namespace DecVarianceProject
             ObtainData();  //Generate Probs/Coefs
             CreateProbsAndCoefsStructure();   // for printing Probs and Coefs into Table
             Tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
+        }
+
+        public void AddMarathonBets(List<BetInfo> marathobBets)
+        {
+            foreach (BetInfo bet in marathobBets)
+            {
+                AllBets.Add(bet);
+            }
         }
 
         protected void ObtainData()

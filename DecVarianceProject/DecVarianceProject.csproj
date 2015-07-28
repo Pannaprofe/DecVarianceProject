@@ -44,18 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetSplitter.cs" />
     <Compile Include="DataGridViewsRepositoryFolder\Bets.cs" />
     <Compile Include="DataGridViewsRepositoryFolder\DataGridViewsRepository.cs" />
     <Compile Include="DataGridViewsRepositoryFolder\IDataGridViewsRepository.cs" />
     <Compile Include="DataGridViewsRepositoryFolder\MatchDayResults.cs" />
+    <Compile Include="DataGridViewsRepositoryFolder\MatchesToRaise.cs" />
     <Compile Include="DataGridViewsRepositoryFolder\ProbsCoefs.cs" />
     <Compile Include="DataGridViewsRepositoryFolder\Results.cs" />
+    <Compile Include="MarathonNetWon.cs" />
     <Compile Include="MatchDayResultsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MatchDayResultsDialog.Designer.cs">
       <DependentUpon>MatchDayResultsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="StructureOfReBet.cs" />
     <Compile Include="Structures\Tables\AllBetsTable.cs" />
     <Compile Include="Structures\Tables\GennedParamsInTable.cs" />
     <Compile Include="ProbsCoefsBetsCreator.cs" />

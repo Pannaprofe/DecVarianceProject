@@ -79,15 +79,19 @@ namespace DecVarianceProject
 
         private void CreateTable(bool AutomaticGen)
         {
+            //clear datagridview
             if (this.dataGridViewMatchDayResults.DataSource != null)
             {
                  this.dataGridViewMatchDayResults.DataSource = null;
+                 this.dataGridViewMatchDayResults.Refresh();
             }
             else
             {
                 this.dataGridViewMatchDayResults.Rows.Clear();
+                this.dataGridViewMatchDayResults.Refresh();
             }
-            
+            MatchDayResultsList.Clear();
+            //-----------------
             
             for (int i = 0; i < MatchesNum; i++)
             {

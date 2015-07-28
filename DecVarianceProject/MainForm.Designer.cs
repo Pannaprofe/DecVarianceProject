@@ -50,6 +50,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.NetWonBeforeRaisingTBX = new System.Windows.Forms.TextBox();
             this.NetWonAfterRaisingTBX = new System.Windows.Forms.TextBox();
+            this.RaiseSumPercentTBX = new System.Windows.Forms.MaskedTextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.RaiseSumTBX = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.AllBetsSumTBX = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProbsCoefs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAllBets)).BeginInit();
@@ -106,18 +112,22 @@
             // 
             // dataGridViewResults
             // 
+            this.dataGridViewResults.AllowUserToAddRows = false;
             this.dataGridViewResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewResults.Location = new System.Drawing.Point(600, 65);
+            this.dataGridViewResults.Location = new System.Drawing.Point(599, 82);
             this.dataGridViewResults.Name = "dataGridViewResults";
+            this.dataGridViewResults.ReadOnly = true;
             this.dataGridViewResults.RowHeadersVisible = false;
             this.dataGridViewResults.Size = new System.Drawing.Size(637, 475);
             this.dataGridViewResults.TabIndex = 2;
             // 
             // dataGridViewProbsCoefs
             // 
+            this.dataGridViewProbsCoefs.AllowUserToAddRows = false;
             this.dataGridViewProbsCoefs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewProbsCoefs.Location = new System.Drawing.Point(16, 65);
+            this.dataGridViewProbsCoefs.Location = new System.Drawing.Point(15, 82);
             this.dataGridViewProbsCoefs.Name = "dataGridViewProbsCoefs";
+            this.dataGridViewProbsCoefs.ReadOnly = true;
             this.dataGridViewProbsCoefs.RowHeadersVisible = false;
             this.dataGridViewProbsCoefs.Size = new System.Drawing.Size(561, 191);
             this.dataGridViewProbsCoefs.TabIndex = 11;
@@ -131,10 +141,12 @@
             // 
             // dataGridViewBets
             // 
+            this.dataGridViewBets.AllowUserToAddRows = false;
             this.dataGridViewBets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewBets.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.dataGridViewBets.Location = new System.Drawing.Point(16, 262);
+            this.dataGridViewBets.Location = new System.Drawing.Point(15, 279);
             this.dataGridViewBets.Name = "dataGridViewBets";
+            this.dataGridViewBets.ReadOnly = true;
             this.dataGridViewBets.RowHeadersVisible = false;
             this.dataGridViewBets.Size = new System.Drawing.Size(561, 278);
             this.dataGridViewBets.TabIndex = 13;
@@ -169,9 +181,11 @@
             // RakeTBX
             // 
             this.RakeTBX.Location = new System.Drawing.Point(836, 9);
+            this.RakeTBX.Mask = "0.000";
             this.RakeTBX.Name = "RakeTBX";
             this.RakeTBX.Size = new System.Drawing.Size(100, 20);
             this.RakeTBX.TabIndex = 18;
+            this.RakeTBX.Text = "0050";
             this.RakeTBX.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.RakeTBX_MaskInputRejected);
             // 
             // GenMatchDayResultsBTN
@@ -204,6 +218,7 @@
             // 
             // dataGridViewMatchDayResults
             // 
+            this.dataGridViewMatchDayResults.AllowUserToAddRows = false;
             this.dataGridViewMatchDayResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMatchDayResults.Location = new System.Drawing.Point(21, 578);
             this.dataGridViewMatchDayResults.Name = "dataGridViewMatchDayResults";
@@ -213,17 +228,19 @@
             // 
             // dataGridViewMatchesToRaise
             // 
+            this.dataGridViewMatchesToRaise.AllowUserToAddRows = false;
             this.dataGridViewMatchesToRaise.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMatchesToRaise.Location = new System.Drawing.Point(413, 578);
             this.dataGridViewMatchesToRaise.Name = "dataGridViewMatchesToRaise";
+            this.dataGridViewMatchesToRaise.ReadOnly = true;
             this.dataGridViewMatchesToRaise.RowHeadersVisible = false;
-            this.dataGridViewMatchesToRaise.Size = new System.Drawing.Size(217, 221);
+            this.dataGridViewMatchesToRaise.Size = new System.Drawing.Size(266, 221);
             this.dataGridViewMatchesToRaise.TabIndex = 25;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(793, 589);
+            this.label5.Location = new System.Drawing.Point(785, 671);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(195, 13);
             this.label5.TabIndex = 26;
@@ -232,7 +249,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(793, 624);
+            this.label6.Location = new System.Drawing.Point(785, 706);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(186, 13);
             this.label6.TabIndex = 27;
@@ -240,7 +257,7 @@
             // 
             // NetWonBeforeRaisingTBX
             // 
-            this.NetWonBeforeRaisingTBX.Location = new System.Drawing.Point(1032, 586);
+            this.NetWonBeforeRaisingTBX.Location = new System.Drawing.Point(1024, 668);
             this.NetWonBeforeRaisingTBX.Name = "NetWonBeforeRaisingTBX";
             this.NetWonBeforeRaisingTBX.ReadOnly = true;
             this.NetWonBeforeRaisingTBX.Size = new System.Drawing.Size(100, 20);
@@ -248,17 +265,76 @@
             // 
             // NetWonAfterRaisingTBX
             // 
-            this.NetWonAfterRaisingTBX.Location = new System.Drawing.Point(1032, 617);
+            this.NetWonAfterRaisingTBX.Location = new System.Drawing.Point(1024, 699);
             this.NetWonAfterRaisingTBX.Name = "NetWonAfterRaisingTBX";
             this.NetWonAfterRaisingTBX.ReadOnly = true;
             this.NetWonAfterRaisingTBX.Size = new System.Drawing.Size(100, 20);
             this.NetWonAfterRaisingTBX.TabIndex = 29;
+            // 
+            // RaiseSumPercentTBX
+            // 
+            this.RaiseSumPercentTBX.Location = new System.Drawing.Point(136, 36);
+            this.RaiseSumPercentTBX.Mask = "0.00";
+            this.RaiseSumPercentTBX.Name = "RaiseSumPercentTBX";
+            this.RaiseSumPercentTBX.Size = new System.Drawing.Size(100, 20);
+            this.RaiseSumPercentTBX.TabIndex = 31;
+            this.RaiseSumPercentTBX.Text = "010";
+            this.RaiseSumPercentTBX.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.RaiseSumTBX_MaskInputRejected);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(18, 39);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(110, 13);
+            this.label7.TabIndex = 30;
+            this.label7.Text = "Raise matches sum,%";
+            // 
+            // RaiseSumTBX
+            // 
+            this.RaiseSumTBX.Location = new System.Drawing.Point(1024, 631);
+            this.RaiseSumTBX.Name = "RaiseSumTBX";
+            this.RaiseSumTBX.ReadOnly = true;
+            this.RaiseSumTBX.Size = new System.Drawing.Size(100, 20);
+            this.RaiseSumTBX.TabIndex = 33;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(905, 634);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 13);
+            this.label8.TabIndex = 32;
+            this.label8.Text = "Raise sum";
+            // 
+            // AllBetsSumTBX
+            // 
+            this.AllBetsSumTBX.Location = new System.Drawing.Point(1024, 593);
+            this.AllBetsSumTBX.Name = "AllBetsSumTBX";
+            this.AllBetsSumTBX.ReadOnly = true;
+            this.AllBetsSumTBX.Size = new System.Drawing.Size(100, 20);
+            this.AllBetsSumTBX.TabIndex = 35;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(900, 593);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(71, 13);
+            this.label9.TabIndex = 34;
+            this.label9.Text = "All bets summ";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1248, 811);
+            this.Controls.Add(this.AllBetsSumTBX);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.RaiseSumTBX);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.RaiseSumPercentTBX);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.NetWonAfterRaisingTBX);
             this.Controls.Add(this.NetWonBeforeRaisingTBX);
             this.Controls.Add(this.label6);
@@ -318,6 +394,12 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox NetWonBeforeRaisingTBX;
         private System.Windows.Forms.TextBox NetWonAfterRaisingTBX;
+        private System.Windows.Forms.MaskedTextBox RaiseSumPercentTBX;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox RaiseSumTBX;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox AllBetsSumTBX;
+        private System.Windows.Forms.Label label9;
     }
 }
 

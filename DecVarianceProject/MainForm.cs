@@ -17,9 +17,13 @@ namespace DecVarianceProject
         private double Rake;
         private int BetsNum;
         private int MaxWinnings = 10000;
-        private int RaiseMatchesNum;
+        private int ReBetMatchesNum;
         private ProbsCoefsBetsCreator Creator;
         private MatchDayResultsDialog Dialog;
+        private double RaiseSumPercent;
+        private double RaiseSum;
+        private double AllBetsSumm;
+        public BetSplitter betSplitter {get;private set;}
 
         public MainForm()
         {
@@ -28,7 +32,8 @@ namespace DecVarianceProject
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            Rake = Convert.ToDouble(RakeTBX.Text);
+            RaiseSumPercent = Convert.ToDouble(RaiseSumPercentTBX.Text);
         }
         private void RunBtn_Click(object sender, EventArgs e)
         {
@@ -38,19 +43,40 @@ namespace DecVarianceProject
             }
             else
             {
-                this.MatchesNum = Convert.ToInt32(MatchesNumTxtBx.Text);
-                this.BetsNum = Convert.ToInt32(BetsNumTxtBx.Text);
-                Creator = new ProbsCoefsBetsCreator(MatchesNum, Rake, BetsNum, MaxWinnings);
-                List<DataGridViewsRepository> repository = new List<DataGridViewsRepository>();
-                repository.Add(new Bets() { DGV = dataGridViewBets, ListContent = new List<TablesContent>(Creator.AllBetsForTable)});
-                repository.Add(new Results() { DGV = dataGridViewResults, ListContent = new List<TablesContent>(Creator.Tree.AllResultsInTable) });
-                repository.Add(new ProbsCoefs() { DGV = dataGridViewProbsCoefs, ListContent = new List<TablesContent>(Creator.GennedParams) });
-                foreach (DataGridViewsRepository elem in repository)
+                if (Rake ==0)
                 {
-                    elem.ConfigureDGV();
+                    DialogResult result = MessageBox.Show("Rake is equal to 0, would you like to continue","Rake issue",MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        ExecuteSimulation();
+                    }
                 }
-                GenMatchDayResultsBTN.Enabled = true;
+                else
+                {
+                    ExecuteSimulation();
+                }
             }
+        }
+
+        private void ExecuteSimulation()
+        {
+            this.MatchesNum = Convert.ToInt32(MatchesNumTxtBx.Text);
+            this.BetsNum = Convert.ToInt32(BetsNumTxtBx.Text);
+            this.ReBetMatchesNum = Convert.ToInt32(ReraiseMatchesTBX.Text);
+            Creator = new ProbsCoefsBetsCreator(MatchesNum, Rake, BetsNum, MaxWinnings);
+            betSplitter = new BetSplitter(Creator.AllBets, RaiseSumPercent, ReBetMatchesNum, Rake, Creator.CoefsOtherCo);
+            RaiseSum = betSplitter.ReBetSum;
+            AllBetsSumm = betSplitter.AllBetsSum;
+            List<DataGridViewsRepository> repository = new List<DataGridViewsRepository>();
+            repository.Add(new Bets() { DGV = dataGridViewBets, ListContent = new List<TablesContent>(Creator.AllBetsForTable) });
+            repository.Add(new Results() { DGV = dataGridViewResults, ListContent = new List<TablesContent>(Creator.Tree.AllResultsInTable) });
+            repository.Add(new ProbsCoefs() { DGV = dataGridViewProbsCoefs, ListContent = new List<TablesContent>(Creator.GennedParams) });
+            repository.Add(new MatchesToRaise() { ListContent = new List<TablesContent>(betSplitter.matchesToRaiseTable), DGV = dataGridViewMatchesToRaise });
+            foreach (DataGridViewsRepository elem in repository)
+            {
+                elem.ConfigureDGV();
+            }
+            GenMatchDayResultsBTN.Enabled = true;
         }
 
 
@@ -76,13 +102,20 @@ namespace DecVarianceProject
         private void ReraiseMatchesTBX_KeyPress(object sender, KeyPressEventArgs e)
         {
             DigitalInput(e);
-            RaiseMatchesNum = Convert.ToInt32(ReraiseMatchesTBX.Text);
+            ReBetMatchesNum = Convert.ToInt32(ReraiseMatchesTBX.Text);
         }
 
         private void RakeTBX_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
         {
-            RakeTBX.Mask = "0.000";
-            Rake = Convert.ToDouble(RakeTBX.Text);
+            var rake = Convert.ToDouble(RakeTBX.Text);
+            if (rake < 1)
+            {
+                Rake = rake;
+            }
+            else
+            {
+                MessageBox.Show("rake < 1 required");
+            }
         }
 
         private void GenMatchDayResultsBTN_Click(object sender, EventArgs e)
@@ -94,7 +127,29 @@ namespace DecVarianceProject
                 var matchday = new MatchDayResults() { ListContent = new List<TablesContent>(Dialog.MatchDayResultsList), DGV = dataGridViewMatchDayResults };
                 matchday.ConfigureDGV();
             }
-            
+            MarathonNetWon netWon = new MarathonNetWon()
+            {
+                AllBets = Creator.AllBets,
+                MatchDayResults = Dialog.MatchDayResultsList
+            };
+            NetWonBeforeRaisingTBX.Text = Convert.ToString(netWon.EstimateMarathonNetWon());
+
+            betSplitter.GenListOfMarathonBets();
+            Creator.AddMarathonBets(betSplitter.MarathonBets);
+            netWon = new MarathonNetWon()
+            {
+                AllBets = Creator.AllBets,
+                MatchDayResults = Dialog.MatchDayResultsList
+            };
+            NetWonAfterRaisingTBX.Text = Convert.ToString(netWon.EstimateMarathonNetWon());
+            RaiseSumTBX.Text = Convert.ToString(RaiseSum);
+            AllBetsSumTBX.Text = Convert.ToString(AllBetsSumm);
+        }
+
+        private void RaiseSumTBX_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+            var sum = Convert.ToDouble(RaiseSumPercentTBX.Text);
+            RaiseSumPercent = sum;
         }
     }
 }

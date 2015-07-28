@@ -38,6 +38,7 @@
             // 
             // dataGridViewMatchDayResults
             // 
+            this.dataGridViewMatchDayResults.AllowUserToAddRows = false;
             this.dataGridViewMatchDayResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMatchDayResults.Location = new System.Drawing.Point(24, 97);
             this.dataGridViewMatchDayResults.Name = "dataGridViewMatchDayResults";
