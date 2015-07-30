@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class Matches
     {
         public List<int> MatchList { get; set; }

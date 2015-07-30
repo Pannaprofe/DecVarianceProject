@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class BetSplitter
     {
         public double ReBetSum { get; private set; }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject.Structures.Tables
 {
+    [Serializable]
     public class MatchesToRaiseTable:MatchDayResultsTable
     {
         public double BetSize { get; set; }

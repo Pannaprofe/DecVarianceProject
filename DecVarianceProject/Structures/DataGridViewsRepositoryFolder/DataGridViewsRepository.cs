@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public abstract class DataGridViewsRepository:IDataGridViewRepository
     {
         public List<TablesContent> ListContent { get; set; }

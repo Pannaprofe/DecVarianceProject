@@ -19,13 +19,15 @@ namespace DecVarianceProject
         public int MatchesNum { get; private set; }
         private Random RandomNum = new Random();
 
-        public MatchDayResultsDialog(int matchesNum)
+        public MatchDayResultsDialog(int matchesNum,bool IsAutomatic)
         {
             MatchesNum = matchesNum;
             InitializeComponent();
             dataGridViewMatchDayResults.Visible = false;
             MatchDayResultsList = new List<MatchDayResultsTable>();
             this.AcceptButton = OkBTN;
+            if (IsAutomatic)
+                OkBTN_Click(this, new EventArgs());
         }
 
         private void OkBTN_Click(object sender, EventArgs e)

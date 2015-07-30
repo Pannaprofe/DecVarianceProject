@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class Results:DataGridViewsRepository
     {
         public override void ConfigureDGV()

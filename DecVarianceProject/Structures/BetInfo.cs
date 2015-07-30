@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class BetInfo
     {
         public Matches MatchesAndOutcomes { get; set; }

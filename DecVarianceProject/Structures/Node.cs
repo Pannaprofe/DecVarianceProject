@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class Node
     {
         public Node Parent { get; set; }

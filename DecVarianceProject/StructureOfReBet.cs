@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class StructureOfReBet
     {
         public int MatchNum { get; set; }

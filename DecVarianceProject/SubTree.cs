@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class SubTree
     {
         private List<MatchParams> Probs;

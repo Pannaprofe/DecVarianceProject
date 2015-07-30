@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class AllBetsTable:TablesContent
     {
         public int BetNum { get; set; }

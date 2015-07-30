@@ -23,6 +23,8 @@ namespace DecVarianceProject
         private double RaiseSumPercent;
         private double RaiseSum;
         private double AllBetsSumm;
+        private double NetWonBefore;
+        private double NetWonAfter;
         public BetSplitter betSplitter {get;private set;}
 
         public MainForm()
@@ -79,7 +81,6 @@ namespace DecVarianceProject
             GenMatchDayResultsBTN.Enabled = true;
         }
 
-
         private void DigitalInput(KeyPressEventArgs e)
         {
             char ch = e.KeyChar;
@@ -120,20 +121,34 @@ namespace DecVarianceProject
 
         private void GenMatchDayResultsBTN_Click(object sender, EventArgs e)
         {
-            Dialog = new MatchDayResultsDialog(MatchesNum);
-            var dr = Dialog.ShowDialog();
-            if (dr == DialogResult.OK)
+            GenMatchDayResults(false);
+        }
+
+        private void GenMatchDayResults(bool automatic)
+        {
+            Dialog = new MatchDayResultsDialog(MatchesNum, automatic);
+            if (!automatic)
             {
-                var matchday = new MatchDayResults() { ListContent = new List<TablesContent>(Dialog.MatchDayResultsList), DGV = dataGridViewMatchDayResults };
-                matchday.ConfigureDGV();
+                var dr = Dialog.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    var matchday = new MatchDayResults() { ListContent = new List<TablesContent>(Dialog.MatchDayResultsList), DGV = dataGridViewMatchDayResults };
+                    matchday.ConfigureDGV();
+                }
             }
+            var matchday1 = new MatchDayResults() { ListContent = new List<TablesContent>(Dialog.MatchDayResultsList), DGV = dataGridViewMatchDayResults };
+            matchday1.ConfigureDGV();
+            
+            //Estimate Marathon NetWon before raising
             MarathonNetWon netWon = new MarathonNetWon()
             {
                 AllBets = Creator.AllBets,
                 MatchDayResults = Dialog.MatchDayResultsList
             };
-            NetWonBeforeRaisingTBX.Text = Convert.ToString(netWon.EstimateMarathonNetWon());
-
+            NetWonBefore = Math.Round(netWon.EstimateMarathonNetWon(),2);
+            NetWonBeforeRaisingTBX.Text = Convert.ToString(NetWonBefore);
+            //----------------------------------------
+            //Estimate Marathon NetWon after raising
             betSplitter.GenListOfMarathonBets();
             Creator.AddMarathonBets(betSplitter.MarathonBets);
             netWon = new MarathonNetWon()
@@ -141,7 +156,9 @@ namespace DecVarianceProject
                 AllBets = Creator.AllBets,
                 MatchDayResults = Dialog.MatchDayResultsList
             };
-            NetWonAfterRaisingTBX.Text = Convert.ToString(netWon.EstimateMarathonNetWon());
+            NetWonAfter = Math.Round(netWon.EstimateMarathonNetWon(),2);
+            NetWonAfterRaisingTBX.Text = Convert.ToString(NetWonAfter);
+            //-----------------------------------------
             RaiseSumTBX.Text = Convert.ToString(RaiseSum);
             AllBetsSumTBX.Text = Convert.ToString(AllBetsSumm);
         }
@@ -150,6 +167,47 @@ namespace DecVarianceProject
         {
             var sum = Convert.ToDouble(RaiseSumPercentTBX.Text);
             RaiseSumPercent = sum;
+        }
+
+        private void TestEvaluationBTN_Click(object sender, EventArgs e)
+        {
+            int idModelsMax = 10;
+            int idMatchDaysMax = 10;
+            DataTable table = new DataTable();
+            List<TestTable> test = new List<TestTable>();
+            ProgressBarForm progressBarForm = new ProgressBarForm(idMatchDaysMax*idModelsMax-1);
+            for (int idModel = 0; idModel < idModelsMax; idModel++)
+            {
+                RunBtn_Click(this, new EventArgs());
+                for (int idMatchDay = 0; idMatchDay < idMatchDaysMax; idMatchDay++)
+                {
+                    GenMatchDayResults(true);
+                    TestTable row = new TestTable()
+                    {
+                        IdModel = idModel,
+                        IdMatchDay = idMatchDay,
+                        BetsSumm = AllBetsSumm,
+                        RaiseSumm = RaiseSum,
+                        NetWonBefore = NetWonBefore,
+                        NetWonAfter = NetWonAfter
+                    };
+                    test.Add(row);
+                    progressBarForm.SetProgressBarValue(idModel * idMatchDaysMax + idMatchDay);
+                }
+            }
+            
+            TestEstimationForm testForm = new TestEstimationForm(test);
+            testForm.ShowDialog();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "omg files (*.omg)|*.omg|All files (*.*)|*.*";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
     }
 }

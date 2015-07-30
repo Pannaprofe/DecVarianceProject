@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class ResultsInTable:TablesContent
     {
         public int Node { get; set; }

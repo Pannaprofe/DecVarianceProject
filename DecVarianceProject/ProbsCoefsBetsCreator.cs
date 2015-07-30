@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
+    [Serializable]
     public class ProbsCoefsBetsCreator
     {
         public List<MatchParams> ProbsMarathon{get;private set;}
