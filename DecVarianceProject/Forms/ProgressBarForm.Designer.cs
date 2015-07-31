@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.LBL = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // progressBar
@@ -38,20 +39,32 @@
             this.progressBar.Size = new System.Drawing.Size(489, 23);
             this.progressBar.TabIndex = 0;
             // 
+            // LBL
+            // 
+            this.LBL.AutoSize = true;
+            this.LBL.Location = new System.Drawing.Point(41, 106);
+            this.LBL.Name = "LBL";
+            this.LBL.Size = new System.Drawing.Size(21, 13);
+            this.LBL.TabIndex = 1;
+            this.LBL.Text = "0%";
+            // 
             // ProgressBarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 262);
+            this.Controls.Add(this.LBL);
             this.Controls.Add(this.progressBar);
             this.Name = "ProgressBarForm";
             this.Text = "ProgressBarForm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label LBL;
     }
 }

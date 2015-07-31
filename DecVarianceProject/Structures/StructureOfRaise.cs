@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DecVarianceProject
 {
     [Serializable]
-    public class StructureOfReBet
+    public class StructureOfRaise
     {
         public int MatchNum { get; set; }
         public int Outcome { get; set; }

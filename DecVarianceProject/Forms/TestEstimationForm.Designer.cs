@@ -41,6 +41,8 @@
             this.VarianceBeforeTBX = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label5 = new System.Windows.Forms.Label();
+            this.EvProfitTBX = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTest)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -159,11 +161,30 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(440, 25);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(55, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "%EV profit";
+            // 
+            // EvProfitTBX
+            // 
+            this.EvProfitTBX.Location = new System.Drawing.Point(501, 22);
+            this.EvProfitTBX.Name = "EvProfitTBX";
+            this.EvProfitTBX.ReadOnly = true;
+            this.EvProfitTBX.Size = new System.Drawing.Size(100, 20);
+            this.EvProfitTBX.TabIndex = 12;
+            // 
             // TestEstimationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(802, 638);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.EvProfitTBX);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.VarianceAfterTBX);
             this.Controls.Add(this.label4);
@@ -202,5 +223,7 @@
         private System.Windows.Forms.TextBox VarianceBeforeTBX;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox EvProfitTBX;
     }
 }

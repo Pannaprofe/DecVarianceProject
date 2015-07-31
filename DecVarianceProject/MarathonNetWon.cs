@@ -14,7 +14,6 @@ namespace DecVarianceProject
         public double Ammount{ get; private set; }
         public List<MatchDayResultsTable> MatchDayResults { get; set; }
 
-        public double MarathonEV { get; set; }
         public double EstimateMarathonNetWon()
         {
             Ammount = 0;
@@ -30,11 +29,6 @@ namespace DecVarianceProject
                 }
             }
             return Ammount;
-        }
-
-        public void EstimateMarathonEV()
-        {
-
         }
 
         private bool BetIsSuccessful(BetInfo bet)

@@ -19,13 +19,15 @@ namespace DecVarianceProject
             this.Show();
         }
 
-        public void SetProgressBarValue(int value)
+        public void IncProgressBarValue()
         {
-            progressBar.Value = value;
+            progressBar.Value++;
             if (progressBar.Value == progressBar.Maximum)
             {
                 this.Close();
             }
+            double tmp = progressBar.Value / progressBar.Maximum;
+            LBL.Text = Convert.ToString(Math.Round(tmp,2) * 100) + "%";
             progressBar.Refresh();
         }
     }

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -126,7 +129,7 @@ namespace DecVarianceProject
 
         private void GenMatchDayResults(bool automatic)
         {
-            Dialog = new MatchDayResultsDialog(MatchesNum, automatic);
+            Dialog = new MatchDayResultsDialog(MatchesNum, automatic, Creator.ProbsMarathon);
             if (!automatic)
             {
                 var dr = Dialog.ShowDialog();
@@ -171,33 +174,47 @@ namespace DecVarianceProject
 
         private void TestEvaluationBTN_Click(object sender, EventArgs e)
         {
-            int idModelsMax = 10;
-            int idMatchDaysMax = 10;
+            int testsNum = 5;
+            int idModelsMax = 100;
+            int idMatchDaysMax = 100;
+            List<int> matchesToRaiseNumList = new List<int>(1) { 2};
+            List<double> raisePercentList = new List<double>(1) {0.1};
             DataTable table = new DataTable();
+
             List<TestTable> test = new List<TestTable>();
-            ProgressBarForm progressBarForm = new ProgressBarForm(idMatchDaysMax*idModelsMax-1);
-            for (int idModel = 0; idModel < idModelsMax; idModel++)
+            ProgressBarForm progressBarForm = new ProgressBarForm(testsNum*idMatchDaysMax*idModelsMax*matchesToRaiseNumList.Count*raisePercentList.Count);
+            for (int i = 1; i <= testsNum; i++)
             {
-                RunBtn_Click(this, new EventArgs());
-                for (int idMatchDay = 0; idMatchDay < idMatchDaysMax; idMatchDay++)
+                for (int num = 1; num <= matchesToRaiseNumList.Count; num++ )
                 {
-                    GenMatchDayResults(true);
-                    TestTable row = new TestTable()
+                    for (int j = 1; j <= raisePercentList.Count; j++)
                     {
-                        IdModel = idModel,
-                        IdMatchDay = idMatchDay,
-                        BetsSumm = AllBetsSumm,
-                        RaiseSumm = RaiseSum,
-                        NetWonBefore = NetWonBefore,
-                        NetWonAfter = NetWonAfter
-                    };
-                    test.Add(row);
-                    progressBarForm.SetProgressBarValue(idModel * idMatchDaysMax + idMatchDay);
+                        for (int idModel = 1; idModel <= idModelsMax; idModel++)
+                        {
+                            RunBtn_Click(this, new EventArgs());
+                            for (int idMatchDay = 1; idMatchDay <= idMatchDaysMax; idMatchDay++)
+                            {
+                                GenMatchDayResults(true);
+                                TestTable row = new TestTable()
+                                {
+                                    IdModel = idModel,
+                                    IdMatchDay = idMatchDay,
+                                    BetsSumm = AllBetsSumm,
+                                    RaiseSumm = RaiseSum,
+                                    NetWonBefore = NetWonBefore,
+                                    NetWonAfter = NetWonAfter
+                                };
+                                test.Add(row);
+                                progressBarForm.IncProgressBarValue();
+                            }
+                        }
+                        TestEstimationForm testForm = new TestEstimationForm(test);
+                        string FileName = matchesToRaiseNumList[num-1] + "-" + raisePercentList[j-1] + "-" + idModelsMax + "-" + idMatchDaysMax + "-" + i;
+                        testForm.Save(FileName);
+                        // testForm.ShowDialog();
+                    }
                 }
             }
-            
-            TestEstimationForm testForm = new TestEstimationForm(test);
-            testForm.ShowDialog();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -206,7 +223,26 @@ namespace DecVarianceProject
             ofd.Filter = "omg files (*.omg)|*.omg|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+                using (Stream stream = new FileStream(ofd.FileName, FileMode.Open))
+                {
 
+                    BinaryFormatter bf = new BinaryFormatter();
+
+                    RijndaelManaged RMCrypto = new RijndaelManaged();
+
+                    byte[] Key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+                    byte[] IV = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+
+                    //Create a CryptoStream, pass it the NetworkStream, and encrypt 
+                    //it with the Rijndael class.
+                    CryptoStream CryptStream = new CryptoStream(stream, RMCrypto.CreateDecryptor(Key, IV), CryptoStreamMode.Read);
+
+                    var newObject = bf.Deserialize(CryptStream) as List<TestTable>;
+                    TestEstimationForm testForm = new TestEstimationForm(newObject);
+                    testForm.ShowDialog();
+
+                    // CryptStream.Close();
+                }
             }
         }
     }

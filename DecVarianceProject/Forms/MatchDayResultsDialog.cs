@@ -16,11 +16,13 @@ namespace DecVarianceProject
         public List<MatchDayResultsTable> MatchDayResultsList { get; private set; }
 
         public MatchDayResults Match_Day_Results { get; private set; }
+        public List<MatchParams> Probs { get; private set; }
         public int MatchesNum { get; private set; }
         private Random RandomNum = new Random();
 
-        public MatchDayResultsDialog(int matchesNum,bool IsAutomatic)
+        public MatchDayResultsDialog(int matchesNum,bool IsAutomatic,List<MatchParams> probs)
         {
+            this.Probs = probs;
             MatchesNum = matchesNum;
             InitializeComponent();
             dataGridViewMatchDayResults.Visible = false;
@@ -66,12 +68,20 @@ namespace DecVarianceProject
             return items;
         }
 
-        private string GenMatchResults(bool AutomaticGen)
+        private string GenMatchResults(bool automaticGen,int matchNum)
         {
-            if (AutomaticGen)
+            if (automaticGen)
             {
-                int res = RandomNum.Next(0, 3);
-                return (res > 0) ? "P" + res : "X";
+                int range = 1000;
+                int middleLowEdge = (int)(Probs[matchNum].P1 * range);
+                int middleHighEdge = (int)(Probs[matchNum].P2 * range) + middleLowEdge;
+                int res = RandomNum.Next(0, range);
+                if (res < middleLowEdge)
+                    return "P1";
+                if ((res >= middleLowEdge) && (res < middleHighEdge))
+                    return "P2";
+                else
+                    return "X";
             }
             else
             {
@@ -100,7 +110,7 @@ namespace DecVarianceProject
                 var result = new MatchDayResultsTable()
                 {
                     MatchNum = i,
-                    MatchOutcome = GenMatchResults(AutomaticGen)
+                    MatchOutcome = GenMatchResults(AutomaticGen,i)
                 };
                 MatchDayResultsList.Add(result);
             }

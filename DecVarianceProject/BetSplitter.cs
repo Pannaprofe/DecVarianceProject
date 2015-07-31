@@ -18,7 +18,7 @@ namespace DecVarianceProject
         public List<BetInfo> MarathonBets { get; private set; }
         public List<MatchesToRaiseTable> matchesToRaiseTable { get; private set; }
 
-        public List<StructureOfReBet> BetsStructure { get; private set; }
+        public List<StructureOfRaise> BetsStructure { get; private set; }
 
         public List<MatchParams> CoefsOtherCo { get; set; }
 
@@ -50,10 +50,10 @@ namespace DecVarianceProject
 
         private void SplitOutcomes()
         {
-            BetsStructure = new List<StructureOfReBet>(CoefsOtherCo.Count);
+            BetsStructure = new List<StructureOfRaise>(CoefsOtherCo.Count);
             for (int i = 0; i < CoefsOtherCo.Count;i++ )
             {
-                BetsStructure.Add(new StructureOfReBet());
+                BetsStructure.Add(new StructureOfRaise());
             }
                 foreach (BetInfo bet in AllBets)
                 {
@@ -77,7 +77,7 @@ namespace DecVarianceProject
                     }
                 }
 
-            foreach (StructureOfReBet reBet in BetsStructure)
+            foreach (StructureOfRaise reBet in BetsStructure)
             {
                 reBet.EvDiff = EstimateEVDifference(reBet);
             }
@@ -86,22 +86,22 @@ namespace DecVarianceProject
 
         private void SplitMoney()
         {
-            List<StructureOfReBet> sortedBetsStructure = BetsStructure.OrderBy(o => o.EvDiff).ToList();
+            List<StructureOfRaise> sortedBetsStructure = BetsStructure.OrderBy(o => o.EvDiff).ToList();
             var cuttedBetsStructure = sortedBetsStructure.Take(ReBetMatchesNum);
             double reverseCoefsSum = 0;
-            foreach (StructureOfReBet structure in cuttedBetsStructure)
+            foreach (StructureOfRaise structure in cuttedBetsStructure)
             {
                 reverseCoefsSum += 1 / structure.SingleMatchCoef;
             }
 
-            foreach (StructureOfReBet structure in cuttedBetsStructure)
+            foreach (StructureOfRaise structure in cuttedBetsStructure)
             {
                 structure.ToBet = Math.Round(ReBetSum / reverseCoefsSum/structure.SingleMatchCoef,2);
             }
-            BetsStructure = new List<StructureOfReBet>(cuttedBetsStructure);
+            BetsStructure = new List<StructureOfRaise>(cuttedBetsStructure);
         }
 
-        private double EstimateEVDifference(StructureOfReBet bet)
+        private double EstimateEVDifference(StructureOfRaise bet)
         {
             var MaxLoss = -(bet.SingleMatchCoef - 1) * bet.BetsAmmount;
             var EV = bet.BetsAmmount * Rake;
@@ -111,7 +111,7 @@ namespace DecVarianceProject
         public void ConvertStructureToTable()
         {
             matchesToRaiseTable = new List<MatchesToRaiseTable>();
-            foreach (StructureOfReBet reBet in BetsStructure)
+            foreach (StructureOfRaise reBet in BetsStructure)
             {
                 MatchesToRaiseTable match = new MatchesToRaiseTable();
                 match.MatchNum = reBet.MatchNum;
@@ -138,7 +138,7 @@ namespace DecVarianceProject
         public void GenListOfMarathonBets()
         {
             MarathonBets = new List<BetInfo>();
-            foreach (StructureOfReBet reBet in BetsStructure)
+            foreach (StructureOfRaise reBet in BetsStructure)
             {
                 var matchList = new List<int>();
                 matchList.Add(reBet.MatchNum);

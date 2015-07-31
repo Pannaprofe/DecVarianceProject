@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DecVarianceProject
 {
-    [Serializable]
     public interface TablesContent
     {
 
