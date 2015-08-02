@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DecVarianceProject.Structures.Tables;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
 {
     interface IDataGridViewRepository
     {
-        void ConfigureDGV();
-        DataTable FillInTheTable(DataTable table, List<TablesContent> list);
+        void ConfigureDgv();
+        DataTable FillInTheTable(DataTable table, List<ITablesContent> list);
         void BindSortingEventToATableHeader(DataGridView dgv);
     }
 }

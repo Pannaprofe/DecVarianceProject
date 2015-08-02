@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
 {
     [Serializable]
     public class MatchDayResults:DataGridViewsRepository
     {
         
-        public override void ConfigureDGV()
+        public override void ConfigureDgv()
         {
             DataTable table = new DataTable();
-            table.Columns.Add("MatchNum").DataType = typeof(Int32);
+            table.Columns.Add("MatchNum").DataType = typeof(int);
             table.Columns.Add("Outcome").DataType = typeof(string);
-            DGV.DataSource = FillInTheTable(table, ListContent);
-            BindSortingEventToATableHeader(DGV);
+            Dgv.DataSource = FillInTheTable(table, ListContent);
+            BindSortingEventToATableHeader(Dgv);
         }
     }
 }

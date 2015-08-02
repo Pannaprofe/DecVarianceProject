@@ -1,40 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DecVarianceProject.Properties;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
 {
     [Serializable]
     public class Bets:DataGridViewsRepository
     {
-        public override void ConfigureDGV()
+        public override void ConfigureDgv()
         {
             try
             {
-                DataTable table = new DataTable();
+                var table = new DataTable();
                 table.Columns.Add("BetNum").DataType = typeof(Int32);
                 table.Columns.Add("BetSize").DataType = typeof(Int32);
                 table.Columns.Add("Coef").DataType = typeof(double);
                 table.Columns.Add("MatchResults").DataType = typeof(string);
-                DGV.DataSource = FillInTheTable(table, ListContent);
-                DGV.ReadOnly = true;
-                DataGridViewColumn betNumColumn = DGV.Columns["BetNum"];
-                betNumColumn.Width = 50;
-                DataGridViewColumn betSizeColumn = DGV.Columns["BetSize"];
-                betSizeColumn.Width = 60;
-                DataGridViewColumn coefColumn = DGV.Columns["Coef"];
-                coefColumn.Width = 70;
-                DataGridViewColumn chosenMatchesResultsColumn = DGV.Columns["MatchResults"];
-                chosenMatchesResultsColumn.Width = DGV.Width - (betSizeColumn.Width + coefColumn.Width + betNumColumn.Width);
-                BindSortingEventToATableHeader(DGV);
+                Dgv.DataSource = FillInTheTable(table, ListContent);
+                Dgv.ReadOnly = true;
+                var betNumColumn = Dgv.Columns["BetNum"];
+                if (betNumColumn != null)
+                {
+                    betNumColumn.Width = 50;
+                    var betSizeColumn = Dgv.Columns["BetSize"];
+                    if (betSizeColumn != null)
+                    {
+                        betSizeColumn.Width = 60;
+                        var coefColumn = Dgv.Columns["Coef"];
+                        if (coefColumn != null)
+                        {
+                            coefColumn.Width = 70;
+                            var chosenMatchesResultsColumn = Dgv.Columns["MatchResults"];
+                            if (chosenMatchesResultsColumn != null)
+                                chosenMatchesResultsColumn.Width = Dgv.Width - (betSizeColumn.Width + coefColumn.Width + betNumColumn.Width);
+                        }
+                    }
+                }
+                BindSortingEventToATableHeader(Dgv);
             }
             catch
             {
-                MessageBox.Show("The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured");
+                MessageBox.Show(Resources.Bets_ConfigureDGV_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured);
                 throw;
             }
         }

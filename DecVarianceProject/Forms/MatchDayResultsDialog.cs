@@ -1,34 +1,30 @@
-﻿using DecVarianceProject.Structures.Tables;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DecVarianceProject.Structures;
+using DecVarianceProject.Structures.DataGridViewsRepositoryFolder;
+using DecVarianceProject.Structures.Tables;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Forms
 {
     public partial class MatchDayResultsDialog : Form
     {
         public List<MatchDayResultsTable> MatchDayResultsList { get; private set; }
 
-        public MatchDayResults Match_Day_Results { get; private set; }
+        public MatchDayResults MatchDayResults { get; private set; }
         public List<MatchParams> Probs { get; private set; }
         public int MatchesNum { get; private set; }
-        private Random RandomNum = new Random();
+        private readonly Random _randomNum = new Random();
 
-        public MatchDayResultsDialog(int matchesNum,bool IsAutomatic,List<MatchParams> probs)
+        public MatchDayResultsDialog(int matchesNum,bool isAutomatic,List<MatchParams> probs)
         {
-            this.Probs = probs;
+            Probs = probs;
             MatchesNum = matchesNum;
             InitializeComponent();
             dataGridViewMatchDayResults.Visible = false;
             MatchDayResultsList = new List<MatchDayResultsTable>();
-            this.AcceptButton = OkBTN;
-            if (IsAutomatic)
+            AcceptButton = OkBTN;
+            if (isAutomatic)
                 OkBTN_Click(this, new EventArgs());
         }
 
@@ -36,8 +32,8 @@ namespace DecVarianceProject
         {
             CreateTable(true);
             MatchDayResultsList = DgvToList(dataGridViewMatchDayResults);
-            this.Close();
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            Close();
+            DialogResult = DialogResult.OK;
         }
 
         public List<MatchDayResultsTable> DgvToList(DataGridView dgv)
@@ -75,7 +71,7 @@ namespace DecVarianceProject
                 int range = 1000;
                 int middleLowEdge = (int)(Probs[matchNum].P1 * range);
                 int middleHighEdge = (int)(Probs[matchNum].P2 * range) + middleLowEdge;
-                int res = RandomNum.Next(0, range);
+                int res = _randomNum.Next(0, range);
                 if (res < middleLowEdge)
                     return "P1";
                 if ((res >= middleLowEdge) && (res < middleHighEdge))
@@ -89,18 +85,18 @@ namespace DecVarianceProject
             }
         }
 
-        private void CreateTable(bool AutomaticGen)
+        private void CreateTable(bool automaticGen)
         {
             //clear datagridview
-            if (this.dataGridViewMatchDayResults.DataSource != null)
+            if (dataGridViewMatchDayResults.DataSource != null)
             {
-                 this.dataGridViewMatchDayResults.DataSource = null;
-                 this.dataGridViewMatchDayResults.Refresh();
+                 dataGridViewMatchDayResults.DataSource = null;
+                 dataGridViewMatchDayResults.Refresh();
             }
             else
             {
-                this.dataGridViewMatchDayResults.Rows.Clear();
-                this.dataGridViewMatchDayResults.Refresh();
+                dataGridViewMatchDayResults.Rows.Clear();
+                dataGridViewMatchDayResults.Refresh();
             }
             MatchDayResultsList.Clear();
             //-----------------
@@ -110,12 +106,12 @@ namespace DecVarianceProject
                 var result = new MatchDayResultsTable()
                 {
                     MatchNum = i,
-                    MatchOutcome = GenMatchResults(AutomaticGen,i)
+                    MatchOutcome = GenMatchResults(automaticGen,i)
                 };
                 MatchDayResultsList.Add(result);
             }
-            Match_Day_Results = new MatchDayResults() { DGV = dataGridViewMatchDayResults, ListContent = new List<TablesContent>(MatchDayResultsList) };
-            Match_Day_Results.ConfigureDGV();
+            MatchDayResults = new MatchDayResults() { Dgv = dataGridViewMatchDayResults, ListContent = new List<ITablesContent>(MatchDayResultsList) };
+            MatchDayResults.ConfigureDgv();
         }
 
         private void AutomaticallyRdBtn_Click(object sender, EventArgs e)

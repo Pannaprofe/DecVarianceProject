@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DecVarianceProject.Properties;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
 {
     [Serializable]
     public class Test:DataGridViewsRepository
     {
-        public override void ConfigureDGV()
+        public override void ConfigureDgv()
         {
             try
             {
@@ -22,12 +19,12 @@ namespace DecVarianceProject
                 table.Columns.Add("Raise Summ").DataType = typeof(double);
                 table.Columns.Add("NetWon Before").DataType = typeof(double);
                 table.Columns.Add("NetWon After").DataType = typeof(double);
-                DGV.DataSource = FillInTheTable(table, ListContent);
-                BindSortingEventToATableHeader(DGV);
+                Dgv.DataSource = FillInTheTable(table, ListContent);
+                BindSortingEventToATableHeader(Dgv);
             }
             catch
             {
-                MessageBox.Show("The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured");
+                MessageBox.Show(Resources.Test_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured);
                 throw;
             }
         }

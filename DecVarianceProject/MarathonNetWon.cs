@@ -1,9 +1,7 @@
 ﻿using DecVarianceProject.Structures.Tables;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DecVarianceProject.Structures;
 
 namespace DecVarianceProject
 {
@@ -33,19 +31,12 @@ namespace DecVarianceProject
 
         private bool BetIsSuccessful(BetInfo bet)
         {
-             try
-             {
-                  for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
-                  {
-                      if (bet.MatchesAndOutcomes.Outcomes[i] != ConvertOutcomeStringToInt(MatchDayResults[bet.MatchesAndOutcomes.MatchList[i]].MatchOutcome))
-                          return false;
-                  }
-                  return true;
-             }
-             catch
-             {
-                 throw;
-             }
+            for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
+            {
+                if (bet.MatchesAndOutcomes.Outcomes[i] != ConvertOutcomeStringToInt(MatchDayResults[bet.MatchesAndOutcomes.MatchList[i]].MatchOutcome))
+                    return false;
+            }
+            return true;
         }
 
         private int ConvertOutcomeStringToInt(string str)

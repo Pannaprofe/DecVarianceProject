@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using DecVarianceProject.Structures;
+using DecVarianceProject.Structures.Tables;
 
 namespace DecVarianceProject
 {
@@ -24,19 +25,19 @@ namespace DecVarianceProject
         public int NumberOfBets { get; private set; }
         public int MaxWinnings { get; private set; }
 
-        private Random RandomNum = new Random();  
+        private readonly Random _randomNum = new Random();  
 
-        public ProbsCoefsBetsCreator(int MatchesNum, double rake, int numberOfBets, int maxWinnings)
+        public ProbsCoefsBetsCreator(int matchesNum, double rake, int numberOfBets, int maxWinnings)
         {
             ProbsMarathon = new List<MatchParams>();
             ProbsOtherCo = new List<MatchParams>();
             CoefsMarathon = new List<MatchParams>();
             CoefsOtherCo = new List<MatchParams>();
             
-            this.MatchesNum = MatchesNum;
-            this.NumberOfBets = numberOfBets;
-            this.MaxWinnings = maxWinnings;
-            this.Rake = rake;
+            MatchesNum = matchesNum;
+            NumberOfBets = numberOfBets;
+            MaxWinnings = maxWinnings;
+            Rake = rake;
             AllBets = new List<BetInfo>();
             AllBetsForTable = new List<AllBetsTable>();
             ObtainData();  //Generate Probs/Coefs
@@ -82,11 +83,10 @@ namespace DecVarianceProject
         // *********************BEGIN GENERATORS*********************************************
         private void GenAllBetsOfAllPlayers()
         {
-            BetInfo OnePlayerBet;
-            for (int i = 0; i < NumberOfBets; i++)
+            for (var i = 0; i < NumberOfBets; i++)
             {
-                OnePlayerBet = GenerateBet(i);
-                AllBets.Add(OnePlayerBet);
+                var onePlayerBet = GenerateBet(i);
+                AllBets.Add(onePlayerBet);
             }
         }
         private void GenProbsMarathon()
@@ -130,15 +130,7 @@ namespace DecVarianceProject
             var coefList = new List<MatchParams>();
             try
             {
-                for (int i = 0; i < probsList.Count; i++)
-                {
-                    double x1 = Math.Round((1 - Rake) / probsList[i].P1, 3);
-                    double x2 = Math.Round((1 - Rake) / probsList[i].P2, 3);
-                    double x = Math.Round((1 - Rake) / probsList[i].X, 3);
-
-                    MatchParams matchParams = new MatchParams(x1, x2, x);
-                    coefList.Add(matchParams);
-                }
+                coefList.AddRange(from t in probsList let x1 = Math.Round((1 - Rake)/t.P1, 3) let x2 = Math.Round((1 - Rake)/t.P2, 3) let x = Math.Round((1 - Rake)/t.X, 3) select new MatchParams(x1, x2, x));
             }
             catch (Exception exception)
             {
@@ -163,7 +155,7 @@ namespace DecVarianceProject
 
                     while (!rez.Contains(matchNum))
                     {
-                        matchNum = RandomNum.Next(0, MatchesNum - 1);
+                        matchNum = _randomNum.Next(0, MatchesNum - 1);
                     }
                     rez.Remove(matchNum);
                 }
@@ -173,10 +165,10 @@ namespace DecVarianceProject
                 rez = new List<int>();
                 for (int i = 0; i < gennedMatchesNumber; i++)
                 {
-                    int matchNum = RandomNum.Next(0, MatchesNum - 1); //randomize the choice of match 
+                    int matchNum = _randomNum.Next(0, MatchesNum - 1); //randomize the choice of match 
                     while (rez.Contains(matchNum))
                     {
-                        matchNum = RandomNum.Next(0, MatchesNum - 1); //randomize the choice of match
+                        matchNum = _randomNum.Next(0, MatchesNum - 1); //randomize the choice of match
                     }
                     rez.Add(matchNum);
                 }
@@ -185,14 +177,14 @@ namespace DecVarianceProject
         }
         private BetInfo GenerateBet(int betNum)
         {
-            var gennedMatchesNumber = RandomNum.Next(1, 10); // randomize the number of matches in express
+            var gennedMatchesNumber = _randomNum.Next(1, 10); // randomize the number of matches in express
             List<int> chosenMatches = GenListOfMatchesInTheBet(gennedMatchesNumber);
             List<int> outcomes = new List<int>(gennedMatchesNumber);
 
 
             for (int i = 0; i < gennedMatchesNumber; i++)
             {
-                int matchResult = RandomNum.Next(0, 3); // randomize match result  0 -> x1;  1 -> x; 2 -> x2;
+                int matchResult = _randomNum.Next(0, 3); // randomize match result  0 -> x1;  1 -> x; 2 -> x2;
                 outcomes.Add(matchResult);
             }
             double coef = 1;
@@ -214,7 +206,7 @@ namespace DecVarianceProject
             }
             coef = Math.Round(coef, 3);
             var maxBet = (int)(MaxWinnings / (coef - 1));
-            int betSize = RandomNum.Next(1, (maxBet > 0) ? maxBet : 1); //randomize  the size of bet
+            int betSize = _randomNum.Next(1, (maxBet > 0) ? maxBet : 1); //randomize  the size of bet
             chosenMatches.Sort();
             BetInfo betinfo = new BetInfo(chosenMatches, outcomes, betSize, coef);
             var sb = new StringBuilder();
@@ -229,7 +221,6 @@ namespace DecVarianceProject
                 ChosenMatchesResults = sb.ToString()
             };
             AllBetsForTable.Add(row);
-            coef = 1;
             return betinfo;
         }
         //**********************END GENERATORS***********************************************

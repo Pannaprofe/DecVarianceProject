@@ -1,55 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DecVarianceProject.Properties;
+using DecVarianceProject.Structures.DataGridViewsRepositoryFolder;
+using DecVarianceProject.Structures.Tables;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Forms
 {
     public partial class TestEstimationForm : Form
     {
         public List<TestTable> TestTableList { get; private set; }
 
-        public double EVBefore { get; private set; }
-        public double EVAfter { get; private set; }
+        public double EvBefore { get; private set; }
+        public double EvAfter { get; private set; }
         public double VarianceBefore { get; private set; }
         public double VarianceAfter { get; private set; }
         public double EvProfit { get; private set; }
+        public double VarianceDiff { get; private set; }
 
 
         public TestEstimationForm(List<TestTable> list)
         {
-            this.TestTableList = list;
+            TestTableList = list;
             InitializeComponent();
-            List<TablesContent> TestListResults = new List<TablesContent>(list);
-            Test test = new Test() { DGV = dataGridViewTest, ListContent = TestListResults };
-            test.ConfigureDGV();
-            EstimateEV();
+            var testListResults = new List<ITablesContent>(list);
+            var test = new Test() { Dgv = dataGridViewTest, ListContent = testListResults };
+            test.ConfigureDgv();
+            EstimateEv();
             EstimateVariance();
-            MarathonEVBeforeTBX.Text = Convert.ToString(EVBefore);
-            MarathonEVAfterTBX.Text = Convert.ToString(EVAfter);
-            VarianceBeforeTBX.Text = Convert.ToString(VarianceBefore);
-            VarianceAfterTBX.Text = Convert.ToString(VarianceAfter);
-            EvProfitTBX.Text = Convert.ToString(EvProfit);
+            MarathonEVBeforeTBX.Text = Convert.ToString(EvBefore, CultureInfo.InvariantCulture);
+            MarathonEVAfterTBX.Text = Convert.ToString(EvAfter, CultureInfo.InvariantCulture);
+            VarianceBeforeTBX.Text = Convert.ToString(VarianceBefore, CultureInfo.InvariantCulture);
+            VarianceAfterTBX.Text = Convert.ToString(VarianceAfter, CultureInfo.InvariantCulture);
+            EvProfitTBX.Text = Convert.ToString(EvProfit, CultureInfo.InvariantCulture);
+            VarianceDifferenceTBX.Text = Convert.ToString(VarianceDiff, CultureInfo.InvariantCulture);
         }
 
-        private void EstimateEV()
+        private void EstimateEv()
         {
             foreach (var row in TestTableList)
             {
-                EVBefore += row.NetWonBefore;
-                EVAfter += row.NetWonAfter;
+                EvBefore += row.NetWonBefore;
+                EvAfter += row.NetWonAfter;
             }
-            EVBefore /= TestTableList.Count;
-            EVAfter /= TestTableList.Count;
-            EvProfit = (EVAfter - EVBefore) / EVBefore;
+            EvBefore /= TestTableList.Count;
+            EvAfter /= TestTableList.Count;
+            EvProfit = (EvAfter - EvBefore) / EvBefore;
             EvProfit = Math.Round(EvProfit, 3);
         }
 
@@ -57,51 +57,33 @@ namespace DecVarianceProject
         {
             foreach(var row in TestTableList)
             {
-                VarianceBefore += Math.Pow(row.NetWonBefore - EVBefore, 2);
-                VarianceAfter += Math.Pow(row.NetWonAfter - EVAfter, 2);
+                VarianceBefore += Math.Pow(row.NetWonBefore - EvBefore, 2);
+                VarianceAfter += Math.Pow(row.NetWonAfter - EvAfter, 2);
             }
             VarianceBefore /= TestTableList.Count;
             VarianceAfter /= TestTableList.Count;
+            VarianceDiff = (VarianceAfter - VarianceBefore)/VarianceBefore;
+            VarianceDiff = Math.Round(VarianceDiff, 3);
         }
 
         private void OKBTN_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "omg files (*.omg)|*.omg|All files (*.*)|*.*";
+            var sfd = new SaveFileDialog
+            {
+                Filter =
+                    Resources.TestEstimationForm_saveToolStripMenuItem_Click_omg_files____omg____omg_All_files__________
+            };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                Save(sfd.FileName);
+                FileActions.Save(sfd.FileName,TestTableList);
             }
         }
 
-        public void Save(string fileName)
-        {
-            using (Stream stream = new FileStream(fileName, FileMode.Create))
-            {
-
-                BinaryFormatter bf = new BinaryFormatter();
-
-                //Create a new instance of the RijndaelManaged class
-                // and encrypt the stream.
-                RijndaelManaged RMCrypto = new RijndaelManaged();
-
-                byte[] Key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
-                byte[] IV = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
-
-                //Create a CryptoStream, pass it the NetworkStream, and encrypt 
-                //it with the Rijndael class.
-                CryptoStream CryptStream = new CryptoStream(stream, RMCrypto.CreateEncryptor(Key, IV), CryptoStreamMode.Write);
-
-                bf.Serialize(CryptStream, TestTableList);
-                CryptStream.Close();
-
-            }
-        }
 
     }
 }

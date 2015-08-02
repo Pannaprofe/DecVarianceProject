@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures
 {
     [Serializable]
     public class MatchParams
@@ -14,9 +11,9 @@ namespace DecVarianceProject
 
         public MatchParams(double x1, double x2, double x)
         {
-            this.P1 = x1;
-            this.P2 = x2;
-            this.X = x;
+            P1 = x1;
+            P2 = x2;
+            X = x;
         }
     }
 }

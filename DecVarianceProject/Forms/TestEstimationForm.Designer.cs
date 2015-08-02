@@ -1,4 +1,4 @@
-﻿namespace DecVarianceProject
+﻿namespace DecVarianceProject.Forms
 {
     partial class TestEstimationForm
     {
@@ -43,6 +43,8 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label5 = new System.Windows.Forms.Label();
             this.EvProfitTBX = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.VarianceDifferenceTBX = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTest)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -178,11 +180,30 @@
             this.EvProfitTBX.Size = new System.Drawing.Size(100, 20);
             this.EvProfitTBX.TabIndex = 12;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(518, 63);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(74, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "%Variance diff";
+            // 
+            // VarianceDifferenceTBX
+            // 
+            this.VarianceDifferenceTBX.Location = new System.Drawing.Point(598, 60);
+            this.VarianceDifferenceTBX.Name = "VarianceDifferenceTBX";
+            this.VarianceDifferenceTBX.ReadOnly = true;
+            this.VarianceDifferenceTBX.Size = new System.Drawing.Size(100, 20);
+            this.VarianceDifferenceTBX.TabIndex = 14;
+            // 
             // TestEstimationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(802, 638);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.VarianceDifferenceTBX);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.EvProfitTBX);
             this.Controls.Add(this.label3);
@@ -225,5 +246,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox EvProfitTBX;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox VarianceDifferenceTBX;
     }
 }

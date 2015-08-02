@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.Tables
 {
     [Serializable]
-    public class GennedParamsInTable:TablesContent
+    public class GennedParamsInTable:ITablesContent
     {
         public int MatchNum { get; set; }
         public double ProbabilityP1 { get; set; }

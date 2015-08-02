@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures
 {
     [Serializable]
     public class BetInfo
@@ -14,11 +12,13 @@ namespace DecVarianceProject
 
         public BetInfo(List<int> matchList, List<int> outcomes, double betSize, double coef)
         {
-            MatchesAndOutcomes = new Matches();
-            this.MatchesAndOutcomes.MatchList = matchList;
-            this.MatchesAndOutcomes.Outcomes = outcomes;
-            this.BetSize = betSize;
-            this.Coef = coef;
+            MatchesAndOutcomes = new Matches
+            {
+                MatchList = matchList,
+                Outcomes = outcomes
+            };
+            BetSize = betSize;
+            Coef = coef;
         }
     }
 }

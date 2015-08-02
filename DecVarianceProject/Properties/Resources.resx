@@ -114,4 +114,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MainForm_RunBtn_Click_Invalid_input" xml:space="preserve">
+    <value>Invalid input</value>
+  </data>
+  <data name="MainForm_RunBtn_Click_Rake_is_equal_to_0__would_you_like_to_continue" xml:space="preserve">
+    <value>Rake is equal to 0, would you like to continue</value>
+  </data>
+  <data name="MainForm_RunBtn_Click_Rake_issue" xml:space="preserve">
+    <value>Rake issue</value>
+  </data>
+  <data name="MainForm_RakeTBX_MaskInputRejected_rake___1_required" xml:space="preserve">
+    <value>rake &lt; 1 required</value>
+  </data>
+  <data name="MainForm_openToolStripMenuItem_Click_omg_files____omg____omg_All_files__________" xml:space="preserve">
+    <value>omg files (*.omg)|*.omg|All files (*.*)|*.*</value>
+  </data>
+  <data name="ProgressBarForm_IncProgressBarValue__" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="TestEstimationForm_saveToolStripMenuItem_Click_omg_files____omg____omg_All_files__________" xml:space="preserve">
+    <value>omg files (*.omg)|*.omg|All files (*.*)|*.*</value>
+  </data>
+  <data name="Bets_ConfigureDGV_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured" xml:space="preserve">
+    <value>The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured</value>
+  </data>
+  <data name="ProbsCoefs_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table_or_cell_type_missmatch_has_occured" xml:space="preserve">
+    <value>The Number of Columns is less then requested in DGV Table or cell type missmatch has occured</value>
+  </data>
+  <data name="Results_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured" xml:space="preserve">
+    <value>The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured</value>
+  </data>
+  <data name="Test_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured" xml:space="preserve">
+    <value>The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured</value>
+  </data>
 </root>

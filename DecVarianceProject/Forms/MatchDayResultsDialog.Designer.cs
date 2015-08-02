@@ -1,4 +1,4 @@
-﻿namespace DecVarianceProject
+﻿namespace DecVarianceProject.Forms
 {
     partial class MatchDayResultsDialog
     {

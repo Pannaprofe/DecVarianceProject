@@ -1,48 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using DecVarianceProject.Structures;
+using DecVarianceProject.Structures.Tables;
 
 namespace DecVarianceProject
 {
     [Serializable]
     public class SubTree
     {
-        private List<MatchParams> Probs;
-        private List<MatchParams> Coefs;
-        private List<BetInfo> Bets;
+        private readonly List<MatchParams> _probs;
+        private readonly List<MatchParams> _coefs;
+        private readonly List<BetInfo> _bets;
         public List<ResultsInTable> AllResultsInTable { get; private set; }
 
-        private Node Tree;
         public  Node Top {get; private set;}
-        private int TreeLevels;
+        private readonly int _treeLevels;
         public int CriticalNodeNumber { get; private set; }   // the Number of nodes of the tree with known number of levels
 
         public SubTree(List<MatchParams> probs, List<MatchParams> coefs, List<BetInfo> bets)
         {
-            this.Probs = probs;
-            this.Coefs = coefs;
-            this.Bets = bets;
+            _probs = probs;
+            _coefs = coefs;
+            _bets = bets;
             //initialize tree top
-            Tree = new Node();
-            Tree.LocalCoef = 1;
-            Tree.LocalProb = 1;
-            TreeLevels = probs.Count;
+            var tree = new Node
+            {
+                LocalCoef = 1,
+                LocalProb = 1
+            };
+            _treeLevels = probs.Count;
             GetCriticalNodeNumber();
-            Top = Tree;
+            Top = tree;
             AllResultsInTable = new List<ResultsInTable>();
 
-            BuildTheTree(ref Tree);
+            BuildTheTree(ref tree);
             PassTheTree(Top);
         }
 
         //returns number of nodes in the tree, excluding top element
         private void GetCriticalNodeNumber()
         {
-            for (int i = 0; i < TreeLevels; i++)
+            for (var i = 0; i < _treeLevels; i++)
             {
                 CriticalNodeNumber = CriticalNodeNumber * 3 + 3;
             }
@@ -50,20 +49,20 @@ namespace DecVarianceProject
 
         private void BuildTheTree(ref Node tree)
         {
-            bool stop = false;
-            int level = 0;
-            int nodesNum = 0;
+            var stop = false;
+            var level = 0;
+            var nodesNum = 0;
             var path = new List<int>();
             while (!stop)
             {
-                if (level < TreeLevels)
+                if (level < _treeLevels)
                 {
                     Node node = new Node();
                     if (tree.Win1 == null)
                     {
                         
-                        node.Coef = Coefs[level].P1;
-                        node.Prob = Probs[level].P1;
+                        node.Coef = _coefs[level].P1;
+                        node.Prob = _probs[level].P1;
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(1);
@@ -78,8 +77,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Draw == null)
                     {
-                        node.Coef = Coefs[level].X;
-                        node.Prob = Probs[level].X;
+                        node.Coef = _coefs[level].X;
+                        node.Prob = _probs[level].X;
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(0);
@@ -93,8 +92,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Win2 == null)
                     {
-                        node.Coef = Coefs[level].P2;
-                        node.Prob = Probs[level].P2;
+                        node.Coef = _coefs[level].P2;
+                        node.Prob = _probs[level].P2;
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(2);
@@ -115,7 +114,7 @@ namespace DecVarianceProject
                     }
                 }
 
-                if (level == TreeLevels)
+                if (level == _treeLevels)
                 {
                     if (nodesNum == CriticalNodeNumber)
                         stop = true;
@@ -134,7 +133,7 @@ namespace DecVarianceProject
         {
             double payments = 0;
             double winnings = 0;
-            foreach (BetInfo bet in Bets)
+            foreach (BetInfo bet in _bets)
             {
                 if (HavingSuchBet(tree.Path,bet))
                 {

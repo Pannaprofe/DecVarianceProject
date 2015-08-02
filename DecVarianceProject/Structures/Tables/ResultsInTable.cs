@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.Tables
 {
     [Serializable]
-    public class ResultsInTable:TablesContent
+    public class ResultsInTable:ITablesContent
     {
         public int Node { get; set; }
         public double Probability { get; set; }

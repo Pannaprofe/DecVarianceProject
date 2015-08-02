@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DecVarianceProject.Structures.Tables;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
 {
     [Serializable]
     public abstract class DataGridViewsRepository:IDataGridViewRepository
     {
-        public List<TablesContent> ListContent { get; set; }
-        public DataGridView DGV { get; set; }
-        public abstract void ConfigureDGV();
-        public DataTable FillInTheTable(DataTable table, List<TablesContent> list)
+        public List<ITablesContent> ListContent { get; set; }
+        public DataGridView Dgv { get; set; }
+        public abstract void ConfigureDgv();
+        public DataTable FillInTheTable(DataTable table, List<ITablesContent> list)
         {
             foreach (var row in list)
             {
                 var properties = row.GetType().GetProperties();
                 var propertiesForTableCount = properties.Count();
-                string[] rowAsTheList = new string[propertiesForTableCount];
+                object[] rowAsTheList = new object[propertiesForTableCount];
                 for (int i = 0; i < propertiesForTableCount; i++)
                 {
                     rowAsTheList[i] = Convert.ToString(properties[i].GetValue(row, null));
@@ -31,19 +30,23 @@ namespace DecVarianceProject
         }
         public void BindSortingEventToATableHeader(DataGridView dgv)
         {
-            List<string> sortColumns = new List<string>();
+            var sortColumns = new List<string>();
             dgv.ColumnHeaderMouseClick += (o, e) =>
             {
-                DataGridView grid = (o as DataGridView);
-                string colName = grid.Columns[e.ColumnIndex].DataPropertyName;
+                var grid = (o as DataGridView);
+                if (grid != null)
+                {
+                    var colName = grid.Columns[e.ColumnIndex].DataPropertyName;
 
-                sortColumns.Remove(colName);
-                sortColumns.Add(colName);
-                string sortExpr = "";
-                foreach (string c in sortColumns)
-                    sortExpr = c + "," + sortExpr;
+                    sortColumns.Remove(colName);
+                    sortColumns.Add(colName);
+                }
+                var sortExpr = sortColumns.Aggregate("", (current, c) => c + "," + current);
 
-                (grid.DataSource as DataTable).DefaultView.Sort = sortExpr.Trim(',');
+                if (grid == null) return;
+                var dataTable = grid.DataSource as DataTable;
+                if (dataTable != null)
+                    dataTable.DefaultView.Sort = sortExpr.Trim(',');
             };
         }
     }

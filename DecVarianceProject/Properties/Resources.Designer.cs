@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DecVarianceProject.Properties
-{
-
-
+namespace DecVarianceProject.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,49 +22,145 @@ namespace DecVarianceProject.Properties
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DecVarianceProject.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured.
+        /// </summary>
+        internal static string Bets_ConfigureDGV_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured {
+            get {
+                return ResourceManager.GetString("Bets_ConfigureDGV_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_c" +
+                        "ell_type_missmatch_has_occured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to omg files (*.omg)|*.omg|All files (*.*)|*.*.
+        /// </summary>
+        internal static string MainForm_openToolStripMenuItem_Click_omg_files____omg____omg_All_files__________ {
+            get {
+                return ResourceManager.GetString("MainForm_openToolStripMenuItem_Click_omg_files____omg____omg_All_files__________", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rake &lt; 1 required.
+        /// </summary>
+        internal static string MainForm_RakeTBX_MaskInputRejected_rake___1_required {
+            get {
+                return ResourceManager.GetString("MainForm_RakeTBX_MaskInputRejected_rake___1_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid input.
+        /// </summary>
+        internal static string MainForm_RunBtn_Click_Invalid_input {
+            get {
+                return ResourceManager.GetString("MainForm_RunBtn_Click_Invalid_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rake is equal to 0, would you like to continue.
+        /// </summary>
+        internal static string MainForm_RunBtn_Click_Rake_is_equal_to_0__would_you_like_to_continue {
+            get {
+                return ResourceManager.GetString("MainForm_RunBtn_Click_Rake_is_equal_to_0__would_you_like_to_continue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rake issue.
+        /// </summary>
+        internal static string MainForm_RunBtn_Click_Rake_issue {
+            get {
+                return ResourceManager.GetString("MainForm_RunBtn_Click_Rake_issue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Number of Columns is less then requested in DGV Table or cell type missmatch has occured.
+        /// </summary>
+        internal static string ProbsCoefs_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table_or_cell_type_missmatch_has_occured {
+            get {
+                return ResourceManager.GetString("ProbsCoefs_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table" +
+                        "_or_cell_type_missmatch_has_occured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        internal static string ProgressBarForm_IncProgressBarValue__ {
+            get {
+                return ResourceManager.GetString("ProgressBarForm_IncProgressBarValue__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured.
+        /// </summary>
+        internal static string Results_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured {
+            get {
+                return ResourceManager.GetString("Results_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__o" +
+                        "r_cell_type_missmatch_has_occured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Number of Columns is less then requested in DGV Table  or cell type missmatch has occured.
+        /// </summary>
+        internal static string Test_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_cell_type_missmatch_has_occured {
+            get {
+                return ResourceManager.GetString("Test_ConfigureDgv_The_Number_of_Columns_is_less_then_requested_in_DGV_Table__or_c" +
+                        "ell_type_missmatch_has_occured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to omg files (*.omg)|*.omg|All files (*.*)|*.*.
+        /// </summary>
+        internal static string TestEstimationForm_saveToolStripMenuItem_Click_omg_files____omg____omg_All_files__________ {
+            get {
+                return ResourceManager.GetString("TestEstimationForm_saveToolStripMenuItem_Click_omg_files____omg____omg_All_files_" +
+                        "_________", resourceCulture);
             }
         }
     }

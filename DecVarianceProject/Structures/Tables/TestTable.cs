@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DecVarianceProject.Structures.Tables;
 
 namespace DecVarianceProject
 {
     [Serializable]
-    public class TestTable:TablesContent
+    public class TestTable:ITablesContent
     {
         public int IdModel { get; set; }
         public int IdMatchDay { get; set; }
