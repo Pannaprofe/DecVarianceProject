@@ -185,11 +185,11 @@ namespace DecVarianceProject.Forms
 
         private void TestEvaluationBTN_Click(object sender, EventArgs e)
         {
-            const int testsNum = 5;
+            const int testsNum = 1;
             const int idModelsMax = 100;
             const int idMatchDaysMax = 100;
             var matchesToRaiseNumList = new List<int>(1) { 2};
-            var raisePercentList = new List<double>(1) {0.1};
+            var raisePercentList = new List<double>(1) {0.05};
 
             var test = new List<TestTable>();
             using (var progressBarForm = new ProgressBarForm(testsNum*idMatchDaysMax*idModelsMax*matchesToRaiseNumList.Count*raisePercentList.Count))
@@ -220,8 +220,10 @@ namespace DecVarianceProject.Forms
                                 }
                             }
                             var testForm = new TestEstimationForm(test);
-                            var fileName = matchesToRaiseNumList[num-1] + "-" + raisePercentList[j-1] + "-" + idModelsMax + "-" + idMatchDaysMax + "-" + i;
-                            testForm.Save(fileName);
+                            var date = DateTime.Now;
+                            var format = "MMM_ ddd_d-HH_mm_yyyy";
+                            var fileName = matchesToRaiseNumList[num - 1] + "-" + raisePercentList[j - 1] + "-" + idModelsMax + "-" + idMatchDaysMax + "-" + i + date.ToString(format);
+                            FileActions.Save(fileName, test);
                             // testForm.ShowDialog();
                         }
                     }

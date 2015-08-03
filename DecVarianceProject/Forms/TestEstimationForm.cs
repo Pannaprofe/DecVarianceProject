@@ -21,6 +21,9 @@ namespace DecVarianceProject.Forms
         public double VarianceAfter { get; private set; }
         public double EvProfit { get; private set; }
         public double VarianceDiff { get; private set; }
+        public double EV2Before { get; private set; }
+
+        public double EV2After { get; private set; }
 
 
         public TestEstimationForm(List<TestTable> list)
@@ -28,10 +31,11 @@ namespace DecVarianceProject.Forms
             TestTableList = list;
             InitializeComponent();
             var testListResults = new List<ITablesContent>(list);
-            var test = new Test() { Dgv = dataGridViewTest, ListContent = testListResults };
-            test.ConfigureDgv();
             EstimateEv();
             EstimateVariance();
+            var test = new Test() { Dgv = dataGridViewTest, ListContent = testListResults };
+            test.ConfigureDgv();
+
             MarathonEVBeforeTBX.Text = Convert.ToString(EvBefore, CultureInfo.InvariantCulture);
             MarathonEVAfterTBX.Text = Convert.ToString(EvAfter, CultureInfo.InvariantCulture);
             VarianceBeforeTBX.Text = Convert.ToString(VarianceBefore, CultureInfo.InvariantCulture);
@@ -42,26 +46,30 @@ namespace DecVarianceProject.Forms
 
         private void EstimateEv()
         {
+            int i = 1;
             foreach (var row in TestTableList)
             {
                 EvBefore += row.NetWonBefore;
                 EvAfter += row.NetWonAfter;
+                EV2Before += Math.Pow(row.NetWonBefore, 2);
+                EV2After += Math.Pow(row.NetWonAfter, 2);
+                row.EVDifference = EvAfter/i - EvBefore/i;
+                i++;
             }
             EvBefore /= TestTableList.Count;
             EvAfter /= TestTableList.Count;
+            EV2After /= TestTableList.Count;
+            EV2Before /= TestTableList.Count;
             EvProfit = (EvAfter - EvBefore) / EvBefore;
             EvProfit = Math.Round(EvProfit, 3);
         }
 
+        
+
         private void EstimateVariance()
         {
-            foreach(var row in TestTableList)
-            {
-                VarianceBefore += Math.Pow(row.NetWonBefore - EvBefore, 2);
-                VarianceAfter += Math.Pow(row.NetWonAfter - EvAfter, 2);
-            }
-            VarianceBefore /= TestTableList.Count;
-            VarianceAfter /= TestTableList.Count;
+            VarianceBefore = EV2Before - Math.Pow(EvBefore, 2);
+            VarianceAfter = EV2After - Math.Pow(EvAfter, 2);
             VarianceDiff = (VarianceAfter - VarianceBefore)/VarianceBefore;
             VarianceDiff = Math.Round(VarianceDiff, 3);
         }

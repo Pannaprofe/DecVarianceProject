@@ -105,7 +105,7 @@ namespace DecVarianceProject
         }
         private void GenProbsOtherCo()
         {
-            double delta = 0.03;
+            double delta = 0;
             Random random = new Random();
             try
             {

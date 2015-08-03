@@ -16,5 +16,6 @@ namespace DecVarianceProject
         public double RaiseSumm { get; set; }
         public double NetWonBefore { get; set; }
         public double NetWonAfter { get; set; }
+        public double EVDifference { get; set; }
     }
 }
