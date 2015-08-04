@@ -18,6 +18,8 @@ namespace DecVarianceProject.Forms
         private int _betsNum;
         private readonly int _maxWinnings = 10000;
         private int _reBetMatchesNum;
+        private double _EvBefore;
+        private double _EvAfter;
         private ProbsCoefsBetsCreator _creator;
         private MatchDayResultsDialog _dialog;
         private double _raiseSumPercent;
@@ -66,7 +68,7 @@ namespace DecVarianceProject.Forms
             _betsNum = Convert.ToInt32(BetsNumTxtBx.Text);
             _reBetMatchesNum = Convert.ToInt32(ReraiseMatchesTBX.Text);
             _creator = new ProbsCoefsBetsCreator(_matchesNum, _rake, _betsNum, _maxWinnings);
-            BetSplitter = new BetSplitter(_creator.AllBets, _raiseSumPercent, _reBetMatchesNum, _rake, _creator.CoefsOtherCo);
+            BetSplitter = new BetSplitter(_creator.AllBets, _raiseSumPercent, _reBetMatchesNum, _rake, _creator.CoefsOtherCo,_creator.ProbsMarathon);
             _raiseSum = BetSplitter.ReBetSum;
             _allBetsSumm = BetSplitter.AllBetsSum;
             var repository = new List<DataGridViewsRepository>
@@ -157,21 +159,29 @@ namespace DecVarianceProject.Forms
             MarathonNetWon netWon = new MarathonNetWon()
             {
                 AllBets = _creator.AllBets,
-                MatchDayResults = _dialog.MatchDayResultsList
+                MatchDayResults = _dialog.MatchDayResultsList,
+                Rake = _rake
             };
             _netWonBefore = Math.Round(netWon.EstimateMarathonNetWon(),2);
             NetWonBeforeRaisingTBX.Text = Convert.ToString(_netWonBefore, CultureInfo.InvariantCulture);
+            _EvBefore = Math.Round(netWon.EstimateMarathonEvBefore(), 2);
+            EvBeforeTBX.Text = Convert.ToString(_EvBefore,CultureInfo.InvariantCulture);
             //----------------------------------------
             //Estimate Marathon NetWon after raising
+            var bets = _creator.AllBets;
             BetSplitter.GenListOfMarathonBets();
-            _creator.AddMarathonBets(BetSplitter.MarathonBets);
+            _creator.MarathonBets = BetSplitter.MarathonBets;
             netWon = new MarathonNetWon()
             {
-                AllBets = _creator.AllBets,
-                MatchDayResults = _dialog.MatchDayResultsList
+                AllBets = _creator.MarathonBets,
+                MatchDayResults = _dialog.MatchDayResultsList,
+                MarathonEvBefore = _EvBefore
             };
-            _netWonAfter = Math.Round(netWon.EstimateMarathonNetWon(),2);
+            _netWonAfter = Math.Round(netWon.EstimateMarathonNetWon()+_netWonBefore,2);
+            _EvAfter = Math.Round(netWon.EstimateMarathonEvAfter(BetSplitter.MarathonBets), 2);
+            EvAfterTBX.Text = Convert.ToString(_EvAfter, CultureInfo.InvariantCulture);
             NetWonAfterRaisingTBX.Text = Convert.ToString(_netWonAfter, CultureInfo.InvariantCulture);
+            _creator.AllBets = new List<Structures.BetInfo>(bets);
             //-----------------------------------------
             RaiseSumTBX.Text = Convert.ToString(_raiseSum, CultureInfo.InvariantCulture);
             AllBetsSumTBX.Text = Convert.ToString(_allBetsSumm, CultureInfo.InvariantCulture);
@@ -186,8 +196,8 @@ namespace DecVarianceProject.Forms
         private void TestEvaluationBTN_Click(object sender, EventArgs e)
         {
             const int testsNum = 1;
-            const int idModelsMax = 100;
-            const int idMatchDaysMax = 100;
+            const int idModelsMax = 1;
+            const int idMatchDaysMax = 50000;
             var matchesToRaiseNumList = new List<int>(1) { 2};
             var raisePercentList = new List<double>(1) {0.05};
 
@@ -221,7 +231,7 @@ namespace DecVarianceProject.Forms
                             }
                             var testForm = new TestEstimationForm(test);
                             var date = DateTime.Now;
-                            var format = "MMM_ ddd_d-HH_mm_yyyy";
+                            var format = "MMM_ ddd_d-HH_mm_s_yyyy";
                             var fileName = matchesToRaiseNumList[num - 1] + "-" + raisePercentList[j - 1] + "-" + idModelsMax + "-" + idMatchDaysMax + "-" + i + date.ToString(format);
                             FileActions.Save(fileName, test);
                             // testForm.ShowDialog();

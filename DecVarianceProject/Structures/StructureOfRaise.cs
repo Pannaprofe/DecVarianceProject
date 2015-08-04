@@ -9,6 +9,7 @@ namespace DecVarianceProject.Structures
         public int Outcome { get; set; }
 
         public double SingleMatchCoef { get; set; }
+        public double SingleMatchProb { get; set; }
         public double BetsAmmount { get; set; }
         public double ToBet { get; set; }
         public double EvDiff { get; set; }

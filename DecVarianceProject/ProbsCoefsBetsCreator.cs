@@ -16,6 +16,7 @@ namespace DecVarianceProject
         public List<MatchParams> CoefsOtherCo { get; private set; }
         public List<GennedParamsInTable> GennedParams { get; private set; }
         public List<BetInfo> AllBets { get; set; }
+        public List<BetInfo> MarathonBets { get; set; }
         public List<AllBetsTable> AllBetsForTable { get; private set; }  
         public SubTree Tree { get; private set; }
 
@@ -43,14 +44,6 @@ namespace DecVarianceProject
             ObtainData();  //Generate Probs/Coefs
             CreateProbsAndCoefsStructure();   // for printing Probs and Coefs into Table
             Tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
-        }
-
-        public void AddMarathonBets(List<BetInfo> marathobBets)
-        {
-            foreach (BetInfo bet in marathobBets)
-            {
-                AllBets.Add(bet);
-            }
         }
 
         protected void ObtainData()
@@ -188,27 +181,31 @@ namespace DecVarianceProject
                 outcomes.Add(matchResult);
             }
             double coef = 1;
+            double prob = 1;
             for (int i = 0; i < chosenMatches.Count; i++)
             {
                 switch (outcomes[i])
                 {
                     case 0:
                         coef *= CoefsMarathon[chosenMatches[i]].P1;
-
+                        prob *= ProbsMarathon[chosenMatches[i]].P1;
                         break;
                     case 1:
                         coef *= CoefsMarathon[chosenMatches[i]].X;
+                        prob *= ProbsMarathon[chosenMatches[i]].X;
                         break;
                     case 2:
                         coef *= CoefsMarathon[chosenMatches[i]].P2;
+                        prob *= ProbsMarathon[chosenMatches[i]].P2;
                         break;
                 }
             }
             coef = Math.Round(coef, 3);
+            prob = Math.Round(coef,3);
             var maxBet = (int)(MaxWinnings / (coef - 1));
             int betSize = _randomNum.Next(1, (maxBet > 0) ? maxBet : 1); //randomize  the size of bet
             chosenMatches.Sort();
-            BetInfo betinfo = new BetInfo(chosenMatches, outcomes, betSize, coef);
+            BetInfo betinfo = new BetInfo(chosenMatches, outcomes, betSize, coef,prob);
             var sb = new StringBuilder();
             for (int i = 0;i < chosenMatches.Count;i++)
             {

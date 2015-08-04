@@ -20,14 +20,16 @@ namespace DecVarianceProject
         public List<StructureOfRaise> BetsStructure { get; private set; }
 
         public List<MatchParams> CoefsOtherCo { get; set; }
+        public List<MatchParams> Probs { get; set; }
 
-        public BetSplitter(List<BetInfo> allBets, double percent,int rebetMatchesNum, double rake, List<MatchParams> coefsOtherCo)
+        public BetSplitter(List<BetInfo> allBets, double percent,int rebetMatchesNum, double rake, List<MatchParams> coefsOtherCo, List<MatchParams> probs)
         {
             EstimateBetsSumm(allBets,percent);
             ReBetMatchesNum = rebetMatchesNum;
             Rake = rake;
             AllBets = allBets;
             CoefsOtherCo = coefsOtherCo;
+            Probs = probs;
             Split();
             ConvertStructureToTable();
         }
@@ -54,27 +56,30 @@ namespace DecVarianceProject
             {
                 BetsStructure.Add(new StructureOfRaise());
             }
-                foreach (BetInfo bet in AllBets)
+            foreach (BetInfo bet in AllBets)
+            {
+                for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
                 {
-                    for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
+                    BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].MatchNum = bet.MatchesAndOutcomes.MatchList[i];
+                    BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].Outcome = bet.MatchesAndOutcomes.Outcomes[i];
+                    switch (BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].Outcome)
                     {
-                        BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].MatchNum = bet.MatchesAndOutcomes.MatchList[i];
-                        BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].Outcome = bet.MatchesAndOutcomes.Outcomes[i];
-                        switch (BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].Outcome)
-                        {
-                            case 1:
-                                BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchCoef = CoefsOtherCo[i].P1;
-                                break;
-                            case 2:
-                                BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchCoef = CoefsOtherCo[i].P2;
-                                break;
-                            case 0:
-                                BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchCoef = CoefsOtherCo[i].X;
-                                break;
-                        }
-                        BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].BetsAmmount += bet.BetSize;
+                        case 1:
+                            BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchCoef = CoefsOtherCo[i].P1;
+                            BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchProb = Probs[i].P1;
+                            break;
+                        case 2:
+                            BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchCoef = CoefsOtherCo[i].P2;
+                            BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchProb = Probs[i].P2;
+                            break;
+                        case 0:
+                            BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchCoef = CoefsOtherCo[i].X;
+                            BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].SingleMatchProb = Probs[i].X;
+                            break;
                     }
+                    BetsStructure[bet.MatchesAndOutcomes.MatchList[i]].BetsAmmount += bet.BetSize;
                 }
+            }
 
             foreach (StructureOfRaise reBet in BetsStructure)
             {
@@ -140,8 +145,9 @@ namespace DecVarianceProject
                 var matchList = new List<int> {reBet.MatchNum};
                 var outcomes = new List<int> {reBet.Outcome};
                 var coef = reBet.SingleMatchCoef;
+                var prob = reBet.SingleMatchProb;
                 var betsize = -reBet.ToBet;    // Negative here
-                BetInfo bet = new BetInfo(matchList,outcomes,betsize,coef);
+                BetInfo bet = new BetInfo(matchList,outcomes,betsize,coef,prob);
                 MarathonBets.Add(bet);
             }
         }

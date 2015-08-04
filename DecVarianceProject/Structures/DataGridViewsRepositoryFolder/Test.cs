@@ -19,7 +19,7 @@ namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
                 table.Columns.Add("Raise Summ").DataType = typeof(double);
                 table.Columns.Add("NetWon Before").DataType = typeof(double);
                 table.Columns.Add("NetWon After").DataType = typeof(double);
-                table.Columns.Add("EV").DataType = typeof(double);
+                table.Columns.Add("EV Before").DataType = typeof(double);
                 Dgv.DataSource = FillInTheTable(table, ListContent);
                 BindSortingEventToATableHeader(Dgv);
             }

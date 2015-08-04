@@ -59,6 +59,10 @@
             this.TestEvaluationBTN = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EvBeforeTBX = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.EvAfterTBX = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProbsCoefs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAllBets)).BeginInit();
@@ -355,11 +359,49 @@
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
+            // EvBeforeTBX
+            // 
+            this.EvBeforeTBX.Location = new System.Drawing.Point(1024, 769);
+            this.EvBeforeTBX.Name = "EvBeforeTBX";
+            this.EvBeforeTBX.ReadOnly = true;
+            this.EvBeforeTBX.Size = new System.Drawing.Size(100, 20);
+            this.EvBeforeTBX.TabIndex = 39;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(785, 776);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(54, 13);
+            this.label10.TabIndex = 38;
+            this.label10.Text = "EV before";
+            // 
+            // EvAfterTBX
+            // 
+            this.EvAfterTBX.Location = new System.Drawing.Point(1024, 795);
+            this.EvAfterTBX.Name = "EvAfterTBX";
+            this.EvAfterTBX.ReadOnly = true;
+            this.EvAfterTBX.Size = new System.Drawing.Size(100, 20);
+            this.EvAfterTBX.TabIndex = 41;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(785, 802);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(45, 13);
+            this.label11.TabIndex = 40;
+            this.label11.Text = "EV after";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1248, 866);
+            this.Controls.Add(this.EvAfterTBX);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.EvBeforeTBX);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.TestEvaluationBTN);
             this.Controls.Add(this.AllBetsSumTBX);
             this.Controls.Add(this.label9);
@@ -439,6 +481,10 @@
         private System.Windows.Forms.Button TestEvaluationBTN;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.TextBox EvBeforeTBX;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox EvAfterTBX;
+        private System.Windows.Forms.Label label11;
     }
 }
 

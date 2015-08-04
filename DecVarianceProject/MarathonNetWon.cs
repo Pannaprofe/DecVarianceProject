@@ -11,7 +11,9 @@ namespace DecVarianceProject
         public List<BetInfo> AllBets { get; set; }
         public double Ammount{ get; private set; }
         public List<MatchDayResultsTable> MatchDayResults { get; set; }
-
+        public double MarathonEvBefore { get;  set; }
+        public double MarathonEvAfter { get; private set; }
+        public double Rake { get; set; }
         public double EstimateMarathonNetWon()
         {
             Ammount = 0;
@@ -51,6 +53,28 @@ namespace DecVarianceProject
             }
             else
                 return 0;
+        }
+
+        public double EstimateMarathonEvBefore()
+        {
+            MarathonEvBefore = 0;
+            foreach (BetInfo bet in AllBets)
+            {
+                MarathonEvBefore += bet.BetSize * Rake;
+            }
+            return MarathonEvBefore;
+        }
+
+        public double EstimateMarathonEvAfter(List<BetInfo> raiseMatchesBets)
+        {
+            MarathonEvAfter = 0;
+            foreach (BetInfo bet in raiseMatchesBets)
+            {
+                var betsize = -bet.BetSize;
+                MarathonEvAfter += betsize * bet.Prob * (bet.Coef - 1) - (1 - bet.Prob) * betsize;
+            }
+            MarathonEvAfter += MarathonEvBefore;
+            return MarathonEvAfter;
         }
     }
 }
