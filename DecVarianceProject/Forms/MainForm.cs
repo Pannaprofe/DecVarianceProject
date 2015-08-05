@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using DecVarianceProject.Properties;
 using DecVarianceProject.Structures.DataGridViewsRepositoryFolder;
 using DecVarianceProject.Structures.Tables;
+using System.Text;
 
 namespace DecVarianceProject.Forms
 {
@@ -195,13 +196,14 @@ namespace DecVarianceProject.Forms
 
         private void TestEvaluationBTN_Click(object sender, EventArgs e)
         {
-            const int testsNum = 1;
+            const int testsNum = 10;
             const int idModelsMax = 1;
             const int idMatchDaysMax = 50000;
             var matchesToRaiseNumList = new List<int>(1) { 2};
             var raisePercentList = new List<double>(1) {0.05};
 
             var test = new List<TestTable>();
+            var testForm = new TestEstimationForm(test);
             using (var progressBarForm = new ProgressBarForm(testsNum*idMatchDaysMax*idModelsMax*matchesToRaiseNumList.Count*raisePercentList.Count))
             {
                 for (var i = 1; i <= testsNum; i++)
@@ -229,14 +231,15 @@ namespace DecVarianceProject.Forms
                                     progressBarForm.IncProgressBarValue();
                                 }
                             }
-                            var testForm = new TestEstimationForm(test);
+                            testForm = new TestEstimationForm(test);
                             var date = DateTime.Now;
                             var format = "MMM_ ddd_d-HH_mm_s_yyyy";
                             var fileName = matchesToRaiseNumList[num - 1] + "-" + raisePercentList[j - 1] + "-" + idModelsMax + "-" + idMatchDaysMax + "-" + i + date.ToString(format);
                             FileActions.Save(fileName, test);
-                            // testForm.ShowDialog();
+                            testForm.ShowDialog();
                         }
                     }
+
                 }
             }
         }
@@ -245,6 +248,28 @@ namespace DecVarianceProject.Forms
         {
             var testForm = new TestEstimationForm(FileActions.Open());
             testForm.ShowDialog();
+        }
+
+        private void AnalysisBTN_Click(object sender, EventArgs e)
+        {
+            var sb = new StringBuilder();
+            string[] array2 = Directory.GetFiles(@"C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\bin\Debug");
+            foreach (var name in array2)
+            {
+                try
+                {
+                    var testForm = new TestEstimationForm(FileActions.Open(name));
+                    sb.AppendLine(testForm.EvProfit + "  " + testForm.VarianceDiff);
+                }
+                catch
+                {
+                    
+                }
+            }
+            using (StreamWriter streamWriter = new StreamWriter("analysis.txt") )
+            {
+                streamWriter.Write(sb.ToString());
+            }
         }
     }
 }

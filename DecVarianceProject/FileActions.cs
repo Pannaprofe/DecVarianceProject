@@ -60,5 +60,25 @@ namespace DecVarianceProject
             }
             return  new List<TestTable>();
         }
+
+        public static List<TestTable> Open(string path)
+        {
+            using (Stream stream = new FileStream(path, FileMode.Open))
+            {
+
+                var bf = new BinaryFormatter();
+
+                var rmCrypto = new RijndaelManaged();
+
+                byte[] key = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+                byte[] iv = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16 };
+
+                //Create a CryptoStream, pass it the NetworkStream, and encrypt 
+                //it with the Rijndael class.
+                var cryptStream = new CryptoStream(stream, rmCrypto.CreateDecryptor(key, iv), CryptoStreamMode.Read);
+
+                return bf.Deserialize(cryptStream) as List<TestTable>;
+            }
+        }
     }
 }

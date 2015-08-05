@@ -63,6 +63,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.EvAfterTBX = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.AnalysisBTN = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProbsCoefs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAllBets)).BeginInit();
@@ -334,7 +335,7 @@
             // 
             // TestEvaluationBTN
             // 
-            this.TestEvaluationBTN.Location = new System.Drawing.Point(1064, 75);
+            this.TestEvaluationBTN.Location = new System.Drawing.Point(970, 75);
             this.TestEvaluationBTN.Name = "TestEvaluationBTN";
             this.TestEvaluationBTN.Size = new System.Drawing.Size(94, 23);
             this.TestEvaluationBTN.TabIndex = 36;
@@ -393,11 +394,22 @@
             this.label11.TabIndex = 40;
             this.label11.Text = "EV after";
             // 
+            // AnalysisBTN
+            // 
+            this.AnalysisBTN.Location = new System.Drawing.Point(1083, 75);
+            this.AnalysisBTN.Name = "AnalysisBTN";
+            this.AnalysisBTN.Size = new System.Drawing.Size(94, 23);
+            this.AnalysisBTN.TabIndex = 42;
+            this.AnalysisBTN.Text = "Analysis";
+            this.AnalysisBTN.UseVisualStyleBackColor = true;
+            this.AnalysisBTN.Click += new System.EventHandler(this.AnalysisBTN_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1248, 866);
+            this.Controls.Add(this.AnalysisBTN);
             this.Controls.Add(this.EvAfterTBX);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.EvBeforeTBX);
@@ -485,6 +497,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox EvAfterTBX;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button AnalysisBTN;
     }
 }
 
