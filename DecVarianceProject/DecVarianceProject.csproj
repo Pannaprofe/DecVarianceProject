@@ -46,14 +46,15 @@
   <ItemGroup>
     <Compile Include="BetSplitter.cs" />
     <Compile Include="FileActions.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\Bets.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\DataGridViewsRepository.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\IDataGridViewsRepository.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\MatchDayResults.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\MatchesToRaise.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\ProbsCoefs.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\Results.cs" />
-    <Compile Include="Structures\DataGridViewsRepositoryFolder\Test.cs" />
+    <Compile Include="Singleton.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\BetsTable.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\DataGridViewsRepository.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\IDataGridViewsRepository.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\MatchDayResultsTable.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\MatchesToRaiseTable.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\ProbsCoefsTable.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\ResultsTable.cs" />
+    <Compile Include="Structures\DataGridViewsTablesFolder\TestTable.cs" />
     <Compile Include="Forms\ProgressBarForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,12 +69,12 @@
       <DependentUpon>MatchDayResultsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Structures\StructureOfRaise.cs" />
-    <Compile Include="Structures\Tables\AllBetsTable.cs" />
-    <Compile Include="Structures\Tables\GennedParamsInTable.cs" />
+    <Compile Include="Structures\TablesContents\AllBetsTableContent.cs" />
+    <Compile Include="Structures\TablesContents\GennedParamsTableContent.cs" />
     <Compile Include="ProbsCoefsBetsCreator.cs" />
-    <Compile Include="Structures\Tables\MatchDayResultsTable.cs" />
-    <Compile Include="Structures\Tables\MatchesToRaiseTable.cs" />
-    <Compile Include="Structures\Tables\ResultsInTable.cs" />
+    <Compile Include="Structures\TablesContents\MatchDayResultsTableContent.cs" />
+    <Compile Include="Structures\TablesContents\MatchesToRaiseTableContent.cs" />
+    <Compile Include="Structures\TablesContents\ResultsInTableContent.cs" />
     <Compile Include="Structures\BetInfo.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -86,8 +87,8 @@
     <Compile Include="Structures\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Structures\Tables\ITablesContent.cs" />
-    <Compile Include="Structures\Tables\TestTable.cs" />
+    <Compile Include="Structures\TablesContents\ITablesContent.cs" />
+    <Compile Include="Structures\TablesContents\TestTableContent.cs" />
     <Compile Include="SubTree.cs" />
     <Compile Include="Forms\TestEstimationForm.cs">
       <SubType>Form</SubType>

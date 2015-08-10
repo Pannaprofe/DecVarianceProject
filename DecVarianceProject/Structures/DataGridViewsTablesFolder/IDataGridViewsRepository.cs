@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
-using DecVarianceProject.Structures.Tables;
 
-namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
+namespace DecVarianceProject
 {
     interface IDataGridViewRepository
     {

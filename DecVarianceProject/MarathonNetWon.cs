@@ -1,5 +1,4 @@
-﻿using DecVarianceProject.Structures.Tables;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using DecVarianceProject.Structures;
 
@@ -8,16 +7,13 @@ namespace DecVarianceProject
     [Serializable]
     public class MarathonNetWon
     {
-        public List<BetInfo> AllBets { get; set; }
+        private Singleton Instance = Singleton.Instance;
         public double Ammount{ get; private set; }
-        public List<MatchDayResultsTable> MatchDayResults { get; set; }
-        public double MarathonEvBefore { get;  set; }
-        public double MarathonEvAfter { get; private set; }
-        public double Rake { get; set; }
+
         public double EstimateMarathonNetWon()
         {
             Ammount = 0;
-            foreach (BetInfo bet in AllBets)
+            foreach (BetInfo bet in Instance.AllBets)
             {
                 if (BetIsSuccessful(bet))
                 {
@@ -35,7 +31,7 @@ namespace DecVarianceProject
         {
             for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
             {
-                if (bet.MatchesAndOutcomes.Outcomes[i] != ConvertOutcomeStringToInt(MatchDayResults[bet.MatchesAndOutcomes.MatchList[i]].MatchOutcome))
+                if (bet.MatchesAndOutcomes.Outcomes[i] != ConvertOutcomeStringToInt(Instance.MatchDayResults[bet.MatchesAndOutcomes.MatchList[i]].MatchOutcome))
                     return false;
             }
             return true;
@@ -57,24 +53,24 @@ namespace DecVarianceProject
 
         public double EstimateMarathonEvBefore()
         {
-            MarathonEvBefore = 0;
-            foreach (BetInfo bet in AllBets)
+            Instance.EvBefore = 0;
+            foreach (BetInfo bet in Instance.AllBets)
             {
-                MarathonEvBefore += bet.BetSize * Rake;
+                Instance.EvBefore += bet.BetSize * Instance.Rake;
             }
-            return MarathonEvBefore;
+            return Instance.EvBefore;
         }
 
         public double EstimateMarathonEvAfter(List<BetInfo> raiseMatchesBets)
         {
-            MarathonEvAfter = 0;
+            Instance.EvAfter = 0;
             foreach (BetInfo bet in raiseMatchesBets)
             {
                 var betsize = -bet.BetSize;
-                MarathonEvAfter += betsize * bet.Prob * (bet.Coef - 1) - (1 - bet.Prob) * betsize;
+                Instance.EvAfter += betsize * bet.Prob * (bet.Coef - 1) - (1 - bet.Prob) * betsize;
             }
-            MarathonEvAfter += MarathonEvBefore;
-            return MarathonEvAfter;
+            Instance.EvAfter += Instance.EvBefore;
+            return Instance.EvAfter;
         }
     }
 }

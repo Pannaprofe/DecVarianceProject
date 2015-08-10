@@ -6,14 +6,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using DecVarianceProject.Properties;
-using DecVarianceProject.Structures.DataGridViewsRepositoryFolder;
-using DecVarianceProject.Structures.Tables;
 
 namespace DecVarianceProject.Forms
 {
     public partial class TestEstimationForm : Form
     {
-        public List<TestTable> TestTableList { get; private set; }
+        public List<TestTableContent> TestTableList { get; private set; }
 
         public double EvBefore { get; private set; }
         public double EvAfter { get; private set; }
@@ -26,14 +24,14 @@ namespace DecVarianceProject.Forms
         public double EV2After { get; private set; }
 
 
-        public TestEstimationForm(List<TestTable> list)
+        public TestEstimationForm(List<TestTableContent> list)
         {
             TestTableList = list;
             InitializeComponent();
             var testListResults = new List<ITablesContent>(list);
             EstimateEv();
             EstimateVariance();
-            var test = new Test() { Dgv = dataGridViewTest, ListContent = testListResults };
+            var test = new TestTable() { Dgv = dataGridViewTest, ListContent = testListResults };
             test.ConfigureDgv();
 
             MarathonEVBeforeTBX.Text = Convert.ToString(EvBefore, CultureInfo.InvariantCulture);

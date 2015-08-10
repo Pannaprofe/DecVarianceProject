@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace DecVarianceProject.Structures.Tables
+namespace DecVarianceProject
 {
     [Serializable]
-    public class AllBetsTable:ITablesContent
+    public class AllBetsTableContent:ITablesContent
     {
         public int BetNum { get; set; }
         public double BetSize { get; set; }

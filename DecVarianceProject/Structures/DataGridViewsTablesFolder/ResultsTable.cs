@@ -3,10 +3,10 @@ using System.Data;
 using System.Windows.Forms;
 using DecVarianceProject.Properties;
 
-namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
+namespace DecVarianceProject
 {
     [Serializable]
-    public class Results:DataGridViewsRepository
+    public class ResultsTable:DataGridViewsRepository
     {
         public override void ConfigureDgv()
         {

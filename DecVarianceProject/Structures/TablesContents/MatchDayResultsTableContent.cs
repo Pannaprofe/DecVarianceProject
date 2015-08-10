@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace DecVarianceProject.Structures.Tables
+namespace DecVarianceProject
 {
     [Serializable]
-    public class MatchDayResultsTable:ITablesContent
+    public class MatchDayResultsTableContent:ITablesContent
     {
         public int MatchNum { get; set; }
         public string MatchOutcome { get; set; }

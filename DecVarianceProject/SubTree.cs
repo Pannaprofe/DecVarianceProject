@@ -2,37 +2,31 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DecVarianceProject.Structures;
-using DecVarianceProject.Structures.Tables;
 
 namespace DecVarianceProject
 {
     [Serializable]
     public class SubTree
     {
-        private readonly List<MatchParams> _probs;
-        private readonly List<MatchParams> _coefs;
-        private readonly List<BetInfo> _bets;
-        public List<ResultsInTable> AllResultsInTable { get; private set; }
+        private Singleton Instance;
 
-        public  Node Top {get; private set;}
+        private  Node Top {get; set;}
         private readonly int _treeLevels;
-        public int CriticalNodeNumber { get; private set; }   // the Number of nodes of the tree with known number of levels
+        private int CriticalNodeNumber { get; set; }   // the Number of nodes of the tree with known number of levels
 
-        public SubTree(List<MatchParams> probs, List<MatchParams> coefs, List<BetInfo> bets)
+        public SubTree()
         {
-            _probs = probs;
-            _coefs = coefs;
-            _bets = bets;
+            Instance = Singleton.Instance;
             //initialize tree top
             var tree = new Node
             {
                 LocalCoef = 1,
                 LocalProb = 1
             };
-            _treeLevels = probs.Count;
+            _treeLevels = Instance.ProbsMarathon.Count;
             GetCriticalNodeNumber();
             Top = tree;
-            AllResultsInTable = new List<ResultsInTable>();
+            Instance.AllResultsInTable = new List<ResultsInTableContent>();
 
             BuildTheTree(ref tree);
             PassTheTree(Top);
@@ -61,8 +55,8 @@ namespace DecVarianceProject
                     if (tree.Win1 == null)
                     {
                         
-                        node.Coef = _coefs[level].P1;
-                        node.Prob = _probs[level].P1;
+                        node.Coef = Instance.CoefsMarathon[level].P1;
+                        node.Prob = Instance.ProbsMarathon[level].P1;
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(1);
@@ -77,8 +71,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Draw == null)
                     {
-                        node.Coef = _coefs[level].X;
-                        node.Prob = _probs[level].X;
+                        node.Coef = Instance.CoefsMarathon[level].X;
+                        node.Prob = Instance.ProbsMarathon[level].X;
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(0);
@@ -92,8 +86,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Win2 == null)
                     {
-                        node.Coef = _coefs[level].P2;
-                        node.Prob = _probs[level].P2;
+                        node.Coef = Instance.CoefsMarathon[level].P2;
+                        node.Prob = Instance.ProbsMarathon[level].P2;
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(2);
@@ -133,7 +127,7 @@ namespace DecVarianceProject
         {
             double payments = 0;
             double winnings = 0;
-            foreach (BetInfo bet in _bets)
+            foreach (BetInfo bet in Instance.AllBets)
             {
                 if (HavingSuchBet(tree.Path,bet))
                 {
@@ -151,7 +145,7 @@ namespace DecVarianceProject
                 var str = String.Join(", ", tree.Path.ToArray());
                 str = Regex.Replace(str, @"0", "X");
                 str = Regex.Replace(str,@"[1-2]", "P$&");
-                ResultsInTable resultsInTable = new ResultsInTable()
+                ResultsInTableContent resultsInTable = new ResultsInTableContent()
                 {
                     Node = tree.NodeNum,
                     Probability = tree.LocalProb,
@@ -160,7 +154,7 @@ namespace DecVarianceProject
                     Payments = payments,
                     NetWon = Math.Round(winnings - payments,2)
                 };
-                AllResultsInTable.Add(resultsInTable);
+                Instance.AllResultsInTable.Add(resultsInTable);
             }
                
 

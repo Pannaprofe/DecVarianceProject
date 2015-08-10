@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using DecVarianceProject.Structures.Tables;
 
-namespace DecVarianceProject.Structures.DataGridViewsRepositoryFolder
+namespace DecVarianceProject
 {
     [Serializable]
     public abstract class DataGridViewsRepository:IDataGridViewRepository

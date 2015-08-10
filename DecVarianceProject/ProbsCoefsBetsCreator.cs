@@ -3,97 +3,78 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DecVarianceProject.Structures;
-using DecVarianceProject.Structures.Tables;
 
 namespace DecVarianceProject
 {
     [Serializable]
     public class ProbsCoefsBetsCreator
     {
-        public List<MatchParams> ProbsMarathon{get;private set;}
-        public List<MatchParams> ProbsOtherCo { get; private set; }
-        public List<MatchParams> CoefsMarathon { get; private set; }
-        public List<MatchParams> CoefsOtherCo { get; private set; }
-        public List<GennedParamsInTable> GennedParams { get; private set; }
-        public List<BetInfo> AllBets { get; set; }
-        public List<BetInfo> MarathonBets { get; set; }
-        public List<AllBetsTable> AllBetsForTable { get; private set; }  
-        public SubTree Tree { get; private set; }
+        private readonly Random _randomNum = new Random();
+        private Singleton Instance;
 
-        public double Rake { get; private set; }
-
-        public int MatchesNum { get; private set; }
-        public int NumberOfBets { get; private set; }
-        public int MaxWinnings { get; private set; }
-
-        private readonly Random _randomNum = new Random();  
-
-        public ProbsCoefsBetsCreator(int matchesNum, double rake, int numberOfBets, int maxWinnings)
+        public ProbsCoefsBetsCreator()
         {
-            ProbsMarathon = new List<MatchParams>();
-            ProbsOtherCo = new List<MatchParams>();
-            CoefsMarathon = new List<MatchParams>();
-            CoefsOtherCo = new List<MatchParams>();
+            Instance = Singleton.Instance;
+            Instance.ProbsMarathon = new List<MatchParams>();
+            Instance.ProbsOtherCo = new List<MatchParams>();
+            Instance.CoefsMarathon = new List<MatchParams>();
+            Instance.CoefsOtherCo = new List<MatchParams>();
             
-            MatchesNum = matchesNum;
-            NumberOfBets = numberOfBets;
-            MaxWinnings = maxWinnings;
-            Rake = rake;
-            AllBets = new List<BetInfo>();
-            AllBetsForTable = new List<AllBetsTable>();
+            Instance.AllBets = new List<BetInfo>();
+            Instance.AllBetsForTable = new List<AllBetsTableContent>();
             ObtainData();  //Generate Probs/Coefs
             CreateProbsAndCoefsStructure();   // for printing Probs and Coefs into Table
-            Tree = new SubTree(ProbsMarathon, CoefsMarathon, AllBets);
+            Instance.Tree = new SubTree();
         }
 
         protected void ObtainData()
         {
             GenProbsMarathon();
             GenProbsOtherCo();
-            CoefsMarathon = GetCoefs(ProbsMarathon);
-            CoefsOtherCo = GetCoefs(ProbsOtherCo);
+            Instance.CoefsMarathon = GetCoefs(Instance.ProbsMarathon);
+            Instance.CoefsOtherCo = GetCoefs(Instance.ProbsOtherCo);
             GenAllBetsOfAllPlayers();
         }
 
         private void CreateProbsAndCoefsStructure()
         {
-            GennedParams = new List<GennedParamsInTable>();
-            for (int i = 0; i < ProbsMarathon.Count;i++ )
+            Instance.GennedParams = new List<GennedParamsTableContent>();
+            for (int i = 0; i < Instance.ProbsMarathon.Count;i++ )
             {
-                var row = new GennedParamsInTable()
+                var row = new GennedParamsTableContent()
                 {
                     MatchNum = i,
-                    ProbabilityP1 = ProbsMarathon[i].P1,
-                    ProbabilityP2 = ProbsMarathon[i].P2,
-                    ProbabilityX = ProbsMarathon[i].X,
-                    CoefP1 = CoefsMarathon[i].P1,
-                    CoefP2 = CoefsMarathon[i].P2,
-                    CoefX = CoefsMarathon[i].X
+                    ProbabilityP1 = Instance.ProbsMarathon[i].P1,
+                    ProbabilityP2 = Instance.ProbsMarathon[i].P2,
+                    ProbabilityX = Instance.ProbsMarathon[i].X,
+                    CoefP1 = Instance.CoefsMarathon[i].P1,
+                    CoefP2 = Instance.CoefsMarathon[i].P2,
+                    CoefX = Instance.CoefsMarathon[i].X
                 };
-                GennedParams.Add(row);
+                Instance.GennedParams.Add(row);
             }
         }
         // *********************BEGIN GENERATORS*********************************************
         private void GenAllBetsOfAllPlayers()
         {
-            for (var i = 0; i < NumberOfBets; i++)
+            for (var i = 0; i < Instance.BetsNum; i++)
             {
                 var onePlayerBet = GenerateBet(i);
-                AllBets.Add(onePlayerBet);
+                Instance.AllBets.Add(onePlayerBet);
             }
         }
         private void GenProbsMarathon()
         {
             double minProb = 0.2;
             Random random = new Random();
-            for (int i = 0; i < MatchesNum; i++)
+            for (int i = 0; i < Instance.MatchesNum; i++)
             {
                 double x1 = Math.Round(random.NextDouble() * (1 - 2 * minProb) + minProb, 3);
                 //random.NextDouble() * (maximum - minimum) + minimum;
                 double x = Math.Round(random.NextDouble() * (1 - x1 - 2 * minProb) + minProb, 3);
                 double x2 = Math.Round(1 - x1 - x,3);
                 MatchParams matchParams = new MatchParams(x1, x2, x);
-                ProbsMarathon.Add(matchParams);
+                Instance.ProbsMarathon.Add(matchParams);
             }
         }
         private void GenProbsOtherCo()
@@ -102,14 +83,14 @@ namespace DecVarianceProject
             Random random = new Random();
             try
             {
-                for (int i = 0; i < MatchesNum; i++)
+                for (int i = 0; i < Instance.MatchesNum; i++)
                 {
-                    double x1 = ProbsMarathon[i].P1 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
-                    double x2 = ProbsMarathon[i].P2 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
-                    double x = ProbsMarathon[i].X + random.NextDouble() * (2 * delta) - delta;
+                    double x1 = Instance.ProbsMarathon[i].P1 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
+                    double x2 = Instance.ProbsMarathon[i].P2 + Math.Round(random.NextDouble() * (2 * delta), 3) - delta;
+                    double x = Instance.ProbsMarathon[i].X + random.NextDouble() * (2 * delta) - delta;
 
                     MatchParams matchParams = new MatchParams(x1, x2, x);
-                    ProbsOtherCo.Add(matchParams);
+                    Instance.ProbsOtherCo.Add(matchParams);
                 }
             }
             catch (Exception exception)
@@ -123,7 +104,7 @@ namespace DecVarianceProject
             var coefList = new List<MatchParams>();
             try
             {
-                coefList.AddRange(from t in probsList let x1 = Math.Round((1 - Rake)/t.P1, 3) let x2 = Math.Round((1 - Rake)/t.P2, 3) let x = Math.Round((1 - Rake)/t.X, 3) select new MatchParams(x1, x2, x));
+                coefList.AddRange(from t in probsList let x1 = Math.Round((1 - Instance.Rake)/t.P1, 3) let x2 = Math.Round((1 - Instance.Rake)/t.P2, 3) let x = Math.Round((1 - Instance.Rake)/t.X, 3) select new MatchParams(x1, x2, x));
             }
             catch (Exception exception)
             {
@@ -134,21 +115,21 @@ namespace DecVarianceProject
         private List<int> GenListOfMatchesInTheBet(int gennedMatchesNumber)
         {
             List<int> rez;
-            if (gennedMatchesNumber > MatchesNum / 2)
+            if (gennedMatchesNumber > Instance.MatchesNum / 2)
             {
-                rez = new List<int>(MatchesNum);
-                for (int i = 0; i < MatchesNum; i++)
+                rez = new List<int>(Instance.MatchesNum);
+                for (int i = 0; i < Instance.MatchesNum; i++)
                 {
                     rez.Add(i);
                 }
 
-                for (int i = 0; i < MatchesNum - gennedMatchesNumber; i++)
+                for (int i = 0; i < Instance.MatchesNum - gennedMatchesNumber; i++)
                 {
                     int matchNum = -1;
 
                     while (!rez.Contains(matchNum))
                     {
-                        matchNum = _randomNum.Next(0, MatchesNum - 1);
+                        matchNum = _randomNum.Next(0, Instance.MatchesNum - 1);
                     }
                     rez.Remove(matchNum);
                 }
@@ -158,10 +139,10 @@ namespace DecVarianceProject
                 rez = new List<int>();
                 for (int i = 0; i < gennedMatchesNumber; i++)
                 {
-                    int matchNum = _randomNum.Next(0, MatchesNum - 1); //randomize the choice of match 
+                    int matchNum = _randomNum.Next(0, Instance.MatchesNum - 1); //randomize the choice of match 
                     while (rez.Contains(matchNum))
                     {
-                        matchNum = _randomNum.Next(0, MatchesNum - 1); //randomize the choice of match
+                        matchNum = _randomNum.Next(0, Instance.MatchesNum - 1); //randomize the choice of match
                     }
                     rez.Add(matchNum);
                 }
@@ -187,22 +168,22 @@ namespace DecVarianceProject
                 switch (outcomes[i])
                 {
                     case 0:
-                        coef *= CoefsMarathon[chosenMatches[i]].P1;
-                        prob *= ProbsMarathon[chosenMatches[i]].P1;
+                        coef *= Instance.CoefsMarathon[chosenMatches[i]].P1;
+                        prob *= Instance.ProbsMarathon[chosenMatches[i]].P1;
                         break;
                     case 1:
-                        coef *= CoefsMarathon[chosenMatches[i]].X;
-                        prob *= ProbsMarathon[chosenMatches[i]].X;
+                        coef *= Instance.CoefsMarathon[chosenMatches[i]].X;
+                        prob *= Instance.ProbsMarathon[chosenMatches[i]].X;
                         break;
                     case 2:
-                        coef *= CoefsMarathon[chosenMatches[i]].P2;
-                        prob *= ProbsMarathon[chosenMatches[i]].P2;
+                        coef *= Instance.CoefsMarathon[chosenMatches[i]].P2;
+                        prob *= Instance.ProbsMarathon[chosenMatches[i]].P2;
                         break;
                 }
             }
             coef = Math.Round(coef, 3);
             prob = Math.Round(coef,3);
-            var maxBet = (int)(MaxWinnings / (coef - 1));
+            var maxBet = (int)(Instance.MaxWinnings / (coef - 1));
             int betSize = _randomNum.Next(1, (maxBet > 0) ? maxBet : 1); //randomize  the size of bet
             chosenMatches.Sort();
             BetInfo betinfo = new BetInfo(chosenMatches, outcomes, betSize, coef,prob);
@@ -211,13 +192,13 @@ namespace DecVarianceProject
             {
                 sb.Append("{"+chosenMatches[i]+"-"+( (outcomes[i] == 0)?"X":"P"+outcomes[i]) +"}, ");
             }
-            AllBetsTable row = new AllBetsTable(){
+            AllBetsTableContent row = new AllBetsTableContent(){
                 BetNum = betNum,
                 BetSize = betSize,
                 Coef = coef,
                 ChosenMatchesResults = sb.ToString()
             };
-            AllBetsForTable.Add(row);
+            Instance.AllBetsForTable.Add(row);
             return betinfo;
         }
         //**********************END GENERATORS***********************************************

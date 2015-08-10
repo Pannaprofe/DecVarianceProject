@@ -9,7 +9,7 @@ namespace DecVarianceProject
 {
     public  static class FileActions
     {
-        public static void Save(string fileName, List<TestTable> testTableList)
+        public static void Save(string fileName, List<TestTableContent> testTableList)
         {
             using (Stream stream = new FileStream(fileName, FileMode.Create))
             {
@@ -33,7 +33,7 @@ namespace DecVarianceProject
             }
         }
 
-        public static List<TestTable> Open()
+        public static List<TestTableContent> Open()
         {
             var ofd = new OpenFileDialog
             {
@@ -55,13 +55,13 @@ namespace DecVarianceProject
                     //it with the Rijndael class.
                     var cryptStream = new CryptoStream(stream, rmCrypto.CreateDecryptor(key, iv), CryptoStreamMode.Read);
 
-                    return bf.Deserialize(cryptStream) as List<TestTable>;
+                    return bf.Deserialize(cryptStream) as List<TestTableContent>;
                 }
             }
-            return  new List<TestTable>();
+            return  new List<TestTableContent>();
         }
 
-        public static List<TestTable> Open(string path)
+        public static List<TestTableContent> Open(string path)
         {
             using (Stream stream = new FileStream(path, FileMode.Open))
             {
@@ -77,7 +77,7 @@ namespace DecVarianceProject
                 //it with the Rijndael class.
                 var cryptStream = new CryptoStream(stream, rmCrypto.CreateDecryptor(key, iv), CryptoStreamMode.Read);
 
-                return bf.Deserialize(cryptStream) as List<TestTable>;
+                return bf.Deserialize(cryptStream) as List<TestTableContent>;
             }
         }
     }

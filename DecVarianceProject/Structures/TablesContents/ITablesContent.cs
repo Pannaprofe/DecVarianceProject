@@ -1,4 +1,4 @@
-﻿namespace DecVarianceProject.Structures.Tables
+﻿namespace DecVarianceProject
 {
     public interface ITablesContent
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace DecVarianceProject.Structures.Tables
+namespace DecVarianceProject
 {
     [Serializable]
-    public class ResultsInTable:ITablesContent
+    public class ResultsInTableContent:ITablesContent
     {
         public int Node { get; set; }
         public double Probability { get; set; }
