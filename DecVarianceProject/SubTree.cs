@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DecVarianceProject.Structures;
+using DecVarianceProject.Structures.TablesContents;
 
 namespace DecVarianceProject
 {
@@ -26,7 +27,7 @@ namespace DecVarianceProject
             _treeLevels = Instance.ProbsMarathon.Count;
             GetCriticalNodeNumber();
             Top = tree;
-            Instance.AllResultsInTable = new List<ResultsInTableContent>();
+            Instance.AllResultsNoTable= new List<ResultsNotForTableContent>();
 
             BuildTheTree(ref tree);
             PassTheTree(Top);
@@ -55,8 +56,8 @@ namespace DecVarianceProject
                     if (tree.Win1 == null)
                     {
                         
-                        node.Coef = Instance.CoefsMarathon[level].P1;
-                        node.Prob = Instance.ProbsMarathon[level].P1;
+                        node.Coef = Instance.CoefsMarathon[level][1];
+                        node.Prob = Instance.ProbsMarathon[level][1];
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(1);
@@ -71,8 +72,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Draw == null)
                     {
-                        node.Coef = Instance.CoefsMarathon[level].X;
-                        node.Prob = Instance.ProbsMarathon[level].X;
+                        node.Coef = Instance.CoefsMarathon[level][0];
+                        node.Prob = Instance.ProbsMarathon[level][0];
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(0);
@@ -86,8 +87,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Win2 == null)
                     {
-                        node.Coef = Instance.CoefsMarathon[level].P2;
-                        node.Prob = Instance.ProbsMarathon[level].P2;
+                        node.Coef = Instance.CoefsMarathon[level][2];
+                        node.Prob = Instance.ProbsMarathon[level][2];
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(2);
@@ -127,7 +128,7 @@ namespace DecVarianceProject
         {
             double payments = 0;
             double winnings = 0;
-            foreach (BetInfo bet in Instance.AllBets)
+            foreach (BetInfo bet in Instance.ClientsBets)
             {
                 if (HavingSuchBet(tree.Path,bet))
                 {
@@ -145,16 +146,17 @@ namespace DecVarianceProject
                 var str = String.Join(", ", tree.Path.ToArray());
                 str = Regex.Replace(str, @"0", "X");
                 str = Regex.Replace(str,@"[1-2]", "P$&");
-                ResultsInTableContent resultsInTable = new ResultsInTableContent()
-                {
-                    Node = tree.NodeNum,
-                    Probability = tree.LocalProb,
-                    NodePath = str,
-                    Winnings = winnings,
-                    Payments = payments,
-                    NetWon = Math.Round(winnings - payments,2)
-                };
-                Instance.AllResultsInTable.Add(resultsInTable);
+                ResultsNotForTableContent results = new ResultsNotForTableContent()
+                 {
+                     Node = tree.NodeNum,
+                     Probability = tree.LocalProb,
+                     NodePathString = str,
+                     Winnings = winnings,
+                     Payments = payments,
+                     NetWon = Math.Round(winnings - payments, 2),
+                     NodePathList = new List<int>(tree.Path)
+                 };
+                Instance.AllResultsNoTable.Add(results);
             }
                
 

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DecVarianceProject.Structures;
 using System.Collections.Generic;
+using DecVarianceProject.Structures.TablesContents;
 
 namespace DecVarianceProject
 {
@@ -24,22 +25,26 @@ namespace DecVarianceProject
         }
 
         //--------Variables----------------
-        public List<MatchParams> ProbsMarathon { get; set; }
-        public List<MatchParams> ProbsOtherCo { get; set; }
-        public List<MatchParams> CoefsMarathon { get; set; }
-        public List<MatchParams> CoefsOtherCo { get; set; }
+        public List<List<double>> ProbsMarathon { get; set; }
+        public List<List<double>> ProbsOtherCo { get; set; }
+        public List<List<double>> CoefsMarathon { get; set; }
+        public List<List<double>> CoefsOtherCo { get; set; }
         public List<GennedParamsTableContent> GennedParams { get;  set; }
-        public List<BetInfo> AllBets { get; set; }
+        public List<BetInfo> ClientsBets { get; set; }
         public List<BetInfo> MarathonBets { get; set; }
         public List<AllBetsTableContent> AllBetsForTable { get; set; }
         public List<ResultsInTableContent> AllResultsInTable { get; set; }
         public List<MatchesToRaiseTableContent> MatchesToRaiseTable { get;  set; }
         public List<StructureOfRaise> BetsStructure { get;  set; }
         public List<MatchDayResultsTableContent> MatchDayResults { get; set; }
+        public List<ResultsNotForTableContent> AllResultsNoTable { get; set; }
+        public List<int> OutcomesFrequencies { get; set; }
+        
+        
         public MatchDayResultsTable MatchDayResultsTable { get; set; }
-
         public SubTree Tree { get; set; }
         public double Rake { get; set; }
+        public double LossToAllBetsSumRatio { get; set; }
         public int MatchesNum { get;set; }
         public int BetsNum { get;  set; }
         public int MaxWinnings { get; set; }

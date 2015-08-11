@@ -12,7 +12,7 @@ namespace DecVarianceProject.Forms
 
         private readonly Random _randomNum = new Random();
 
-        public MatchDayResultsDialog(int matchesNum,bool isAutomatic,List<MatchParams> probs)
+        public MatchDayResultsDialog(bool isAutomatic)
         {
             InitializeComponent();
             dataGridViewMatchDayResults.Visible = false;
@@ -63,8 +63,8 @@ namespace DecVarianceProject.Forms
             if (automaticGen)
             {
                 int range = 1000;
-                int middleLowEdge = (int)(Instance.ProbsMarathon[matchNum].P1 * range);
-                int middleHighEdge = (int)(Instance.ProbsMarathon[matchNum].P2 * range) + middleLowEdge;
+                int middleLowEdge = (int)(Instance.ProbsMarathon[matchNum][1] * range);
+                int middleHighEdge = (int)(Instance.ProbsMarathon[matchNum][2] * range) + middleLowEdge;
                 int res = _randomNum.Next(0, range);
                 if (res < middleLowEdge)
                     return "P1";

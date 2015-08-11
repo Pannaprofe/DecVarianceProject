@@ -13,7 +13,7 @@ namespace DecVarianceProject
         public double EstimateMarathonNetWon()
         {
             Ammount = 0;
-            foreach (BetInfo bet in Instance.AllBets)
+            foreach (BetInfo bet in Instance.ClientsBets)
             {
                 if (BetIsSuccessful(bet))
                 {
@@ -54,7 +54,7 @@ namespace DecVarianceProject
         public double EstimateMarathonEvBefore()
         {
             Instance.EvBefore = 0;
-            foreach (BetInfo bet in Instance.AllBets)
+            foreach (BetInfo bet in Instance.ClientsBets)
             {
                 Instance.EvBefore += bet.BetSize * Instance.Rake;
             }

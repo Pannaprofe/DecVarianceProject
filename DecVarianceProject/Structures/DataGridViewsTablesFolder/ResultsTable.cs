@@ -2,6 +2,8 @@
 using System.Data;
 using System.Windows.Forms;
 using DecVarianceProject.Properties;
+using System.Collections.Generic;
+using DecVarianceProject.Structures.TablesContents;
 
 namespace DecVarianceProject
 {

@@ -24,6 +24,7 @@ namespace DecVarianceProject.Forms
         private void Form1_Load(object sender, EventArgs e)
         {
             Instance.Rake = Convert.ToDouble(RakeTBX.Text);
+            Instance.MaxWinnings = 10000;
             Instance.RaiseSumPercent = Convert.ToDouble(RaiseSumPercentTBX.Text);
         }
         private void RunBtn_Click(object sender, EventArgs e)
@@ -56,13 +57,29 @@ namespace DecVarianceProject.Forms
             Instance.RaiseMatchesNum = Convert.ToInt32(ReraiseMatchesTBX.Text);
             Instance.Creator = new ProbsCoefsBetsCreator();
             Instance.BetSplitter = new BetSplitter();
+            var tmp = new List<ResultsInTableContent>();
+            foreach (var elem in Instance.AllResultsNoTable)
+            {
+                var x = new ResultsInTableContent()
+                {
+                    NetWon = elem.NetWon,
+                    NodePathString = elem.NodePathString,
+                    Node = elem.Node,
+                    Payments = elem.Payments,
+                    Probability = elem.Probability,
+                    Winnings = elem.Winnings
+                };
+                tmp.Add(x);
+            }
+
+            //List<ResultsInTableContent> lst = (Instance.AllResultsNoTable).
             var repository = new List<DataGridViewsRepository>
             {
                 new BetsTable() {Dgv = dataGridViewBets, ListContent = new List<ITablesContent>(Instance.AllBetsForTable)},
                 new ResultsTable()
                 {
                     Dgv = dataGridViewResults,
-                    ListContent = new List<ITablesContent>(Instance.AllResultsInTable)
+                    ListContent = new List<ITablesContent>(tmp)
                 },
                 new ProbsCoefsTable()
                 {
@@ -127,7 +144,7 @@ namespace DecVarianceProject.Forms
 
         private void GenMatchDayResults(bool automatic)
         {
-            _dialog = new MatchDayResultsDialog(Instance.MatchesNum, automatic, Instance.ProbsMarathon);
+            _dialog = new MatchDayResultsDialog(automatic);
             if (!automatic)
             {
                 var dr = _dialog.ShowDialog();
@@ -148,16 +165,16 @@ namespace DecVarianceProject.Forms
             EvBeforeTBX.Text = Convert.ToString(Instance.EvBefore,CultureInfo.InvariantCulture);
             //----------------------------------------
             //Estimate Marathon NetWon after raising
-            var bets = Instance.AllBets;
+            var bets = Instance.ClientsBets;
             Instance.BetSplitter.GenListOfMarathonBets();
             netWon = new MarathonNetWon();
             Instance.NetWonAfter = Math.Round(netWon.EstimateMarathonNetWon()+Instance.NetWonBefore,2);
             Instance.EvAfter = Math.Round(netWon.EstimateMarathonEvAfter(Instance.MarathonBets), 2);
             EvAfterTBX.Text = Convert.ToString(Instance.EvAfter, CultureInfo.InvariantCulture);
             NetWonAfterRaisingTBX.Text = Convert.ToString(Instance.NetWonAfter, CultureInfo.InvariantCulture);
-            Instance.AllBets = new List<Structures.BetInfo>(bets);
+            Instance.ClientsBets = new List<Structures.BetInfo>(bets);
             //-----------------------------------------
-            RaiseSumTBX.Text = Convert.ToString(Instance.RaiseSumPercent, CultureInfo.InvariantCulture);
+            RaiseSumTBX.Text = Convert.ToString(Instance.RaiseSum, CultureInfo.InvariantCulture);
             AllBetsSumTBX.Text = Convert.ToString(Instance.AllBetsSum, CultureInfo.InvariantCulture);
         }
 
