@@ -7,13 +7,14 @@ namespace DecVarianceProject
     [Serializable]
     public class MarathonNetWon
     {
-        private Singleton Instance = Singleton.Instance;
+        private readonly Singleton _instance = Singleton.Instance;
         public double Ammount{ get; private set; }
+        public List<BetInfo> Bets { get; set; }
 
         public double EstimateMarathonNetWon()
         {
             Ammount = 0;
-            foreach (BetInfo bet in Instance.ClientsBets)
+            foreach (var bet in Bets)
             {
                 if (BetIsSuccessful(bet))
                 {
@@ -29,48 +30,47 @@ namespace DecVarianceProject
 
         private bool BetIsSuccessful(BetInfo bet)
         {
-            for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
+            for (var i = 0; i < bet.MatchesAndOutcomes.Count; i++)
             {
-                if (bet.MatchesAndOutcomes.Outcomes[i] != ConvertOutcomeStringToInt(Instance.MatchDayResults[bet.MatchesAndOutcomes.MatchList[i]].MatchOutcome))
+                if (bet.MatchesAndOutcomes.Outcomes[i] != ConvertOutcomeStringToInt(_instance.MatchDayResults[bet.MatchesAndOutcomes.MatchList[i]].MatchOutcome))
                     return false;
             }
             return true;
         }
 
-        private int ConvertOutcomeStringToInt(string str)
+        private static int ConvertOutcomeStringToInt(string str)
         {
-            if (str=="P1")
+            switch (str)
             {
-                return 1;
+                case "P1":
+                    return 1;
+                case "P2":
+                    return 2;
+                default:
+                    return 0;
             }
-            if (str == "P2")
-            {
-                return 2;
-            }
-            else
-                return 0;
         }
 
         public double EstimateMarathonEvBefore()
         {
-            Instance.EvBefore = 0;
-            foreach (BetInfo bet in Instance.ClientsBets)
+            _instance.EvBefore = 0;
+            foreach (var bet in Bets)
             {
-                Instance.EvBefore += bet.BetSize * Instance.Rake;
+                _instance.EvBefore += bet.BetSize * _instance.Rake;
             }
-            return Instance.EvBefore;
+            return _instance.EvBefore;
         }
 
         public double EstimateMarathonEvAfter(List<BetInfo> raiseMatchesBets)
         {
-            Instance.EvAfter = 0;
-            foreach (BetInfo bet in raiseMatchesBets)
+            _instance.EvAfter = 0;
+            foreach (var bet in raiseMatchesBets)
             {
                 var betsize = -bet.BetSize;
-                Instance.EvAfter += betsize * bet.Prob * (bet.Coef - 1) - (1 - bet.Prob) * betsize;
+                _instance.EvAfter += betsize * bet.Prob * (bet.Coef - 1) - (1 - bet.Prob) * betsize;
             }
-            Instance.EvAfter += Instance.EvBefore;
-            return Instance.EvAfter;
+            _instance.EvAfter += _instance.EvBefore;
+            return _instance.EvAfter;
         }
     }
 }

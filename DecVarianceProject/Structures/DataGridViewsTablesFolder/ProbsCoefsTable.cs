@@ -3,7 +3,7 @@ using System.Data;
 using System.Windows.Forms;
 using DecVarianceProject.Properties;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsTablesFolder
 {
     [Serializable]
     public class ProbsCoefsTable: DataGridViewsRepository

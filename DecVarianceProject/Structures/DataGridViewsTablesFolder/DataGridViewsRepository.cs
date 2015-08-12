@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using DecVarianceProject.Structures.TablesContents;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsTablesFolder
 {
     [Serializable]
     public abstract class DataGridViewsRepository:IDataGridViewRepository
@@ -18,8 +19,8 @@ namespace DecVarianceProject
             {
                 var properties = row.GetType().GetProperties();
                 var propertiesForTableCount = properties.Count();
-                object[] rowAsTheList = new object[propertiesForTableCount];
-                for (int i = 0; i < propertiesForTableCount; i++)
+                var rowAsTheList = new object[propertiesForTableCount];
+                for (var i = 0; i < propertiesForTableCount; i++)
                 {
                     rowAsTheList[i] = Convert.ToString(properties[i].GetValue(row, null));
                 }

@@ -9,7 +9,7 @@ namespace DecVarianceProject
     [Serializable]
     public class SubTree
     {
-        private Singleton Instance;
+        private readonly Singleton _instance;
 
         private  Node Top {get; set;}
         private readonly int _treeLevels;
@@ -17,17 +17,17 @@ namespace DecVarianceProject
 
         public SubTree()
         {
-            Instance = Singleton.Instance;
+            _instance = Singleton.Instance;
             //initialize tree top
             var tree = new Node
             {
                 LocalCoef = 1,
                 LocalProb = 1
             };
-            _treeLevels = Instance.ProbsMarathon.Count;
+            _treeLevels = _instance.ProbsMarathon.Count;
             GetCriticalNodeNumber();
             Top = tree;
-            Instance.AllResultsNoTable= new List<ResultsNotForTableContent>();
+            _instance.AllResultsNoTable= new List<ResultsNotForTableContent>();
 
             BuildTheTree(ref tree);
             PassTheTree(Top);
@@ -52,12 +52,12 @@ namespace DecVarianceProject
             {
                 if (level < _treeLevels)
                 {
-                    Node node = new Node();
+                    var node = new Node();
                     if (tree.Win1 == null)
                     {
                         
-                        node.Coef = Instance.CoefsMarathon[level][1];
-                        node.Prob = Instance.ProbsMarathon[level][1];
+                        node.Coef = _instance.CoefsMarathon[level][1];
+                        node.Prob = _instance.ProbsMarathon[level][1];
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(1);
@@ -72,8 +72,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Draw == null)
                     {
-                        node.Coef = Instance.CoefsMarathon[level][0];
-                        node.Prob = Instance.ProbsMarathon[level][0];
+                        node.Coef = _instance.CoefsMarathon[level][0];
+                        node.Prob = _instance.ProbsMarathon[level][0];
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(0);
@@ -87,8 +87,8 @@ namespace DecVarianceProject
                     }
                     else if (tree.Win2 == null)
                     {
-                        node.Coef = Instance.CoefsMarathon[level][2];
-                        node.Prob = Instance.ProbsMarathon[level][2];
+                        node.Coef = _instance.CoefsMarathon[level][2];
+                        node.Prob = _instance.ProbsMarathon[level][2];
                         node.LocalCoef = Math.Round(tree.LocalCoef * node.Coef,3);
                         node.LocalProb = Math.Round(tree.LocalProb * node.Prob,6);
                         path.Add(2);
@@ -109,16 +109,14 @@ namespace DecVarianceProject
                     }
                 }
 
-                if (level == _treeLevels)
+                if (level != _treeLevels) continue;
+                if (nodesNum == CriticalNodeNumber)
+                    stop = true;
+                else
                 {
-                    if (nodesNum == CriticalNodeNumber)
-                        stop = true;
-                    else
-                    {
-                        path.RemoveAt(path.Count - 1);
-                        level--;
-                        tree = tree.Parent;
-                    }
+                    path.RemoveAt(path.Count - 1);
+                    level--;
+                    tree = tree.Parent;
                 }
             }
             Console.WriteLine(tree.Parent.Parent.Win1.Win1.Path.ToString());
@@ -128,7 +126,7 @@ namespace DecVarianceProject
         {
             double payments = 0;
             double winnings = 0;
-            foreach (BetInfo bet in Instance.ClientsBets)
+            foreach (var bet in _instance.ClientsBets)
             {
                 if (HavingSuchBet(tree.Path,bet))
                 {
@@ -143,10 +141,10 @@ namespace DecVarianceProject
             winnings = Math.Round(winnings, 2);
             if (tree.Parent != null)
             {
-                var str = String.Join(", ", tree.Path.ToArray());
+                var str = string.Join(", ", tree.Path.ToArray());
                 str = Regex.Replace(str, @"0", "X");
                 str = Regex.Replace(str,@"[1-2]", "P$&");
-                ResultsNotForTableContent results = new ResultsNotForTableContent()
+                var results = new ResultsNotForTableContent()
                  {
                      Node = tree.NodeNum,
                      Probability = tree.LocalProb,
@@ -156,7 +154,7 @@ namespace DecVarianceProject
                      NetWon = Math.Round(winnings - payments, 2),
                      NodePathList = new List<int>(tree.Path)
                  };
-                Instance.AllResultsNoTable.Add(results);
+                _instance.AllResultsNoTable.Add(results);
             }
                
 
@@ -169,21 +167,18 @@ namespace DecVarianceProject
             PassTheTree(tree.Win2);
         }
 
-        private bool HavingSuchBet(List<int> path, BetInfo bet)
+        private static bool HavingSuchBet(IReadOnlyList<int> path, BetInfo bet)
         {
             try
             {
                 if (bet.MatchesAndOutcomes.Count > path.Count)
                     return false;
-                else
+                for (var i = 0; i < bet.MatchesAndOutcomes.Count; i++)
                 {
-                    for (int i = 0; i < bet.MatchesAndOutcomes.Count; i++)
-                    {
-                        if (bet.MatchesAndOutcomes.Outcomes[i] != path[bet.MatchesAndOutcomes.MatchList[i]])
-                            return false;
-                    }
-                    return true;
+                    if (bet.MatchesAndOutcomes.Outcomes[i] != path[bet.MatchesAndOutcomes.MatchList[i]])
+                        return false;
                 }
+                return true;
             }
             catch
             {

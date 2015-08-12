@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using DecVarianceProject.Structures;
+using DecVarianceProject.Structures.DataGridViewsTablesFolder;
+using DecVarianceProject.Structures.TablesContents;
 
 namespace DecVarianceProject.Forms
 {

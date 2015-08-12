@@ -1,27 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DecVarianceProject.Structures;
-using System.Collections.Generic;
 using DecVarianceProject.Structures.TablesContents;
+using DecVarianceProject.Structures.DataGridViewsTablesFolder;
 
 namespace DecVarianceProject
 {
     public class Singleton
     {
-        private static Singleton instance;
+        private static Singleton _instance;
 
         private Singleton() { }
 
         public static Singleton Instance
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Singleton();
-                }
-                return instance;
-            }
+            get { return _instance ?? (_instance = new Singleton()); }
         }
 
         //--------Variables----------------
@@ -38,7 +30,6 @@ namespace DecVarianceProject
         public List<StructureOfRaise> BetsStructure { get;  set; }
         public List<MatchDayResultsTableContent> MatchDayResults { get; set; }
         public List<ResultsNotForTableContent> AllResultsNoTable { get; set; }
-        public List<int> OutcomesFrequencies { get; set; }
         
         
         public MatchDayResultsTable MatchDayResultsTable { get; set; }
@@ -48,7 +39,6 @@ namespace DecVarianceProject
         public int MatchesNum { get;set; }
         public int BetsNum { get;  set; }
         public int MaxWinnings { get; set; }
-        public int RaiseMatchesNum { get; set; }
         public double EvBefore { get; set; }
         public double EvAfter { get; set; }
         public ProbsCoefsBetsCreator Creator { get; set; }

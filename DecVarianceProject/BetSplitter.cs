@@ -9,12 +9,12 @@ namespace DecVarianceProject
     [Serializable]
     public class BetSplitter 
     {
-        private Singleton Instance;
+        private readonly Singleton _instance;
 
 
         public BetSplitter()
         {
-            Instance = Singleton.Instance;
+            _instance = Singleton.Instance;
             EstimateBetsSumm();
             Split();
             ConvertStructureToTable();
@@ -22,12 +22,12 @@ namespace DecVarianceProject
 
         private void EstimateBetsSumm()
         {
-            foreach (BetInfo bet in Instance.ClientsBets)
+            foreach (var bet in _instance.ClientsBets)
             {
-                Instance.RaiseSum += bet.BetSize;
+                _instance.RaiseSum += bet.BetSize;
             }
-            Instance.AllBetsSum = Instance.RaiseSum;
-            Instance.RaiseSum *= Instance.RaiseSumPercent;
+            _instance.AllBetsSum = _instance.RaiseSum;
+            _instance.RaiseSum *= _instance.RaiseSumPercent;
         }
         public void Split()
         {
@@ -37,19 +37,11 @@ namespace DecVarianceProject
 
         private void SplitOutcomes()
         {
-            var tmp = Enumerable.Range(0, 3).Select(n => 0).ToList();
-            var outcomesFrequences = Enumerable.Range(0, Instance.MatchesNum).Select(n => tmp).ToList();
+            var outcomesFrequences = Enumerable.Range(0, _instance.MatchesNum).Select(n => Enumerable.Range(0, 3).Select(k => 0).ToList()).ToList();
 
-            var temp = new List<ResultsNotForTableContent>();
-            Instance.LossToAllBetsSumRatio = 0.5;
-            foreach (var row in Instance.AllResultsNoTable)
-            {
-                if (row.NetWon<-Instance.LossToAllBetsSumRatio*Instance.AllBetsSum)
-                {
-                    temp.Add(row);
-                }
-            }
-            for (int i = 0; i<Instance.MatchesNum;i++)
+            _instance.LossToAllBetsSumRatio = 0.5;
+            var temp = _instance.AllResultsNoTable.Where(row => row.NetWon < -_instance.LossToAllBetsSumRatio*_instance.AllBetsSum).ToList();
+            for (var i = 0; i<_instance.MatchesNum;i++)
             {
                 foreach (var row in temp)
                 {
@@ -70,39 +62,35 @@ namespace DecVarianceProject
                     }
                     catch
                     {
-
+                        // ignored
                     }
                 }
             }
 
-            Instance.BetsStructure = new List<StructureOfRaise>();
+            _instance.BetsStructure = new List<StructureOfRaise>();
 
             for (int i = 0; i < outcomesFrequences.Count;i++ )
             {
                 var freq = outcomesFrequences[i];
                 var sum = freq[1] + freq[2] + freq[0];
-                var ratio = 0.5;
+                const double ratio = 0.7;
                 var max = freq[1];
                 var outcome = 1;
-                for (int j = 0; j < freq.Count;j++ )
+                for (var j = 0; j < freq.Count;j++ )
                 {
-                    if (freq[j]>max)
-                    {
-                        max = freq[j];
-                        outcome = j;
-                    }
+                    if (freq[j] <= max) continue;
+                    max = freq[j];
+                    outcome = j;
                 }
-                if (max >= sum * ratio)
+                if (!(max >= sum*ratio)) continue;
+                var raise = new StructureOfRaise()
                 {
-                    var raise = new StructureOfRaise()
-                    {
-                        MatchNum = i,
-                        Outcome = outcome,
-                        SingleMatchCoef = Instance.CoefsOtherCo[i][outcome],
-                        SingleMatchProb = Instance.ProbsMarathon[i][outcome]
-                    };
-                    Instance.BetsStructure.Add(raise);
-                }
+                    MatchNum = i,
+                    Outcome = outcome,
+                    SingleMatchCoef = _instance.CoefsOtherCo[i][outcome],
+                    SingleMatchProb = _instance.ProbsMarathon[i][outcome]
+                };
+                _instance.BetsStructure.Add(raise);
             }
 
         }
@@ -110,55 +98,50 @@ namespace DecVarianceProject
         private void SplitMoney()
         {
 
-            double reverseCoefsSum = Instance.BetsStructure.Sum(structure => 1 / structure.SingleMatchCoef);
+            var reverseCoefsSum = _instance.BetsStructure.Sum(structure => 1 / structure.SingleMatchCoef);
 
-            foreach (var structure in Instance.BetsStructure)
+            foreach (var structure in _instance.BetsStructure)
             {
-                structure.ToBet = Math.Round(Instance.RaiseSum / reverseCoefsSum / structure.SingleMatchCoef, 2);
+                structure.ToBet = Math.Round(_instance.RaiseSum / reverseCoefsSum / structure.SingleMatchCoef, 2);
             }
-            Instance.BetsStructure = new List<StructureOfRaise>(Instance.BetsStructure);
+            _instance.BetsStructure = new List<StructureOfRaise>(_instance.BetsStructure);
         }
 
         public void ConvertStructureToTable()
         {
-            Instance.MatchesToRaiseTable = new List<MatchesToRaiseTableContent>();
-            foreach (var match in Instance.BetsStructure.Select(raise => new MatchesToRaiseTableContent
+            _instance.MatchesToRaiseTable = new List<MatchesToRaiseTableContent>();
+            foreach (var match in _instance.BetsStructure.Select(raise => new MatchesToRaiseTableContent
             {
                 MatchNum = raise.MatchNum,
                 MatchOutcome = ConvertOutcomeIntToString(raise.Outcome),
                 BetSize = raise.ToBet
             }))
             {
-                Instance.MatchesToRaiseTable.Add(match);
+                _instance.MatchesToRaiseTable.Add(match);
             }
         }
 
-        private string ConvertOutcomeIntToString(int outcome)
+        private static string ConvertOutcomeIntToString(int outcome)
         {
-            if (outcome == 1)
+            switch (outcome)
             {
-                return "P1";
+                case 1:
+                    return "P1";
+                case 2:
+                    return "P2";
+                default:
+                    return "X";
             }
-            if (outcome == 2)
-            {
-                return "P2";
-            }
-            else
-                return "X";
         }
 
         public void GenListOfMarathonBets()
         {
-            Instance.MarathonBets = new List<BetInfo>();
-            foreach (StructureOfRaise raise in Instance.BetsStructure)
+            _instance.MarathonBets = new List<BetInfo>();
+            foreach (var bet in from raise in _instance.BetsStructure let matchList = new List<int> {raise.MatchNum} 
+                                let outcomes = new List<int> {raise.Outcome} let coef = raise.SingleMatchCoef let prob = raise.SingleMatchProb 
+                                let betsize = -raise.ToBet select new BetInfo(matchList,outcomes,betsize,coef,prob))
             {
-                var matchList = new List<int> {raise.MatchNum};
-                var outcomes = new List<int> {raise.Outcome};
-                var coef = raise.SingleMatchCoef;
-                var prob = raise.SingleMatchProb;
-                var betsize = -raise.ToBet;    // Negative here
-                BetInfo bet = new BetInfo(matchList,outcomes,betsize,coef,prob);
-                Instance.MarathonBets.Add(bet);
+                _instance.MarathonBets.Add(bet);
             }
         }
     }

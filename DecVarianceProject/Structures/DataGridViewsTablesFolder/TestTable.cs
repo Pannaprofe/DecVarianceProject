@@ -3,7 +3,7 @@ using System.Data;
 using System.Windows.Forms;
 using DecVarianceProject.Properties;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsTablesFolder
 {
     [Serializable]
     public class TestTable:DataGridViewsRepository
@@ -19,7 +19,7 @@ namespace DecVarianceProject
                 table.Columns.Add("Raise Summ").DataType = typeof(double);
                 table.Columns.Add("NetWon Before").DataType = typeof(double);
                 table.Columns.Add("NetWon After").DataType = typeof(double);
-                table.Columns.Add("EV Before").DataType = typeof(double);
+                table.Columns.Add("NetWon Diff").DataType = typeof(double);
                 Dgv.DataSource = FillInTheTable(table, ListContent);
                 BindSortingEventToATableHeader(Dgv);
             }

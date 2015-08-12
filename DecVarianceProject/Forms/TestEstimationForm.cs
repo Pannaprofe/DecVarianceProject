@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 using DecVarianceProject.Properties;
+using DecVarianceProject.Structures.DataGridViewsTablesFolder;
+using DecVarianceProject.Structures.TablesContents;
 
 namespace DecVarianceProject.Forms
 {
@@ -19,9 +18,9 @@ namespace DecVarianceProject.Forms
         public double VarianceAfter { get; private set; }
         public double EvProfit { get; private set; }
         public double VarianceDiff { get; private set; }
-        public double EV2Before { get; private set; }
+        public double Ev2Before { get; private set; }
 
-        public double EV2After { get; private set; }
+        public double Ev2After { get; private set; }
 
 
         public TestEstimationForm(List<TestTableContent> list)
@@ -44,20 +43,20 @@ namespace DecVarianceProject.Forms
 
         private void EstimateEv()
         {
-            int i = 1;
+            var i = 1;
             foreach (var row in TestTableList)
             {
                 EvBefore += row.NetWonBefore;
                 EvAfter += row.NetWonAfter;
-                EV2Before += Math.Pow(row.NetWonBefore, 2);
-                EV2After += Math.Pow(row.NetWonAfter, 2);
-                row.EVDifference = EvAfter/i - EvBefore/i;
+                Ev2Before += Math.Pow(row.NetWonBefore, 2);
+                Ev2After += Math.Pow(row.NetWonAfter, 2);
+                row.NetWonDifference = row.NetWonAfter - row.NetWonBefore;
                 i++;
             }
             EvBefore /= TestTableList.Count;
             EvAfter /= TestTableList.Count;
-            EV2After /= TestTableList.Count;
-            EV2Before /= TestTableList.Count;
+            Ev2After /= TestTableList.Count;
+            Ev2Before /= TestTableList.Count;
             EvProfit = (EvAfter - EvBefore) / EvBefore;
             EvProfit = Math.Round(EvProfit, 3);
         }
@@ -66,8 +65,8 @@ namespace DecVarianceProject.Forms
 
         private void EstimateVariance()
         {
-            VarianceBefore = EV2Before - Math.Pow(EvBefore, 2);
-            VarianceAfter = EV2After - Math.Pow(EvAfter, 2);
+            VarianceBefore = Ev2Before - Math.Pow(EvBefore, 2);
+            VarianceAfter = Ev2After - Math.Pow(EvAfter, 2);
             VarianceDiff = (VarianceAfter - VarianceBefore)/VarianceBefore;
             VarianceDiff = Math.Round(VarianceDiff, 3);
         }

@@ -37,8 +37,6 @@
             this.dataGridViewProbsCoefs = new System.Windows.Forms.DataGridView();
             this.dataGridViewAllBets = new System.Windows.Forms.DataGridView();
             this.dataGridViewBets = new System.Windows.Forms.DataGridView();
-            this.ReraiseMatchesTBX = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.RakeTBX = new System.Windows.Forms.MaskedTextBox();
             this.GenMatchDayResultsBTN = new System.Windows.Forms.Button();
@@ -160,24 +158,6 @@
             this.dataGridViewBets.Size = new System.Drawing.Size(561, 278);
             this.dataGridViewBets.TabIndex = 13;
             // 
-            // ReraiseMatchesTBX
-            // 
-            this.ReraiseMatchesTBX.Location = new System.Drawing.Point(657, 45);
-            this.ReraiseMatchesTBX.Name = "ReraiseMatchesTBX";
-            this.ReraiseMatchesTBX.Size = new System.Drawing.Size(100, 20);
-            this.ReraiseMatchesTBX.TabIndex = 15;
-            this.ReraiseMatchesTBX.Text = "3";
-            this.ReraiseMatchesTBX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ReraiseMatchesTBX_KeyPress);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(518, 49);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(124, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Number of raise matches";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -282,22 +262,23 @@
             // 
             // RaiseSumPercentTBX
             // 
-            this.RaiseSumPercentTBX.Location = new System.Drawing.Point(136, 72);
+            this.RaiseSumPercentTBX.Location = new System.Drawing.Point(639, 46);
             this.RaiseSumPercentTBX.Mask = "0.00";
             this.RaiseSumPercentTBX.Name = "RaiseSumPercentTBX";
             this.RaiseSumPercentTBX.Size = new System.Drawing.Size(100, 20);
             this.RaiseSumPercentTBX.TabIndex = 31;
-            this.RaiseSumPercentTBX.Text = "010";
+            this.RaiseSumPercentTBX.Text = "005";
             this.RaiseSumPercentTBX.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.RaiseSumTBX_MaskInputRejected);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(18, 75);
+            this.label7.Location = new System.Drawing.Point(521, 49);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(110, 13);
             this.label7.TabIndex = 30;
             this.label7.Text = "Raise matches sum,%";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // RaiseSumTBX
             // 
@@ -432,8 +413,6 @@
             this.Controls.Add(this.GenMatchDayResultsBTN);
             this.Controls.Add(this.RakeTBX);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.ReraiseMatchesTBX);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridViewBets);
             this.Controls.Add(this.MatchesNumLbl);
             this.Controls.Add(this.dataGridViewProbsCoefs);
@@ -471,8 +450,6 @@
         private System.Windows.Forms.DataGridView dataGridViewProbsCoefs;
         private System.Windows.Forms.DataGridView dataGridViewAllBets;
         private System.Windows.Forms.DataGridView dataGridViewBets;
-        private System.Windows.Forms.TextBox ReraiseMatchesTBX;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.MaskedTextBox RakeTBX;
         private System.Windows.Forms.Button GenMatchDayResultsBTN;

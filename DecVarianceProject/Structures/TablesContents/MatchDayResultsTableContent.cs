@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.TablesContents
 {
     [Serializable]
     public class MatchDayResultsTableContent:ITablesContent

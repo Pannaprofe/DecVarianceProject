@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.TablesContents
 {
     [Serializable]
     public class ResultsInTableContent : ITablesContent

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsTablesFolder
 {
     [Serializable]
     public class MatchesToRaiseTable: DataGridViewsRepository

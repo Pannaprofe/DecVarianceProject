@@ -2,10 +2,8 @@
 using System.Data;
 using System.Windows.Forms;
 using DecVarianceProject.Properties;
-using System.Collections.Generic;
-using DecVarianceProject.Structures.TablesContents;
 
-namespace DecVarianceProject
+namespace DecVarianceProject.Structures.DataGridViewsTablesFolder
 {
     [Serializable]
     public class ResultsTable:DataGridViewsRepository
@@ -15,7 +13,7 @@ namespace DecVarianceProject
             try
             {
                 var table = new DataTable();
-                table.Columns.Add("Node").DataType = typeof(Int32);
+                table.Columns.Add("Node").DataType = typeof(int);
                 table.Columns.Add("Probability").DataType = typeof(double);
                 table.Columns.Add("Payments").DataType = typeof(double);
                 table.Columns.Add("Winnings").DataType = typeof(double);
@@ -24,34 +22,20 @@ namespace DecVarianceProject
                 Dgv.DataSource = FillInTheTable(table, ListContent);
                 Dgv.ReadOnly = true;
                 var nodeNumColumn = Dgv.Columns["Node"];
-                if (nodeNumColumn != null)
-                {
-                    nodeNumColumn.Width = 50;
-                    var probabilityColumn = Dgv.Columns["Probability"];
-                    if (probabilityColumn != null)
-                    {
-                        probabilityColumn.Width = 60;
-                        var patternWidth = Dgv.Width / 6;
-                        var paymentsColumn = Dgv.Columns["Payments"];
-                        if (paymentsColumn != null)
-                        {
-                            paymentsColumn.Width = patternWidth;
-                            var winningsColumn = Dgv.Columns["Winnings"];
-                            if (winningsColumn != null)
-                            {
-                                winningsColumn.Width = patternWidth;
-                                var netWonColumn = Dgv.Columns["NetWon"];
-                                if (netWonColumn != null)
-                                {
-                                    netWonColumn.Width = patternWidth;
-                                    var pathColumn = Dgv.Columns["Path"];
-                                    if (pathColumn != null)
-                                        pathColumn.Width = Dgv.Width - (nodeNumColumn.Width + probabilityColumn.Width + paymentsColumn.Width + winningsColumn.Width + netWonColumn.Width);
-                                }
-                            }
-                        }
-                    }
-                }
+                nodeNumColumn.Width = 50;
+                var probabilityColumn = Dgv.Columns["Probability"];
+                  
+                probabilityColumn.Width = 60;
+                var patternWidth = Dgv.Width / 6;
+                var paymentsColumn = Dgv.Columns["Payments"];
+                paymentsColumn.Width = patternWidth;
+                var winningsColumn = Dgv.Columns["Winnings"];
+                winningsColumn.Width = patternWidth;
+                var netWonColumn = Dgv.Columns["NetWon"];
+                netWonColumn.Width = patternWidth;
+                var pathColumn = Dgv.Columns["Path"];
+                pathColumn.Width = Dgv.Width - (nodeNumColumn.Width + probabilityColumn.Width + paymentsColumn.Width + winningsColumn.Width + netWonColumn.Width);
+
                 BindSortingEventToATableHeader(Dgv);
             }
             catch
