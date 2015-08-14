@@ -207,7 +207,7 @@ namespace DecVarianceProject.Forms
                             }
                             var testForm = new TestEstimationForm(test);
                             var date = DateTime.Now;
-                            var format = "MMM_ ddd_d-HH_mm_s_yyyy";
+                            const string format = "MMM_ ddd_d-HH_mm_s_yyyy";
                             var fileName = matchesToRaiseNumList[num - 1] + "-" + raisePercentList[j - 1] + "-" + idModelsMax + "-" + idMatchDaysMax + "-" + i + date.ToString(format);
                             FileActions.Save(fileName, test);
                             testForm.ShowDialog();
@@ -227,12 +227,19 @@ namespace DecVarianceProject.Forms
         private void AnalysisBTN_Click(object sender, EventArgs e)
         {
             var sb = new StringBuilder();
-            string[] array2 = Directory.GetFiles(@"C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\bin\Debug");
+            var array2 = Directory.GetFiles(@"C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProject\bin\1");
+            var testInfo = new TestInfo {EvAndVariances = new List<EvAndVariance>()};
             foreach (var name in array2)
             {
                 try
                 {
                     var testForm = new TestEstimationForm(FileActions.Open(name));
+                    var evandVariance = new EvAndVariance
+                    {
+                        EvDiff = testForm.EvProfit,
+                        VarianceDiff = testForm.VarianceDiff
+                    };
+                    testInfo.EvAndVariances.Add(evandVariance);
                     sb.AppendLine(testForm.EvProfit + "  " + testForm.VarianceDiff);
                 }
                 catch
@@ -240,15 +247,20 @@ namespace DecVarianceProject.Forms
                     // ignored
                 }
             }
-            using (StreamWriter streamWriter = new StreamWriter("analysis.txt") )
+            foreach (var elem in testInfo.EvAndVariances)
+            {
+                testInfo.AvgEvDiff += elem.EvDiff;
+                testInfo.AvgVarianceDiff += elem.VarianceDiff;
+            }
+            testInfo.AvgEvDiff /= testInfo.EvAndVariances.Count;
+            testInfo.AvgVarianceDiff /= testInfo.EvAndVariances.Count;
+            sb.AppendLine("-----------------------------");
+            sb.AppendLine("Average Ev diff: "+ testInfo.AvgEvDiff+ " Average Variance Diff: "+ testInfo.AvgVarianceDiff);
+
+            using (var streamWriter = new StreamWriter("analysis.txt") )
             {
                 streamWriter.Write(sb.ToString());
             }
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -278,7 +278,6 @@
             this.label7.Size = new System.Drawing.Size(110, 13);
             this.label7.TabIndex = 30;
             this.label7.Text = "Raise matches sum,%";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // RaiseSumTBX
             // 

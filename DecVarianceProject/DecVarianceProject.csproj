@@ -68,6 +68,7 @@
     <Compile Include="Forms\MatchDayResultsDialog.Designer.cs">
       <DependentUpon>MatchDayResultsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Structures\EvAndVariance.cs" />
     <Compile Include="Structures\StructureOfRaise.cs" />
     <Compile Include="Structures\TablesContents\AllBetsTableContent.cs" />
     <Compile Include="Structures\TablesContents\GennedParamsTableContent.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Structures\TablesContents\ITablesContent.cs" />
     <Compile Include="Structures\TablesContents\ResultsNotForTableContent.cs" />
     <Compile Include="Structures\TablesContents\TestTableContent.cs" />
+    <Compile Include="Structures\TestInfo.cs" />
     <Compile Include="SubTree.cs" />
     <Compile Include="Forms\TestEstimationForm.cs">
       <SubType>Form</SubType>
