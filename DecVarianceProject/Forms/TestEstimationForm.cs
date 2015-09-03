@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
+using DecVarianceProject.AppLogic;
 using DecVarianceProject.Properties;
-using DecVarianceProject.Structures.DataGridViewsTablesFolder;
-using DecVarianceProject.Structures.TablesContents;
+using DecVarianceProject.Entities.DataGridViewsTablesFolder;
+using DecVarianceProject.Entities.TablesContents;
 
 namespace DecVarianceProject.Forms
 {
@@ -43,7 +44,6 @@ namespace DecVarianceProject.Forms
 
         private void EstimateEv()
         {
-            var i = 1;
             foreach (var row in TestTableList)
             {
                 EvBefore += row.NetWonBefore;
@@ -51,17 +51,21 @@ namespace DecVarianceProject.Forms
                 Ev2Before += Math.Pow(row.NetWonBefore, 2);
                 Ev2After += Math.Pow(row.NetWonAfter, 2);
                 row.NetWonDifference = row.NetWonAfter - row.NetWonBefore;
-                i++;
             }
             EvBefore /= TestTableList.Count;
             EvAfter /= TestTableList.Count;
             Ev2After /= TestTableList.Count;
             Ev2Before /= TestTableList.Count;
-            EvProfit = (EvAfter - EvBefore) / EvBefore;
+            EvProfit = Math.Sign(EvBefore)*(EvAfter - EvBefore) / EvBefore;
             EvProfit = Math.Round(EvProfit, 3);
+            
         }
 
-        
+        public void ShowAndInstaClose()
+        {
+            ShowDialog();
+            Close();
+        }
 
         private void EstimateVariance()
         {
@@ -89,6 +93,12 @@ namespace DecVarianceProject.Forms
             }
         }
 
-
+        private void TestEstimationForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                OKBTN_Click(null,null);
+            }
+        }
     }
 }

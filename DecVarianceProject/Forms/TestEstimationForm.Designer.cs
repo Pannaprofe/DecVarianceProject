@@ -218,9 +218,11 @@
             this.Controls.Add(this.TestResultsLBL);
             this.Controls.Add(this.dataGridViewTest);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TestEstimationForm";
             this.Text = "TestEstimationForm";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TestEstimationForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTest)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

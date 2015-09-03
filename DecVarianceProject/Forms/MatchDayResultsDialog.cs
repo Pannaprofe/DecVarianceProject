@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using DecVarianceProject.Structures.DataGridViewsTablesFolder;
-using DecVarianceProject.Structures.TablesContents;
+using DecVarianceProject.Entities.DataGridViewsTablesFolder;
+using DecVarianceProject.Entities.Structures;
+using DecVarianceProject.Entities.TablesContents;
 
 namespace DecVarianceProject.Forms
 {
     public partial class MatchDayResultsDialog : Form
     {
-        private Singleton Instance = Singleton.Instance;
+        private readonly Singleton _instance = Singleton.Instance;
         
 
         private readonly Random _randomNum = new Random();
@@ -17,7 +18,7 @@ namespace DecVarianceProject.Forms
         {
             InitializeComponent();
             dataGridViewMatchDayResults.Visible = false;
-            Instance.MatchDayResults = new List<MatchDayResultsTableContent>();
+            _instance.MatchDayResultsList = new List<MatchDayResultsTableContent>();
             AcceptButton = OkBTN;
             if (isAutomatic)
                 OkBTN_Click(this, new EventArgs());
@@ -26,7 +27,7 @@ namespace DecVarianceProject.Forms
         private void OkBTN_Click(object sender, EventArgs e)
         {
             CreateTable(true);
-            Instance.MatchDayResults = DgvToList(dataGridViewMatchDayResults);
+            _instance.MatchDayResultsList = DgvToList(dataGridViewMatchDayResults);
             Close();
             DialogResult = DialogResult.OK;
         }
@@ -64,8 +65,8 @@ namespace DecVarianceProject.Forms
             if (automaticGen)
             {
                 int range = 1000;
-                int middleLowEdge = (int)(Instance.ProbsMarathon[matchNum][1] * range);
-                int middleHighEdge = (int)(Instance.ProbsMarathon[matchNum][2] * range) + middleLowEdge;
+                int middleLowEdge = (int)(_instance.ProbsMarathonList[matchNum][1] * range);
+                int middleHighEdge = (int)(_instance.ProbsMarathonList[matchNum][2] * range) + middleLowEdge;
                 int res = _randomNum.Next(0, range);
                 if (res < middleLowEdge)
                     return "P1";
@@ -93,20 +94,20 @@ namespace DecVarianceProject.Forms
                 dataGridViewMatchDayResults.Rows.Clear();
                 dataGridViewMatchDayResults.Refresh();
             }
-            Instance.MatchDayResults.Clear();
+            _instance.MatchDayResultsList.Clear();
             //-----------------
             
-            for (int i = 0; i < Instance.MatchesNum; i++)
+            for (int i = 0; i < _instance.MatchesNum; i++)
             {
                 var result = new MatchDayResultsTableContent()
                 {
                     MatchNum = i,
                     MatchOutcome = GenMatchResults(automaticGen,i)
                 };
-                Instance.MatchDayResults.Add(result);
+                _instance.MatchDayResultsList.Add(result);
             }
-            Instance.MatchDayResultsTable = new MatchDayResultsTable() { Dgv = dataGridViewMatchDayResults, ListContent = new List<ITablesContent>(Instance.MatchDayResults) };
-            Instance.MatchDayResultsTable.ConfigureDgv();
+            _instance.MatchDayResultsTable = new MatchDayResultsTable() { Dgv = dataGridViewMatchDayResults, ListContent = new List<ITablesContent>(_instance.MatchDayResultsList) };
+            _instance.MatchDayResultsTable.ConfigureDgv();
         }
 
         private void AutomaticallyRdBtn_Click(object sender, EventArgs e)

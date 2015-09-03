@@ -1,0 +1,7 @@
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProjectTests\bin\Debug\DecVarianceProjectTests.dll
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProjectTests\bin\Debug\DecVarianceProjectTests.pdb
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProjectTests\bin\Debug\DecVarianceProject.exe
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProjectTests\bin\Debug\DecVarianceProject.pdb
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProjectTests\obj\Debug\DecVarianceProjectTests.csprojResolveAssemblyReference.cache
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProjectTests\obj\Debug\DecVarianceProjectTests.dll
+C:\Users\Guest\Desktop\DecVarianceProject\DecVarianceProjectTests\obj\Debug\DecVarianceProjectTests.pdb
