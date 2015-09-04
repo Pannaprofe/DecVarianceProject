@@ -16,11 +16,13 @@ namespace DecVarianceProject.Forms
         {
             _instance = Singleton.Instance;
             InitializeComponent();
+            _instance.Rake = Convert.ToDouble(RakeTBX.Text);
+            _instance.MaxWinnings = 10000;
+            _instance.RaiseSumPercent = Convert.ToDouble(RaiseSumPercentTBX.Text);
+            _instance.BetsNum = Convert.ToInt32(BetsNumTxtBx.Text);
+            _instance.MatchesNum = Convert.ToInt32(MatchesNumTxtBx.Text);
             GenMatchDayResultsBTN.Enabled = false;
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            _instance.DgvDictionary = new Dictionary<string,DataGridView >
+            _instance.DgvDictionary = new Dictionary<string, DataGridView>
             {
                 {"Bets",dataGridViewBets},
                 {"MatchDayResults",dataGridViewMatchDayResults },
@@ -28,6 +30,10 @@ namespace DecVarianceProject.Forms
                 {"Results",dataGridViewResults },
                 {"ProbsCoefs",dataGridViewProbsCoefs }
             };
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
 
 

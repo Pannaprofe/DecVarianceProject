@@ -14,7 +14,12 @@ namespace DecVarianceProject.AppLogic
         {
             _instance = Singleton.Instance;
             _instance.Creator = new ProbsCoefsBetsCreator();
+
+            _instance.Tree = new SubTree();
+            _instance.Tree.BuildTheTree(ref _instance.Tree.Tree);
+            _instance.Tree.PassTheTree(_instance.Tree.Top);
             _instance.BetSplitter = new BetSplitter();
+
             var resultsTableList = _instance.AllResultsNoTableList.Select(elem => new ResultsInTableContent()
             {
                 NetWon = elem.NetWon,

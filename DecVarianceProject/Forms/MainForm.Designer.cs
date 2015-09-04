@@ -267,7 +267,7 @@
             this.RaiseSumPercentTBX.Name = "RaiseSumPercentTBX";
             this.RaiseSumPercentTBX.Size = new System.Drawing.Size(100, 20);
             this.RaiseSumPercentTBX.TabIndex = 31;
-            this.RaiseSumPercentTBX.Text = "020";
+            this.RaiseSumPercentTBX.Text = "005";
             this.RaiseSumPercentTBX.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.RaiseSumTBX_MaskInputRejected);
             // 
             // label7

@@ -29,7 +29,6 @@ namespace DecVarianceProject.AppLogic
             _treeLevels = _instance.MatchesNum;
             GetCriticalNodeNumber();
             Top = Tree;
-            _instance.AllResultsNoTableList= new List<ResultsNotForTableContent>();
         }
 
         //returns number of nodes in the tree, excluding top element
@@ -119,7 +118,6 @@ namespace DecVarianceProject.AppLogic
                     tree = tree.Parent;
                 }
             }
-            Console.WriteLine(tree.Parent.Parent.Win1.Win1.Path.ToString());
         }
 
         public void PassTheTree(Node tree)
@@ -167,7 +165,7 @@ namespace DecVarianceProject.AppLogic
             PassTheTree(tree.Win2);
         }
 
-        private static bool HavingSuchBet(IReadOnlyList<int> path, BetInfo bet)
+        public static bool HavingSuchBet(IReadOnlyList<int> path, BetInfo bet)
         {
             try
             {

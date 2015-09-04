@@ -12,18 +12,18 @@ namespace DecVarianceProject.Entities.Structures
 
         private Singleton()
         {
-            ProbsMarathonList = new List<List<double>>();
-            ProbsOtherCoList = new List<List<double>>();
-            CoefsMarathonList = new List<List<double>>();
-            CoefsOtherCoList = new List<List<double>>();
-            GennedParamsList = new List<GennedParamsTableContent>();
-            ClientsBetsList = new List<BetInfo>();
-            MarathonBetsList = new List<BetInfo>();
-            AllBetsForTableList = new List<AllBetsTableContent>();
-            AllResultsInTableList = new List<ResultsInTableContent>();
-            MatchesToRaiseTableList = new List<MatchesToRaiseTableContent>();
-            BetsStructureList = new List<StructureOfRaise>();
-            MatchDayResultsList = new List<MatchDayResultsTableContent>();
+            //ProbsMarathonList = new List<List<double>>();
+            //ProbsOtherCoList = new List<List<double>>();
+            //CoefsMarathonList = new List<List<double>>();
+            //CoefsOtherCoList = new List<List<double>>();
+            //GennedParamsList = new List<GennedParamsTableContent>();
+            //ClientsBetsList = new List<BetInfo>();
+            //MarathonBetsList = new List<BetInfo>();
+            //AllBetsForTableList = new List<AllBetsTableContent>();
+            //AllResultsInTableList = new List<ResultsInTableContent>();
+            //MatchesToRaiseTableList = new List<MatchesToRaiseTableContent>();
+            //BetsStructureList = new List<StructureOfRaise>();
+           // MatchDayResultsList = new List<MatchDayResultsTableContent>();
             AllResultsNoTableList = new List<ResultsNotForTableContent>();
             DgvDictionary = new Dictionary<string, DataGridView>();
 

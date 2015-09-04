@@ -25,9 +25,7 @@ namespace DecVarianceProject.AppLogic
             _instance.AllBetsForTableList = new List<AllBetsTableContent>();
             ObtainData();  //Generate Probs/Coefs
             CreateProbsAndCoefsStructure();   // for printing Probs and Coefs into Table
-            _instance.Tree = new SubTree();
-            _instance.Tree.BuildTheTree(ref _instance.Tree.Tree);
-            _instance.Tree.PassTheTree(_instance.Tree.Top);
+
         }
 
         protected void ObtainData()
